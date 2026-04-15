@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monkius Full Stream — Real Cinema</title>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0b0b0b; color: white; overflow-x: hidden; }
+    #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; background: radial-gradient(circle at 20% 30%, #0a0f1a, #03060c); }
+    .main-content { position: relative; z-index: 2; background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.82) 100%); min-height: 100vh; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 4%; background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 100%); backdrop-filter: blur(6px); position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 1rem; }
+    .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #E50914, #ff6b6b); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { color: #e5e5e5; text-decoration: none; font-weight: 500; cursor: pointer; }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    .auth-buttons { display: flex; gap: 1rem; }
+    .auth-btn { background: #E50914; border: none; padding: 0.4rem 1rem; border-radius: 4px; color: white; cursor: pointer; font-weight: 600; font-family: inherit; }
+    .user-greeting { display: flex; align-items: center; gap: 1rem; }
+    .hero { padding: 4rem 4% 6rem; min-height: 70vh; display: flex; align-items: center; background: linear-gradient(90deg, #03060c 0%, transparent 70%); }
+    .hero-content { max-width: 550px; }
+    .hero-badge { background: rgba(229,9,20,0.9); display: inline-block; padding: 0.2rem 1rem; border-radius: 30px; font-size: 0.8rem; margin-bottom: 1rem; }
+    .hero-content h1 { font-size: 3rem; margin-bottom: 1rem; }
+    .row-section { margin: 2.5rem 0 3rem 0; padding-left: 4%; }
+    .row-header { display: flex; justify-content: space-between; align-items: baseline; padding-right: 4%; margin-bottom: 1rem; }
+    .movie-row { display: flex; gap: 1rem; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 1rem; scrollbar-width: thin; }
+    .movie-row::-webkit-scrollbar { height: 6px; }
+    .movie-card { flex: 0 0 auto; width: 190px; border-radius: 12px; overflow: hidden; background: #111; cursor: pointer; transition: transform 0.2s; }
+    .movie-card:hover { transform: scale(1.05); }
+    .movie-poster { width: 100%; height: 270px; object-fit: cover; }
+    .movie-info { padding: 0.6rem; }
+    .movie-title { font-size: 0.85rem; font-weight: 600; }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; }
+    .modal-content { background: #111; width: 90%; max-width: 800px; border-radius: 12px; overflow: hidden; }
+    .modal-video { width: 100%; height: 400px; }
+    .modal-info { padding: 1.5rem; }
+    .close-modal { float: right; font-size: 2rem; cursor: pointer; color: white; }
+    .footer { text-align: center; padding: 2rem; color: #8a8a8a; }
+    @media (max-width: 768px) { .movie-card { width: 140px; } .movie-poster { height: 200px; } .nav-links { display: none; } .hero-content h1 { font-size: 2rem; } }
+  </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div class="main-content">
+  <div class="navbar">
+    <div class="logo">MONKIUS FULL STREAM</div>
+    <div class="nav-links">
+      <a class="active" data-nav="home">Home</a>
+      <a data-nav="mylist">My List</a>
+    </div>
+    <div id="auth-section"></div>
+  </div>
+  <div id="hero-section" class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">🔥 REAL MOVIES · WATCH TRAILERS</div>
+      <h1 id="featured-title">Loading...</h1>
+      <p id="featured-desc"></p>
+      <button class="auth-btn" id="watch-trailer-btn" style="background:white; color:black;">▶ Watch Trailer</button>
+    </div>
+  </div>
+  <div id="rows-container"></div>
+  <div class="footer"><p>© 2026 Monkius Full Stream — Real movie data from TMDB | Trailers from YouTube</p></div>
+</div>
+<div id="trailer-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <iframe id="trailer-iframe" class="modal-video" frameborder="0" allowfullscreen></iframe>
+    <div class="modal-info"><h3 id="modal-title"></h3><p id="modal-overview"></p></div>
+  </div>
+</div>
+<script>
+  // Firebase config (your actual keys)
+  const firebaseConfig = {
+    apiKey: "AIzaSyB-9QzBOU6vFST4EvxdhFEIz5QBA1D-XW0",
+    authDomain: "monkius-full-stream.firebaseapp.com",
+    projectId: "monkius-full-stream",
+    storageBucket: "monkius-full-stream.firebasestorage.app",
+    messagingSenderId: "276409313367",
+    appId: "1:276409313367:web:1eb2fb48df4feb9c801b12"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  let currentUser = null;
+  let myList = new Set();
+
+  const authSection = document.getElementById('auth-section');
+  const rowsContainer = document.getElementById('rows-container');
+  const modal = document.getElementById('trailer-modal');
+  const iframe = document.getElementById('trailer-iframe');
+  const modalTitle = document.getElementById('modal-title');
+  const modalOverview = document.getElementById('modal-overview');
+  const closeModal = document.querySelector('.close-modal');
+  const watchTrailerBtn = document.getElementById('watch-trailer-btn');
+  let featuredMovie = null;
+
+  function updateAuthUI() {
+    if (currentUser) {
+      authSection.innerHTML = `<div class="user-greeting"><span>👤 ${currentUser.email}</span><button class="auth-btn" id="logout-btn">Logout</button></div>`;
+      document.getElementById('logout-btn').addEventListener('click', () => auth.signOut());
+      loadMyList();
+    } else {
+      authSection.innerHTML = `<div class="auth-buttons"><button class="auth-btn" id="login-btn">Login</button><button class="auth-btn" id="signup-btn">Sign Up</button></div>`;
+      document.getElementById('login-btn').addEventListener('click', () => showAuthModal('login'));
+      document.getElementById('signup-btn').addEventListener('click', () => showAuthModal('signup'));
+    }
+  }
+
+  function showAuthModal(mode) {
+    const email = prompt(mode === 'login' ? 'Enter your email:' : 'Enter email for signup:');
+    if (!email) return;
+    const password = prompt('Enter password (min 6 characters):');
+    if (!password) return;
+    if (mode === 'signup') {
+      auth.createUserWithEmailAndPassword(email, password).catch(err => alert(err.message));
+    } else {
+      auth.signInWithEmailAndPassword(email, password).catch(err => alert(err.message));
+    }
+  }
+
+  auth.onAuthStateChanged(user => { currentUser = user; updateAuthUI(); });
+
+  async function loadMyList() {
+    if (!currentUser) return;
+    const snapshot = await db.collection('users').doc(currentUser.uid).collection('mylist').get();
+    myList.clear();
+    snapshot.forEach(doc => myList.add(doc.id));
+    if (document.querySelector('[data-nav="mylist"].active')) renderMyListView();
+  }
+
+  async function addToMyList(movieId, movieData) {
+    if (!currentUser) { alert('Please login to save to My List'); return; }
+    await db.collection('users').doc(currentUser.uid).collection('mylist').doc(movieId.toString()).set(movieData);
+    myList.add(movieId.toString());
+    alert('Added to My List');
+  }
+
+  async function removeFromMyList(movieId) {
+    if (!currentUser) return;
+    await db.collection('users').doc(currentUser.uid).collection('mylist').doc(movieId.toString()).delete();
+    myList.delete(movieId.toString());
+    alert('Removed from My List');
+    if (document.querySelector('[data-nav="mylist"].active')) renderMyListView();
+  }
+
+  function renderMovieCard(movie, isMyListView = false) {
+    const card = document.createElement('div');
+    card.className = 'movie-card';
+    card.innerHTML = `
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}" onerror="this.src='https://placehold.co/300x450/1e1e2a/white?text=No+Image'">
+      <div class="movie-info">
+        <div class="movie-title">${movie.title}</div>
+        <button class="auth-btn" style="margin-top:5px; font-size:0.7rem;" data-movie-id="${movie.id}" data-movie-title="${movie.title}" data-movie-overview="${movie.overview}" data-movie-poster="${movie.poster_path}">${isMyListView ? 'Remove' : '➕ My List'}</button>
+        <button class="auth-btn" style="margin-top:5px; background:#333;" data-trailer-id="${movie.id}">▶ Trailer</button>
+      </div>
+    `;
+    const listBtn = card.querySelector('.auth-btn:first-of-type');
+    listBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isMyListView) removeFromMyList(movie.id);
+      else addToMyList(movie.id, { title: movie.title, poster_path: movie.poster_path, overview: movie.overview });
+    });
+    const trailerBtn = card.querySelector('[data-trailer-id]');
+    trailerBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openTrailer(movie.id, movie.title, movie.overview);
+    });
+    return card;
+  }
+
+  async function fetchMovies(category) {
+    const res = await fetch(`/api/movies/${category}`);
+    return await res.json();
+  }
+
+  async function loadRows() {
+    const categories = [
+      { title: '🔥 Trending Now', category: 'trending' },
+      { title: '🏆 Top Rated', category: 'top_rated' },
+      { title: '💥 Action', category: 'action' },
+      { title: '😂 Comedy', category: 'comedy' }
+    ];
+    rowsContainer.innerHTML = '';
+    for (let cat of categories) {
+      const movies = await fetchMovies(cat.category);
+      if (!movies || movies.length === 0) continue;
+      const rowDiv = document.createElement('div');
+      rowDiv.className = 'row-section';
+      rowDiv.innerHTML = `<div class="row-header"><h2>${cat.title}</h2></div><div class="movie-row" id="row-${cat.category}"></div>`;
+      const movieRow = rowDiv.querySelector('.movie-row');
+      movies.slice(0, 12).forEach(movie => movieRow.appendChild(renderMovieCard(movie)));
+      rowsContainer.appendChild(rowDiv);
+      if (cat.category === 'trending' && movies[0]) {
+        featuredMovie = movies[0];
+        document.getElementById('featured-title').innerText = featuredMovie.title;
+        document.getElementById('featured-desc').innerText = featuredMovie.overview ? featuredMovie.overview.slice(0, 150) + '...' : 'No description available.';
+      }
+    }
+  }
+
+  async function renderMyListView() {
+    if (!currentUser) { rowsContainer.innerHTML = '<div style="padding:2rem; text-align:center;">Please login to see your list</div>'; return; }
+    const snapshot = await db.collection('users').doc(currentUser.uid).collection('mylist').get();
+    const myMovies = [];
+    snapshot.forEach(doc => myMovies.push({ id: doc.id, ...doc.data() }));
+    rowsContainer.innerHTML = `<div class="row-section"><div class="row-header"><h2>📋 My List</h2></div><div class="movie-row" id="mylist-row"></div></div>`;
+    const row = document.getElementById('mylist-row');
+    if (myMovies.length === 0) row.innerHTML = '<p style="color:gray;">No movies added yet. Browse and click + My List</p>';
+    else myMovies.forEach(movie => {
+      const card = renderMovieCard({ id: movie.id, title: movie.title, poster_path: movie.poster_path, overview: movie.overview }, true);
+      row.appendChild(card);
+    });
+  }
+
+  async function openTrailer(movieId, title, overview) {
+    const res = await fetch(`/api/movie/${movieId}/trailer`);
+    const data = await res.json();
+    if (data.key) {
+      iframe.src = `https://www.youtube.com/embed/${data.key}?autoplay=1`;
+      modalTitle.innerText = title;
+      modalOverview.innerText = overview || 'No overview available.';
+      modal.style.display = 'flex';
+    } else {
+      alert('No trailer available for this movie');
+    }
+  }
+
+  closeModal.onclick = () => { modal.style.display = 'none'; iframe.src = ''; };
+  window.onclick = (e) => { if (e.target === modal) { modal.style.display = 'none'; iframe.src = ''; } };
+  watchTrailerBtn.onclick = () => { if (featuredMovie) openTrailer(featuredMovie.id, featuredMovie.title, featuredMovie.overview); };
+
+  document.querySelectorAll('[data-nav]').forEach(link => {
+    link.addEventListener('click', () => {
+      const nav = link.getAttribute('data-nav');
+      if (nav === 'home') loadRows();
+      else if (nav === 'mylist') renderMyListView();
+      document.querySelectorAll('[data-nav]').forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+
+  loadRows();
+
+  // ========== ANIMATED BACKGROUND CANVAS ==========
+  const canvas = document.getElementById('bg-canvas');
+  let ctx = canvas.getContext('2d');
+  let width = window.innerWidth, height = window.innerHeight;
+  let particles = [];
+  const PARTICLE_COUNT = 80, MAX_DIST = 140, PARTICLE_SPEED = 0.35;
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.vx = (Math.random() - 0.5) * PARTICLE_SPEED;
+      this.vy = (Math.random() - 0.5) * PARTICLE_SPEED;
+      this.size = Math.random() * 2.5 + 1;
+      this.color = `rgba(229, 9, 20, ${Math.random() * 0.4 + 0.2})`;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0) this.x = width;
+      if (this.x > width) this.x = 0;
+      if (this.y < 0) this.y = height;
+      if (this.y > height) this.y = 0;
+    }
+    draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); }
+  }
+
+  function initParticles() { particles = []; for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle()); }
+  function drawConnections() {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y, dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < MAX_DIST) {
+          ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(229, 70, 100, ${(1 - dist / MAX_DIST) * 0.3})`; ctx.lineWidth = 0.8; ctx.stroke();
+        }
+      }
+    }
+  }
+  let gradientOffset = 0;
+  function animateBackground() {
+    ctx.clearRect(0, 0, width, height);
+    gradientOffset += 0.002;
+    const grad = ctx.createLinearGradient(Math.sin(gradientOffset) * 100, 0, width - Math.cos(gradientOffset * 0.7) * 100, height);
+    grad.addColorStop(0, '#03060c'); grad.addColorStop(0.5, '#121826'); grad.addColorStop(1, '#1a0e12');
+    ctx.fillStyle = grad; ctx.fillRect(0, 0, width, height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    drawConnections();
+    requestAnimationFrame(animateBackground);
+  }
+  function resizeCanvas() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; initParticles(); }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+  animateBackground();
+
+  // subtle parallax
+  window.addEventListener('mousemove', (e) => {
+    const hero = document.querySelector('.hero');
+    if (hero) { const x = (e.clientX / window.innerWidth) * 10, y = (e.clientY / window.innerHeight) * 5; hero.style.transform = `translate(${x * 0.05}px, ${y * 0.03}px)`; }
+  });
+</script>
+</body>
+</html>
