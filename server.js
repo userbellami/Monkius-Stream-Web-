@@ -28,6 +28,21 @@ app.get('/api/movies/:category', async (req, res) => {
   }
 });
 
+// Search movies
+app.get('/api/search', async (req, res) => {
+  const query = req.query.q;
+  if (!query) return res.json([]);
+  const TMDB_API_KEY = process.env.TMDB_API_KEY;
+  const url = `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`;
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    res.json(data.results || []);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Get trailer
 app.get('/api/movie/:id/trailer', async (req, res) => {
   const { id } = req.params;
@@ -41,6 +56,15 @@ app.get('/api/movie/:id/trailer', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+// NEW: VidSrc streaming endpoint
+app.get('/api/stream/:mediaType/:id', (req, res) => {
+  const { mediaType, id } = req.params;
+  // Use vidsrc.to – it works with TMDB or IMDb IDs
+  const streamUrl = `https://vidsrc.to/embed/${mediaType}/${id}`;
+  console.log(`[Stream] Generated URL: ${streamUrl}`);
+  res.json({ url: streamUrl });
 });
 
 // Serve frontend
