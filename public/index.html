@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monkius Full Stream — Watch Any Movie</title>
+  <title>Monkius Full Stream — Watch Free</title>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -22,17 +22,15 @@
     .nav-icons { display: flex; gap: 1.2rem; align-items: center; }
     .nav-icons i { font-size: 1.2rem; cursor: pointer; color: #e5e5e5; transition: 0.2s; }
     .nav-icons i:hover { color: #E50914; }
-    .auth-buttons { display: flex; gap: 1rem; }
-    .auth-btn { background: #E50914; border: none; padding: 0.4rem 1rem; border-radius: 4px; color: white; cursor: pointer; font-weight: 600; font-family: inherit; }
-    .user-greeting { display: flex; align-items: center; gap: 1rem; }
+    .auth-buttons, .user-greeting { display: flex; gap: 1rem; align-items: center; }
+    .auth-btn { background: #E50914; border: none; padding: 0.4rem 1rem; border-radius: 4px; color: white; cursor: pointer; font-weight: 600; }
     .hero { padding: 4rem 4% 6rem; min-height: 70vh; display: flex; align-items: center; background: linear-gradient(90deg, #03060c 0%, transparent 70%); }
     .hero-content { max-width: 550px; }
     .hero-badge { background: rgba(229,9,20,0.9); display: inline-block; padding: 0.2rem 1rem; border-radius: 30px; font-size: 0.8rem; margin-bottom: 1rem; }
     .hero-content h1 { font-size: 3rem; margin-bottom: 1rem; }
     .row-section { margin: 2.5rem 0 3rem 0; padding-left: 4%; }
     .row-header { display: flex; justify-content: space-between; align-items: baseline; padding-right: 4%; margin-bottom: 1rem; }
-    .movie-row { display: flex; gap: 1rem; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 1rem; scrollbar-width: thin; }
-    .movie-row::-webkit-scrollbar { height: 6px; }
+    .movie-row { display: flex; gap: 1rem; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 1rem; }
     .movie-card { flex: 0 0 auto; width: 190px; border-radius: 12px; overflow: hidden; background: #111; cursor: pointer; transition: transform 0.2s; }
     .movie-card:hover { transform: scale(1.05); }
     .movie-poster { width: 100%; height: 270px; object-fit: cover; }
@@ -52,8 +50,7 @@
     .search-results { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; max-height: 400px; overflow-y: auto; justify-content: center; }
     .refresh-bar { display: flex; justify-content: space-between; align-items: center; padding: 0 4%; margin-top: 1rem; }
     .live-badge { background: #E50914; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; }
-    .refresh-btn { background: transparent; border: 1px solid #E50914; color: white; padding: 6px 12px; border-radius: 20px; cursor: pointer; transition: 0.2s; }
-    .refresh-btn:hover { background: #E50914; }
+    .refresh-btn { background: transparent; border: 1px solid #E50914; color: white; padding: 6px 12px; border-radius: 20px; cursor: pointer; }
     .footer { text-align: center; padding: 2rem; color: #8a8a8a; }
     @media (max-width: 768px) { .movie-card { width: 140px; } .movie-poster { height: 200px; } .nav-links { display: none; } .hero-content h1 { font-size: 2rem; } .modal-video { height: 250px; } }
   </style>
@@ -63,362 +60,63 @@
 <div class="main-content">
   <div class="navbar">
     <div class="logo">MONKIUS FULL STREAM</div>
-    <div class="nav-links">
-      <a class="active" data-nav="home">Home</a>
-      <a data-nav="mylist">My List</a>
-    </div>
+    <div class="nav-links"><a class="active" data-nav="home">Home</a><a data-nav="mylist">My List</a></div>
     <div style="display: flex; gap: 1rem; align-items: center;">
       <div class="nav-icons"><i class="fas fa-search" id="search-icon"></i></div>
       <div id="auth-section"></div>
     </div>
   </div>
   <div id="search-overlay" class="search-overlay">
-    <input type="text" id="search-input" placeholder="Search for a movie...">
+    <input type="text" id="search-input" placeholder="Search movies...">
     <button id="search-btn"><i class="fas fa-search"></i> Search</button>
     <div id="search-results" class="search-results"></div>
   </div>
   <div class="refresh-bar">
-    <div><span class="live-badge">🔥 LIVE</span> <span style="margin-left:10px; font-size:0.8rem; color:#aaa;">Content updates daily (TMDB)</span></div>
-    <button id="refresh-data-btn" class="refresh-btn"><i class="fas fa-sync-alt"></i> Refresh Now</button>
+    <div><span class="live-badge">🔥 LIVE</span><span style="margin-left:10px;font-size:0.8rem;">Content updates daily</span></div>
+    <button id="refresh-data-btn" class="refresh-btn"><i class="fas fa-sync-alt"></i> Refresh</button>
   </div>
-  <div id="hero-section" class="hero">
-    <div class="hero-content">
-      <div class="hero-badge">🎬 WATCH FULL MOVIES • VIDSRC POWERED</div>
-      <h1 id="featured-title">Loading...</h1>
-      <p id="featured-desc"></p>
-      <button class="auth-btn" id="watch-trailer-btn" style="background:white; color:black;">▶ Watch Trailer</button>
-    </div>
-  </div>
+  <div class="hero"><div class="hero-content"><div class="hero-badge">🎬 WATCH FULL MOVIES</div><h1 id="featured-title">Loading...</h1><p id="featured-desc"></p><button class="auth-btn" id="watch-trailer-btn" style="background:white;color:black;">▶ Trailer</button></div></div>
   <div id="rows-container"></div>
-  <div class="footer"><p>© 2026 Monkius Full Stream — Stream any movie instantly. Updated daily from TMDB.</p></div>
+  <div class="footer"><p>© 2026 Monkius Full Stream — Stream instantly, no redirects.</p></div>
 </div>
-<!-- Trailer Modal -->
-<div id="trailer-modal" class="modal">
-  <div class="modal-content">
-    <span class="close-modal">&times;</span>
-    <iframe id="trailer-iframe" class="modal-video" frameborder="0" allowfullscreen></iframe>
-    <div class="modal-info"><h3 id="modal-title"></h3><p id="modal-overview"></p></div>
-  </div>
-</div>
-<!-- Stream Modal (VidSrc iframe) -->
-<div id="stream-modal" class="modal">
-  <div class="modal-content">
-    <span class="close-modal" id="close-stream">&times;</span>
-    <iframe id="stream-iframe" class="modal-video" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen; picture-in-picture"></iframe>
-    <div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p></div>
-  </div>
-</div>
-
+<div id="trailer-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="trailer-iframe" class="modal-video" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="modal-title"></h3><p id="modal-overview"></p></div></div></div>
+<div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-popups-to-escape-sandbox" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p></div></div></div>
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyB-9QzBOU6vFST4EvxdhFEIz5QBA1D-XW0",
-    authDomain: "monkius-full-stream.firebaseapp.com",
-    projectId: "monkius-full-stream",
-    storageBucket: "monkius-full-stream.firebasestorage.app",
-    messagingSenderId: "276409313367",
-    appId: "1:276409313367:web:1eb2fb48df4feb9c801b12"
-  };
+  const firebaseConfig = { apiKey: "AIzaSyB-9QzBOU6vFST4EvxdhFEIz5QBA1D-XW0", authDomain: "monkius-full-stream.firebaseapp.com", projectId: "monkius-full-stream", storageBucket: "monkius-full-stream.firebasestorage.app", messagingSenderId: "276409313367", appId: "1:276409313367:web:1eb2fb48df4feb9c801b12" };
   firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
-
-  let currentUser = null;
-  let myList = new Set();
-
-  const authSection = document.getElementById('auth-section');
-  const rowsContainer = document.getElementById('rows-container');
-  const trailerModal = document.getElementById('trailer-modal');
-  const streamModal = document.getElementById('stream-modal');
-  const trailerIframe = document.getElementById('trailer-iframe');
-  const streamIframe = document.getElementById('stream-iframe');
-  const streamTitle = document.getElementById('stream-title');
-  const streamDesc = document.getElementById('stream-desc');
-  const closeModalBtns = document.querySelectorAll('.close-modal');
-  const watchTrailerBtn = document.getElementById('watch-trailer-btn');
-  const searchIcon = document.getElementById('search-icon');
-  const searchOverlay = document.getElementById('search-overlay');
-  const searchInput = document.getElementById('search-input');
-  const searchBtn = document.getElementById('search-btn');
-  const searchResultsDiv = document.getElementById('search-results');
+  const auth = firebase.auth(), db = firebase.firestore();
+  let currentUser = null, myList = new Set();
+  const authSection = document.getElementById('auth-section'), rowsContainer = document.getElementById('rows-container'), trailerModal = document.getElementById('trailer-modal'), streamModal = document.getElementById('stream-modal'), trailerIframe = document.getElementById('trailer-iframe'), streamIframe = document.getElementById('stream-iframe'), streamTitle = document.getElementById('stream-title'), streamDesc = document.getElementById('stream-desc'), watchTrailerBtn = document.getElementById('watch-trailer-btn'), searchIcon = document.getElementById('search-icon'), searchOverlay = document.getElementById('search-overlay'), searchInput = document.getElementById('search-input'), searchBtn = document.getElementById('search-btn'), searchResultsDiv = document.getElementById('search-results');
   let featuredMovie = null;
-
-  // ---- Helper: Show/Hide Search ----
-  searchIcon.onclick = () => {
-    if (searchOverlay.style.display === 'block') searchOverlay.style.display = 'none';
-    else { searchOverlay.style.display = 'block'; searchInput.focus(); }
-  };
-  async function performSearch() {
-    const query = searchInput.value.trim();
-    if (!query) return;
-    const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
-    const movies = await res.json();
-    searchResultsDiv.innerHTML = '';
-    if (movies.length === 0) { searchResultsDiv.innerHTML = '<p>No movies found</p>'; return; }
-    movies.slice(0, 12).forEach(movie => {
-      const card = document.createElement('div');
-      card.className = 'movie-card';
-      card.style.width = '150px';
-      card.innerHTML = `
-        <img class="movie-poster" src="https://image.tmdb.org/t/p/w200${movie.poster_path}" alt="${movie.title}" style="height:225px;">
-        <div class="movie-info">
-          <div class="movie-title">${movie.title}</div>
-          <div class="movie-actions">
-            <button class="small-btn watch" data-movie='${JSON.stringify(movie)}'>▶ Watch</button>
-            <button class="small-btn" data-movie-id="${movie.id}" data-movie-title="${movie.title}" data-movie-poster="${movie.poster_path}" data-movie-overview="${movie.overview}">➕ My List</button>
-          </div>
-        </div>
-      `;
-      const watchBtn = card.querySelector('.watch');
-      watchBtn.onclick = () => playFullMovie(movie);
-      const listBtn = card.querySelector('.small-btn:not(.watch)');
-      listBtn.onclick = () => addToMyList(movie.id, { title: movie.title, poster_path: movie.poster_path, overview: movie.overview });
-      searchResultsDiv.appendChild(card);
-    });
-  }
-  searchBtn.onclick = performSearch;
-  searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') performSearch(); });
-
-  // ---- VidSrc Streaming (via our backend) ----
-  async function getStreamingUrl(movieId) {
-    const mediaType = 'movie';
-    try {
-      const response = await fetch(`/api/stream/${mediaType}/${movieId}`);
-      const data = await response.json();
-      return data.url;
-    } catch (error) {
-      console.error("Stream error:", error);
-      return null;
-    }
-  }
-  async function playFullMovie(movie) {
-    streamTitle.innerText = movie.title;
-    streamDesc.innerText = movie.overview || 'No description available.';
-    const streamUrl = await getStreamingUrl(movie.id);
-    if (streamUrl) {
-      streamIframe.src = streamUrl;
-      streamModal.style.display = 'flex';
-    } else {
-      alert('Stream not available for this movie.');
-    }
-  }
-
-  // ---- Authentication & My List ----
-  function updateAuthUI() {
-    if (currentUser) {
-      authSection.innerHTML = `<div class="user-greeting"><span>👤 ${currentUser.email}</span><button class="auth-btn" id="logout-btn">Logout</button></div>`;
-      document.getElementById('logout-btn').addEventListener('click', () => auth.signOut());
-      loadMyList();
-    } else {
-      authSection.innerHTML = `<div class="auth-buttons"><button class="auth-btn" id="login-btn">Login</button><button class="auth-btn" id="signup-btn">Sign Up</button></div>`;
-      document.getElementById('login-btn').addEventListener('click', () => showAuthModal('login'));
-      document.getElementById('signup-btn').addEventListener('click', () => showAuthModal('signup'));
-    }
-  }
-  function showAuthModal(mode) {
-    const email = prompt(mode === 'login' ? 'Enter your email:' : 'Enter email for signup:');
-    if (!email) return;
-    const password = prompt('Enter password (min 6 characters):');
-    if (!password) return;
-    if (mode === 'signup') auth.createUserWithEmailAndPassword(email, password).catch(err => alert(err.message));
-    else auth.signInWithEmailAndPassword(email, password).catch(err => alert(err.message));
-  }
+  searchIcon.onclick = () => { searchOverlay.style.display = searchOverlay.style.display === 'block' ? 'none' : 'block'; if(searchOverlay.style.display === 'block') searchInput.focus(); };
+  async function performSearch() { const query = searchInput.value.trim(); if(!query) return; const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`); const movies = await res.json(); searchResultsDiv.innerHTML = ''; if(movies.length===0){ searchResultsDiv.innerHTML='<p>No movies found</p>'; return; } movies.slice(0,12).forEach(m=>{ const card = document.createElement('div'); card.className='movie-card'; card.style.width='150px'; card.innerHTML=`<img class="movie-poster" src="https://image.tmdb.org/t/p/w200${m.poster_path}" style="height:225px;"><div class="movie-info"><div class="movie-title">${m.title}</div><div class="movie-actions"><button class="small-btn watch" data-movie='${JSON.stringify(m)}'>▶ Watch</button><button class="small-btn" data-movie-id="${m.id}" data-movie-title="${m.title}" data-movie-poster="${m.poster_path}" data-movie-overview="${m.overview}">➕ My List</button></div></div>`; card.querySelector('.watch').onclick = () => playFullMovie(m); card.querySelector('.small-btn:not(.watch)').onclick = () => addToMyList(m.id, {title:m.title, poster_path:m.poster_path, overview:m.overview}); searchResultsDiv.appendChild(card); }); }
+  searchBtn.onclick = performSearch; searchInput.addEventListener('keypress', e => { if(e.key === 'Enter') performSearch(); });
+  async function getStreamingUrl(movieId){ const res = await fetch(`/api/stream/movie/${movieId}`); const data = await res.json(); return data.url; }
+  async function playFullMovie(movie){ streamTitle.innerText = movie.title; streamDesc.innerText = movie.overview || ''; const url = await getStreamingUrl(movie.id); if(url){ streamIframe.src = ''; streamIframe.src = url; streamModal.style.display = 'flex'; } else alert('Stream not available'); }
+  function updateAuthUI(){ if(currentUser){ authSection.innerHTML = `<div class="user-greeting"><span>👤 ${currentUser.email}</span><button class="auth-btn" id="logout-btn">Logout</button></div>`; document.getElementById('logout-btn').onclick = () => auth.signOut(); loadMyList(); } else { authSection.innerHTML = `<div class="auth-buttons"><button class="auth-btn" id="login-btn">Login</button><button class="auth-btn" id="signup-btn">Sign Up</button></div>`; document.getElementById('login-btn').onclick = () => showAuthModal('login'); document.getElementById('signup-btn').onclick = () => showAuthModal('signup'); } }
+  function showAuthModal(mode){ const email = prompt(mode==='login'?'Email:':'Email for signup:'); if(!email) return; const pwd = prompt('Password (min 6 chars):'); if(!pwd) return; if(mode==='signup') auth.createUserWithEmailAndPassword(email,pwd).catch(e=>alert(e.message)); else auth.signInWithEmailAndPassword(email,pwd).catch(e=>alert(e.message)); }
   auth.onAuthStateChanged(user => { currentUser = user; updateAuthUI(); });
-  async function loadMyList() {
-    if (!currentUser) return;
-    const snapshot = await db.collection('users').doc(currentUser.uid).collection('mylist').get();
-    myList.clear();
-    snapshot.forEach(doc => myList.add(doc.id));
-    if (document.querySelector('[data-nav="mylist"].active')) renderMyListView();
-  }
-  async function addToMyList(movieId, movieData) {
-    if (!currentUser) { alert('Please login to save to My List'); return; }
-    await db.collection('users').doc(currentUser.uid).collection('mylist').doc(movieId.toString()).set(movieData);
-    myList.add(movieId.toString());
-    alert('Added to My List');
-  }
-  async function removeFromMyList(movieId) {
-    if (!currentUser) return;
-    await db.collection('users').doc(currentUser.uid).collection('mylist').doc(movieId.toString()).delete();
-    myList.delete(movieId.toString());
-    alert('Removed from My List');
-    if (document.querySelector('[data-nav="mylist"].active')) renderMyListView();
-  }
-
-  // ---- Movie Card Render (with Watch + My List + Trailer) ----
-  function renderMovieCard(movie, isMyListView = false) {
-    const card = document.createElement('div');
-    card.className = 'movie-card';
-    card.innerHTML = `
-      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}" onerror="this.src='https://placehold.co/300x450/1e1e2a/white?text=No+Image'">
-      <div class="movie-info">
-        <div class="movie-title">${movie.title}</div>
-        <div class="movie-actions">
-          <button class="small-btn watch" data-movie='${JSON.stringify(movie)}'>▶ Watch</button>
-          <button class="small-btn" data-movie-id="${movie.id}" data-movie-title="${movie.title}" data-movie-poster="${movie.poster_path}" data-movie-overview="${movie.overview}">${isMyListView ? 'Remove' : '➕ My List'}</button>
-          <button class="small-btn" data-trailer-id="${movie.id}">🎬 Trailer</button>
-        </div>
-      </div>
-    `;
-    const watchBtn = card.querySelector('.watch');
-    watchBtn.onclick = (e) => { e.stopPropagation(); playFullMovie(movie); };
-    const listBtn = card.querySelector('.small-btn:nth-child(2)');
-    listBtn.onclick = (e) => {
-      e.stopPropagation();
-      if (isMyListView) removeFromMyList(movie.id);
-      else addToMyList(movie.id, { title: movie.title, poster_path: movie.poster_path, overview: movie.overview });
-    };
-    const trailerBtn = card.querySelector('[data-trailer-id]');
-    trailerBtn.onclick = (e) => { e.stopPropagation(); openTrailer(movie.id, movie.title, movie.overview); };
-    return card;
-  }
-
-  async function openTrailer(movieId, title, overview) {
-    const res = await fetch(`/api/movie/${movieId}/trailer`);
-    const data = await res.json();
-    if (data.key) {
-      trailerIframe.src = `https://www.youtube.com/embed/${data.key}?autoplay=1`;
-      document.getElementById('modal-title').innerText = title;
-      document.getElementById('modal-overview').innerText = overview || 'No overview available.';
-      trailerModal.style.display = 'flex';
-    } else alert('No trailer available');
-  }
-
-  // ---- Load Movie Rows from TMDB ----
-  async function fetchMovies(category) {
-    const res = await fetch(`/api/movies/${category}`);
-    return await res.json();
-  }
-  async function loadRows() {
-    const categories = [
-      { title: '🔥 Trending Now', category: 'trending' },
-      { title: '🏆 Top Rated', category: 'top_rated' },
-      { title: '💥 Action', category: 'action' },
-      { title: '😂 Comedy', category: 'comedy' }
-    ];
-    rowsContainer.innerHTML = '';
-    for (let cat of categories) {
-      const movies = await fetchMovies(cat.category);
-      if (!movies || movies.length === 0) continue;
-      const rowDiv = document.createElement('div');
-      rowDiv.className = 'row-section';
-      rowDiv.innerHTML = `<div class="row-header"><h2>${cat.title}</h2></div><div class="movie-row" id="row-${cat.category}"></div>`;
-      const movieRow = rowDiv.querySelector('.movie-row');
-      movies.slice(0, 12).forEach(movie => movieRow.appendChild(renderMovieCard(movie)));
-      rowsContainer.appendChild(rowDiv);
-      if (cat.category === 'trending' && movies[0]) {
-        featuredMovie = movies[0];
-        document.getElementById('featured-title').innerText = featuredMovie.title;
-        document.getElementById('featured-desc').innerText = featuredMovie.overview ? featuredMovie.overview.slice(0, 150) + '...' : '';
-      }
-    }
-  }
-
-  async function renderMyListView() {
-    if (!currentUser) { rowsContainer.innerHTML = '<div style="padding:2rem; text-align:center;">Please login to see your list</div>'; return; }
-    const snapshot = await db.collection('users').doc(currentUser.uid).collection('mylist').get();
-    const myMovies = [];
-    snapshot.forEach(doc => myMovies.push({ id: doc.id, ...doc.data() }));
-    rowsContainer.innerHTML = `<div class="row-section"><div class="row-header"><h2>📋 My List</h2></div><div class="movie-row" id="mylist-row"></div></div>`;
-    const row = document.getElementById('mylist-row');
-    if (myMovies.length === 0) row.innerHTML = '<p style="color:gray;">No movies added yet. Browse and click + My List</p>';
-    else myMovies.forEach(movie => {
-      const fakeMovie = { id: movie.id, title: movie.title, poster_path: movie.poster_path, overview: movie.overview };
-      row.appendChild(renderMovieCard(fakeMovie, true));
-    });
-  }
-
-  // ---- Refresh button ----
-  const refreshBtn = document.getElementById('refresh-data-btn');
-  if (refreshBtn) {
-    refreshBtn.addEventListener('click', async () => {
-      refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
-      refreshBtn.disabled = true;
-      await loadRows();
-      refreshBtn.innerHTML = '<i class="fas fa-check"></i> Updated!';
-      setTimeout(() => {
-        refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh Now';
-        refreshBtn.disabled = false;
-      }, 2000);
-    });
-  }
-
-  // Navigation
-  document.querySelectorAll('[data-nav]').forEach(link => {
-    link.addEventListener('click', () => {
-      const nav = link.getAttribute('data-nav');
-      if (nav === 'home') loadRows();
-      else if (nav === 'mylist') renderMyListView();
-      document.querySelectorAll('[data-nav]').forEach(l => l.classList.remove('active'));
-      link.classList.add('active');
-      searchOverlay.style.display = 'none';
-    });
-  });
-
-  watchTrailerBtn.onclick = () => { if (featuredMovie) openTrailer(featuredMovie.id, featuredMovie.title, featuredMovie.overview); };
-
-  // Close modals
-  closeModalBtns.forEach(btn => {
-    btn.onclick = () => {
-      trailerModal.style.display = 'none';
-      streamModal.style.display = 'none';
-      trailerIframe.src = '';
-      streamIframe.src = '';
-    };
-  });
-  window.onclick = (e) => {
-    if (e.target === trailerModal) { trailerModal.style.display = 'none'; trailerIframe.src = ''; }
-    if (e.target === streamModal) { streamModal.style.display = 'none'; streamIframe.src = ''; }
-  };
-
+  async function loadMyList(){ if(!currentUser) return; const snap = await db.collection('users').doc(currentUser.uid).collection('mylist').get(); myList.clear(); snap.forEach(d=>myList.add(d.id)); if(document.querySelector('[data-nav="mylist"].active')) renderMyListView(); }
+  async function addToMyList(id,data){ if(!currentUser){ alert('Login first'); return; } await db.collection('users').doc(currentUser.uid).collection('mylist').doc(id.toString()).set(data); myList.add(id.toString()); alert('Added'); }
+  async function removeFromMyList(id){ if(!currentUser) return; await db.collection('users').doc(currentUser.uid).collection('mylist').doc(id.toString()).delete(); myList.delete(id.toString()); alert('Removed'); if(document.querySelector('[data-nav="mylist"].active')) renderMyListView(); }
+  function renderMovieCard(m, isMyList=false){ const card = document.createElement('div'); card.className='movie-card'; card.innerHTML=`<img class="movie-poster" src="https://image.tmdb.org/t/p/w500${m.poster_path}" onerror="this.src='https://placehold.co/300x450/1e1e2a/white?text=No+Image'"><div class="movie-info"><div class="movie-title">${m.title}</div><div class="movie-actions"><button class="small-btn watch" data-movie='${JSON.stringify(m)}'>▶ Watch</button><button class="small-btn" data-movie-id="${m.id}">${isMyList ? 'Remove' : '➕ My List'}</button><button class="small-btn" data-trailer-id="${m.id}">🎬 Trailer</button></div></div>`; card.querySelector('.watch').onclick = e => { e.stopPropagation(); playFullMovie(m); }; const listBtn = card.querySelector('.small-btn:nth-child(2)'); listBtn.onclick = e => { e.stopPropagation(); if(isMyList) removeFromMyList(m.id); else addToMyList(m.id, {title:m.title, poster_path:m.poster_path, overview:m.overview}); }; card.querySelector('[data-trailer-id]').onclick = e => { e.stopPropagation(); openTrailer(m.id, m.title, m.overview); }; return card; }
+  async function openTrailer(id, title, overview){ const res = await fetch(`/api/movie/${id}/trailer`); const data = await res.json(); if(data.key){ trailerIframe.src = `https://www.youtube.com/embed/${data.key}?autoplay=1`; document.getElementById('modal-title').innerText = title; document.getElementById('modal-overview').innerText = overview || ''; trailerModal.style.display = 'flex'; } else alert('No trailer'); }
+  async function fetchMovies(cat){ const res = await fetch(`/api/movies/${cat}`); return await res.json(); }
+  async function loadRows(){ const cats = [{title:'🔥 Trending Now', cat:'trending'},{title:'🏆 Top Rated', cat:'top_rated'},{title:'💥 Action', cat:'action'},{title:'😂 Comedy', cat:'comedy'}]; rowsContainer.innerHTML = ''; for(let c of cats){ const movies = await fetchMovies(c.cat); if(!movies || movies.length===0) continue; const rowDiv = document.createElement('div'); rowDiv.className='row-section'; rowDiv.innerHTML = `<div class="row-header"><h2>${c.title}</h2></div><div class="movie-row" id="row-${c.cat}"></div>`; const movieRow = rowDiv.querySelector('.movie-row'); movies.slice(0,12).forEach(m => movieRow.appendChild(renderMovieCard(m))); rowsContainer.appendChild(rowDiv); if(c.cat === 'trending' && movies[0]){ featuredMovie = movies[0]; document.getElementById('featured-title').innerText = featuredMovie.title; document.getElementById('featured-desc').innerText = featuredMovie.overview ? featuredMovie.overview.slice(0,150)+'...' : ''; } } }
+  async function renderMyListView(){ if(!currentUser){ rowsContainer.innerHTML = '<div style="padding:2rem;text-align:center;">Please login</div>'; return; } const snap = await db.collection('users').doc(currentUser.uid).collection('mylist').get(); const myMovies = []; snap.forEach(d=>myMovies.push({id:d.id, ...d.data()})); rowsContainer.innerHTML = `<div class="row-section"><div class="row-header"><h2>📋 My List</h2></div><div class="movie-row" id="mylist-row"></div></div>`; const row = document.getElementById('mylist-row'); if(myMovies.length===0) row.innerHTML = '<p style="color:gray;">No movies yet</p>'; else myMovies.forEach(m=>{ const fake = {id:m.id, title:m.title, poster_path:m.poster_path, overview:m.overview}; row.appendChild(renderMovieCard(fake, true)); }); }
+  document.querySelectorAll('[data-nav]').forEach(link => { link.addEventListener('click', () => { const nav = link.getAttribute('data-nav'); if(nav === 'home') loadRows(); else if(nav === 'mylist') renderMyListView(); document.querySelectorAll('[data-nav]').forEach(l => l.classList.remove('active')); link.classList.add('active'); searchOverlay.style.display = 'none'; }); });
+  watchTrailerBtn.onclick = () => { if(featuredMovie) openTrailer(featuredMovie.id, featuredMovie.title, featuredMovie.overview); };
+  document.querySelectorAll('.close-modal').forEach(btn => { btn.onclick = () => { trailerModal.style.display = 'none'; streamModal.style.display = 'none'; trailerIframe.src = ''; streamIframe.src = ''; }; });
+  window.onclick = (e) => { if(e.target === trailerModal) { trailerModal.style.display = 'none'; trailerIframe.src = ''; } if(e.target === streamModal) { streamModal.style.display = 'none'; streamIframe.src = ''; } };
+  document.getElementById('refresh-data-btn').onclick = async () => { const btn = document.getElementById('refresh-data-btn'); btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...'; btn.disabled = true; await loadRows(); btn.innerHTML = '<i class="fas fa-check"></i> Updated!'; setTimeout(() => { btn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh'; btn.disabled = false; }, 2000); };
   loadRows();
-
-  // ---- Animated Canvas Background (same as before) ----
-  const canvas = document.getElementById('bg-canvas');
-  let ctx = canvas.getContext('2d');
-  let width = window.innerWidth, height = window.innerHeight;
-  let particles = [];
-  const PARTICLE_COUNT = 70, MAX_DIST = 140;
-  class Particle {
-    constructor() {
-      this.x = Math.random() * width;
-      this.y = Math.random() * height;
-      this.vx = (Math.random() - 0.5) * 0.35;
-      this.vy = (Math.random() - 0.5) * 0.35;
-      this.size = Math.random() * 2.5 + 1;
-      this.color = `rgba(229, 9, 20, ${Math.random() * 0.4 + 0.2})`;
-    }
-    update() {
-      this.x += this.vx; this.y += this.vy;
-      if (this.x < 0) this.x = width; if (this.x > width) this.x = 0;
-      if (this.y < 0) this.y = height; if (this.y > height) this.y = 0;
-    }
-    draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fillStyle = this.color; ctx.fill(); }
-  }
-  function initParticles() { particles = []; for(let i=0;i<PARTICLE_COUNT;i++) particles.push(new Particle()); }
-  function drawConnections() {
-    for(let i=0;i<particles.length;i++)
-      for(let j=i+1;j<particles.length;j++) {
-        const dx = particles[i].x-particles[j].x, dy = particles[i].y-particles[j].y, dist = Math.hypot(dx,dy);
-        if(dist<MAX_DIST) {
-          ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y); ctx.lineTo(particles[j].x,particles[j].y);
-          ctx.strokeStyle = `rgba(229,70,100,${(1-dist/MAX_DIST)*0.3})`; ctx.lineWidth=0.8; ctx.stroke();
-        }
-      }
-  }
-  let gradientOffset=0;
-  function animate() {
-    ctx.clearRect(0,0,width,height);
-    gradientOffset+=0.002;
-    const grad = ctx.createLinearGradient(Math.sin(gradientOffset)*100,0,width-Math.cos(gradientOffset*0.7)*100,height);
-    grad.addColorStop(0,'#03060c'); grad.addColorStop(0.5,'#121826'); grad.addColorStop(1,'#1a0e12');
-    ctx.fillStyle=grad; ctx.fillRect(0,0,width,height);
-    particles.forEach(p=>{p.update();p.draw();});
-    drawConnections();
-    requestAnimationFrame(animate);
-  }
-  function resize() { width=window.innerWidth; height=window.innerHeight; canvas.width=width; canvas.height=height; initParticles(); }
-  window.addEventListener('resize',resize);
-  resize(); animate();
+  // Background animation (simplified but works)
+  const canvas = document.getElementById('bg-canvas'), ctx = canvas.getContext('2d');
+  let w = window.innerWidth, h = window.innerHeight, particles = [];
+  function resizeCanvas(){ w = window.innerWidth; h = window.innerHeight; canvas.width = w; canvas.height = h; initParticles(); }
+  function initParticles(){ particles = []; for(let i=0;i<70;i++) particles.push({x:Math.random()*w, y:Math.random()*h, vx:(Math.random()-0.5)*0.35, vy:(Math.random()-0.5)*0.35, size:Math.random()*2.5+1, color:`rgba(229,9,20,${Math.random()*0.4+0.2})`}); }
+  function draw(){ ctx.clearRect(0,0,w,h); const grad = ctx.createLinearGradient(Math.sin(Date.now()*0.001)*100,0,w-Math.cos(Date.now()*0.0007)*100,h); grad.addColorStop(0,'#03060c'); grad.addColorStop(0.5,'#121826'); grad.addColorStop(1,'#1a0e12'); ctx.fillStyle=grad; ctx.fillRect(0,0,w,h); particles.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; if(p.x<0) p.x=w; if(p.x>w) p.x=0; if(p.y<0) p.y=h; if(p.y>h) p.y=0; ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fillStyle=p.color; ctx.fill(); }); requestAnimationFrame(draw); }
+  window.addEventListener('resize', resizeCanvas); resizeCanvas(); initParticles(); draw();
 </script>
 </body>
 </html>

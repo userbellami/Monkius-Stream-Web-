@@ -1,7 +1,7 @@
 {
   "name": "monkius-full-stream",
   "version": "2.0.0",
-  "description": "Real streaming platform with TMDB and Firebase",
+  "description": "Full movie streaming with VidSrc (no redirects)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

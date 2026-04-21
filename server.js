@@ -8,7 +8,6 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static('public'));
 app.use(express.json());
 
-// Proxy TMDB API
 app.get('/api/movies/:category', async (req, res) => {
   const { category } = req.params;
   const TMDB_API_KEY = process.env.TMDB_API_KEY;
@@ -28,7 +27,6 @@ app.get('/api/movies/:category', async (req, res) => {
   }
 });
 
-// Search movies
 app.get('/api/search', async (req, res) => {
   const query = req.query.q;
   if (!query) return res.json([]);
@@ -43,7 +41,6 @@ app.get('/api/search', async (req, res) => {
   }
 });
 
-// Get trailer
 app.get('/api/movie/:id/trailer', async (req, res) => {
   const { id } = req.params;
   const TMDB_API_KEY = process.env.TMDB_API_KEY;
@@ -58,16 +55,12 @@ app.get('/api/movie/:id/trailer', async (req, res) => {
   }
 });
 
-// NEW: VidSrc streaming endpoint
 app.get('/api/stream/:mediaType/:id', (req, res) => {
   const { mediaType, id } = req.params;
-  // Use vidsrc.to – it works with TMDB or IMDb IDs
-  const streamUrl = `https://vidsrc.to/embed/${mediaType}/${id}`;
-  console.log(`[Stream] Generated URL: ${streamUrl}`);
+  const streamUrl = `https://vidsrc.me/embed/${mediaType}/${id}?autoplay=1`;
   res.json({ url: streamUrl });
 });
 
-// Serve frontend
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
