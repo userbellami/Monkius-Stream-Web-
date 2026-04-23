@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static('public'));
 app.use(express.json());
 
-// TMDB endpoints
+// TMDB endpoints (unchanged)
 app.get('/api/movies/:category', async (req, res) => {
   const { category } = req.params;
   const TMDB_API_KEY = process.env.TMDB_API_KEY;
@@ -58,16 +58,16 @@ app.get('/api/movie/:id/trailer', async (req, res) => {
   }
 });
 
-// Improved streaming with multiple fallbacks
+// Cleaner streaming providers (prioritize vidsrc.me which has fewer overlays)
 app.get('/api/stream/:id', async (req, res) => {
   const { id } = req.params;
   const providers = [
-    `https://vidsrc.xyz/embed/movie/${id}`,
     `https://vidsrc.me/embed/movie/${id}?autoplay=1`,
+    `https://vidsrc.xyz/embed/movie/${id}`,
     `https://2embed.cc/embed/${id}`,
     `https://embed.su/embed/movie/${id}`
   ];
-  // Try first provider (we'll let frontend handle fallback)
+  // Return the first (cleanest) provider
   res.json({ url: providers[0], fallbacks: providers.slice(1) });
 });
 

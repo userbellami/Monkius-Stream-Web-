@@ -5,8 +5,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Monkius Full Stream — Best Streaming Platform</title>
   <!-- Firebase SDK (without Storage – removed avatar upload) -->
+  // Remove annoying overlays and video call notifications from streaming iframe
+  function cleanStreamingAds() {
+    const iframe = document.getElementById("stream-iframe");
+    if (iframe && iframe.contentDocument) {
+      try {
+        const iframeDoc = iframe.contentDocument;
+        const ads = iframeDoc.querySelectorAll(".ad, .notification, .modal, .overlay, [class*="alert"], [class*="call"], [class*="video-call"]");
+        ads.forEach(ad => ad.remove());
+      } catch(e) { /* cross-origin restrictions – cannot access */ }
+    }
+    setTimeout(cleanStreamingAds, 2000);
+  }
+  const originalPlay = playFullMovie;
+  window.playFullMovie = async function(movie) {
+    await originalPlay(movie);
+    setTimeout(cleanStreamingAds, 3000);
+    setTimeout(cleanStreamingAds, 8000);
+  };
+
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  // Remove annoying overlays and video call notifications from streaming iframe
+  function cleanStreamingAds() {
+    const iframe = document.getElementById("stream-iframe");
+    if (iframe && iframe.contentDocument) {
+      try {
+        const iframeDoc = iframe.contentDocument;
+        const ads = iframeDoc.querySelectorAll(".ad, .notification, .modal, .overlay, [class*="alert"], [class*="call"], [class*="video-call"]");
+        ads.forEach(ad => ad.remove());
+      } catch(e) { /* cross-origin restrictions – cannot access */ }
+    }
+    setTimeout(cleanStreamingAds, 2000);
+  }
+  const originalPlay = playFullMovie;
+  window.playFullMovie = async function(movie) {
+    await originalPlay(movie);
+    setTimeout(cleanStreamingAds, 3000);
+    setTimeout(cleanStreamingAds, 8000);
+  };
+
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  // Remove annoying overlays and video call notifications from streaming iframe
+  function cleanStreamingAds() {
+    const iframe = document.getElementById("stream-iframe");
+    if (iframe && iframe.contentDocument) {
+      try {
+        const iframeDoc = iframe.contentDocument;
+        const ads = iframeDoc.querySelectorAll(".ad, .notification, .modal, .overlay, [class*="alert"], [class*="call"], [class*="video-call"]");
+        ads.forEach(ad => ad.remove());
+      } catch(e) { /* cross-origin restrictions – cannot access */ }
+    }
+    setTimeout(cleanStreamingAds, 2000);
+  }
+  const originalPlay = playFullMovie;
+  window.playFullMovie = async function(movie) {
+    await originalPlay(movie);
+    setTimeout(cleanStreamingAds, 3000);
+    setTimeout(cleanStreamingAds, 8000);
+  };
+
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -327,6 +384,13 @@
       .modal-video { height: 250px; }
       .email-form input { width: 100%; }
     }
+    /* Hide intrusive popups and overlays from streaming providers */
+    iframe[src*="vidsrc"] + div, 
+    iframe[src*="vidsrc"] ~ div, 
+    .overlay, .ad-container, .notification-bubble, .modal-dialog, 
+    div[class*="alert"], div[class*="notification"] { display: none !important; }
+    body > div:not(.modal):not(.main-content) { display: none !important; }
+
   </style>
 </head>
 <body>
@@ -398,7 +462,7 @@
 
 <!-- Modals -->
 <div id="trailer-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="trailer-iframe" class="modal-video" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="modal-title"></h3><p id="modal-overview"></p></div></div></div>
-<div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p><button id="fallback-btn" style="background:#333; border:none; padding:8px; margin-top:10px; border-radius:4px; color:white; cursor:pointer;">🔄 Try Alternate Source</button></div></div></div>
+<div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" allow="autoplay; fullscreen" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-popups-to-escape-sandbox allow-modals" style="background:#000;"></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p><button id="fallback-btn" style="background:#333; border:none; padding:8px; margin-top:10px; border-radius:4px; color:white; cursor:pointer;">🔄 Try Alternate Source</button></div></div></div>
 
 <script>
   // Firebase config (no Storage needed for profile)
@@ -769,6 +833,25 @@
   resizeCanvas();
   initParticles();
   animateBg();
+  // Remove annoying overlays and video call notifications from streaming iframe
+  function cleanStreamingAds() {
+    const iframe = document.getElementById("stream-iframe");
+    if (iframe && iframe.contentDocument) {
+      try {
+        const iframeDoc = iframe.contentDocument;
+        const ads = iframeDoc.querySelectorAll(".ad, .notification, .modal, .overlay, [class*="alert"], [class*="call"], [class*="video-call"]");
+        ads.forEach(ad => ad.remove());
+      } catch(e) { /* cross-origin restrictions – cannot access */ }
+    }
+    setTimeout(cleanStreamingAds, 2000);
+  }
+  const originalPlay = playFullMovie;
+  window.playFullMovie = async function(movie) {
+    await originalPlay(movie);
+    setTimeout(cleanStreamingAds, 3000);
+    setTimeout(cleanStreamingAds, 8000);
+  };
+
 </script>
 </body>
 </html>
