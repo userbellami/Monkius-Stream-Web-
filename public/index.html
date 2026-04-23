@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monkius Full Stream v3 — Profile Menu</title>
+  <title>Monkius Full Stream v4 — Profile Settings</title>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -15,7 +15,7 @@
     #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; background: radial-gradient(circle at 20% 30%, #0a0f1a, #03060c); }
     .main-content { position: relative; z-index: 2; background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.82) 100%); min-height: 100vh; }
     
-    /* Navbar: profile on left, logo in center, nav-links & search on right */
+    /* Navbar: logo left, right side contains nav-links, search, profile */
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -29,12 +29,36 @@
       flex-wrap: wrap;
       gap: 1rem;
     }
-    .navbar-left {
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #E50914, #ff6b6b);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .navbar-right {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 1.5rem;
     }
-    /* Profile dropdown */
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    .nav-links a {
+      color: #e5e5e5;
+      text-decoration: none;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    .nav-icons { display: flex; gap: 1.2rem; align-items: center; }
+    .nav-icons i { font-size: 1.2rem; cursor: pointer; color: #e5e5e5; transition: 0.2s; }
+    .nav-icons i:hover { color: #E50914; }
+    
+    /* Profile dropdown - top right */
     .profile-dropdown {
       position: relative;
       display: inline-block;
@@ -63,55 +87,48 @@
       display: none;
       position: absolute;
       top: 45px;
-      left: 0;
+      right: 0;
       background-color: #111;
-      min-width: 200px;
+      min-width: 260px;
       border-radius: 8px;
       box-shadow: 0 8px 16px rgba(0,0,0,0.5);
       z-index: 200;
       border: 1px solid #333;
-    }
-    .dropdown-content a, .dropdown-content div {
-      color: white;
-      padding: 12px 16px;
-      text-decoration: none;
-      display: block;
-      font-size: 0.9rem;
-      cursor: pointer;
-    }
-    .dropdown-content a:hover, .dropdown-content div:hover {
-      background-color: #E50914;
+      padding: 12px;
     }
     .profile-dropdown:hover .dropdown-content {
       display: block;
     }
-    /* Logo */
-    .logo {
-      font-size: 1.6rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #E50914, #ff6b6b);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      text-align: center;
+    .dropdown-content .user-info {
+      padding: 8px 0;
+      border-bottom: 1px solid #333;
+      margin-bottom: 8px;
     }
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      align-items: center;
+    .dropdown-content input {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 4px;
+      color: white;
     }
-    .nav-links a {
-      color: #e5e5e5;
-      text-decoration: none;
-      font-weight: 500;
+    .dropdown-content button {
+      background: #E50914;
+      border: none;
+      padding: 8px;
+      width: 100%;
+      border-radius: 4px;
+      color: white;
       cursor: pointer;
+      margin-top: 8px;
     }
-    .nav-links a:hover, .nav-links a.active { color: #fff; }
-    .nav-icons { display: flex; gap: 1.2rem; align-items: center; }
-    .nav-icons i { font-size: 1.2rem; cursor: pointer; color: #e5e5e5; transition: 0.2s; }
-    .nav-icons i:hover { color: #E50914; }
-    .auth-buttons { display: flex; gap: 1rem; }
-    .auth-btn { background: #E50914; border: none; padding: 0.4rem 1rem; border-radius: 4px; color: white; cursor: pointer; font-weight: 600; }
+    .dropdown-content button.secondary {
+      background: #333;
+    }
+    .dropdown-content button:hover {
+      opacity: 0.9;
+    }
     .hero { padding: 4rem 4% 6rem; min-height: 70vh; display: flex; align-items: center; background: linear-gradient(90deg, #03060c 0%, transparent 70%); }
     .hero-content { max-width: 550px; }
     .hero-badge { background: rgba(229,9,20,0.9); display: inline-block; padding: 0.2rem 1rem; border-radius: 30px; font-size: 0.8rem; margin-bottom: 1rem; }
@@ -147,7 +164,7 @@
       .hero-content h1 { font-size: 2rem; }
       .modal-video { height: 250px; }
       .navbar { flex-direction: column; align-items: center; }
-      .navbar-left, .navbar-right { width: 100%; justify-content: space-between; }
+      .navbar-right { width: 100%; justify-content: flex-end; }
     }
   </style>
 </head>
@@ -155,28 +172,29 @@
 <canvas id="bg-canvas"></canvas>
 <div class="main-content">
   <div class="navbar">
-    <div class="navbar-left">
-      <!-- Profile Dropdown (top-left) -->
-      <div class="profile-dropdown" id="profile-dropdown">
-        <button class="profile-btn" id="profile-btn">
-          <i class="fas fa-user-circle"></i>
-          <span id="profile-email-short">Account</span>
-          <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i>
-        </button>
-        <div class="dropdown-content" id="dropdown-menu">
-          <div id="user-email-full">Loading...</div>
-          <div id="logout-item">Logout <i class="fas fa-sign-out-alt"></i></div>
-        </div>
-      </div>
-      <div class="logo">MONKIUS FULL STREAM</div>
-    </div>
-    <div class="navbar-right" style="display: flex; gap: 1rem; align-items: center;">
+    <div class="logo">MONKIUS FULL STREAM</div>
+    <div class="navbar-right">
       <div class="nav-links">
         <a class="active" data-nav="home">Home</a>
         <a data-nav="mylist">My List</a>
       </div>
       <div class="nav-icons"><i class="fas fa-search" id="search-icon"></i></div>
-      <div id="auth-section" style="display: none;"></div> <!-- hidden because profile handles auth -->
+      <!-- Profile Dropdown - top right -->
+      <div class="profile-dropdown" id="profile-dropdown">
+        <button class="profile-btn" id="profile-btn">
+          <i class="fas fa-user-circle"></i>
+          <span id="profile-name">Account</span>
+          <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i>
+        </button>
+        <div class="dropdown-content" id="dropdown-menu">
+          <div class="user-info" id="user-info-area"></div>
+          <div id="profile-edit-area">
+            <input type="text" id="display-name-input" placeholder="Your display name">
+            <button id="save-name-btn">💾 Save Name</button>
+          </div>
+          <button id="logout-btn-dropdown" class="secondary">🚪 Logout</button>
+        </div>
+      </div>
     </div>
   </div>
   
@@ -186,16 +204,15 @@
     <div id="search-results" class="search-results"></div>
   </div>
   <div class="refresh-bar">
-    <div><span class="live-badge">✅ V3</span><span style="margin-left:10px;font-size:0.8rem;">Profile menu at top-left</span></div>
+    <div><span class="live-badge">✅ V4</span><span style="margin-left:10px;font-size:0.8rem;">Profile top-right + name update</span></div>
     <button id="refresh-data-btn" class="refresh-btn"><i class="fas fa-sync-alt"></i> Refresh</button>
   </div>
   <div class="hero"><div class="hero-content"><div class="hero-badge">🎬 STREAM NOW</div><h1 id="featured-title">Loading...</h1><p id="featured-desc"></p><button class="auth-btn" id="watch-trailer-btn" style="background:white;color:black;">▶ Trailer</button></div></div>
   <div id="rows-container"></div>
-  <div class="footer"><p>© 2026 Monkius Full Stream v3 — Profile menu, better UI</p></div>
+  <div class="footer"><p>© 2026 Monkius Full Stream v4 — Update your profile name from the top-right menu</p></div>
 </div>
-<!-- Trailer Modal -->
+<!-- Modals unchanged -->
 <div id="trailer-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="trailer-iframe" class="modal-video" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="modal-title"></h3><p id="modal-overview"></p></div></div></div>
-<!-- Stream Modal -->
 <div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p></div></div></div>
 
 <script>
@@ -206,6 +223,7 @@
 
   let currentUser = null;
   let myList = new Set();
+  let currentDisplayName = "";
 
   // DOM elements
   const rowsContainer = document.getElementById('rows-container');
@@ -221,79 +239,116 @@
   const searchInput = document.getElementById('search-input');
   const searchBtn = document.getElementById('search-btn');
   const searchResultsDiv = document.getElementById('search-results');
-  const profileEmailShort = document.getElementById('profile-email-short');
-  const userEmailFull = document.getElementById('user-email-full');
-  const logoutItem = document.getElementById('logout-item');
+  const profileNameSpan = document.getElementById('profile-name');
+  const userInfoArea = document.getElementById('user-info-area');
+  const displayNameInput = document.getElementById('display-name-input');
+  const saveNameBtn = document.getElementById('save-name-btn');
+  const logoutBtn = document.getElementById('logout-btn-dropdown');
   let featuredMovie = null;
 
-  // Profile dropdown: update when user changes
+  // Helper: load user profile from Firestore
+  async function loadUserProfile(uid) {
+    if (!uid) return;
+    const docRef = db.collection('users').doc(uid).collection('profile').doc('info');
+    const doc = await docRef.get();
+    if (doc.exists) {
+      currentDisplayName = doc.data().displayName || '';
+    } else {
+      currentDisplayName = '';
+    }
+    updateProfileUI();
+  }
+
+  async function saveDisplayName(uid, newName) {
+    if (!uid) return;
+    const docRef = db.collection('users').doc(uid).collection('profile').doc('info');
+    await docRef.set({ displayName: newName, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+    currentDisplayName = newName;
+    updateProfileUI();
+    alert('Profile name updated!');
+  }
+
   function updateProfileUI() {
     if (currentUser) {
       const email = currentUser.email;
-      const shortName = email.split('@')[0];
-      profileEmailShort.innerText = shortName.length > 12 ? shortName.slice(0,10)+'..' : shortName;
-      userEmailFull.innerHTML = `<i class="fas fa-envelope"></i> ${email}`;
-      logoutItem.style.display = 'block';
+      const shortName = currentDisplayName && currentDisplayName.trim() !== "" ? currentDisplayName : email.split('@')[0];
+      profileNameSpan.innerText = shortName.length > 15 ? shortName.slice(0,12)+'..' : shortName;
+      userInfoArea.innerHTML = `<strong>${currentDisplayName || 'No name set'}</strong><br><small>${email}</small>`;
+      displayNameInput.value = currentDisplayName || '';
     } else {
-      profileEmailShort.innerText = 'Guest';
-      userEmailFull.innerHTML = '<i class="fas fa-user"></i> Not logged in';
-      logoutItem.style.display = 'none';
+      profileNameSpan.innerText = 'Guest';
+      userInfoArea.innerHTML = '<em>Not logged in</em><br><small>Click Login/Signup below</small>';
+      displayNameInput.value = '';
     }
   }
 
-  logoutItem.onclick = () => {
-    auth.signOut();
-    // Also reload page to reset state
-    window.location.reload();
-  };
-
-  // Authentication functions (still needed for sign-in/sign-up via modal)
+  // Handle login/signup modal (simple prompt)
   function showAuthModal(mode) {
     const email = prompt(mode === 'login' ? 'Enter your email:' : 'Enter email for signup:');
     if (!email) return;
     const password = prompt('Password (min 6 characters):');
     if (!password) return;
     if (mode === 'signup') {
-      auth.createUserWithEmailAndPassword(email, password).catch(err => alert(err.message));
+      auth.createUserWithEmailAndPassword(email, password).then(() => {
+        // after signup, create profile document
+        if (auth.currentUser) {
+          db.collection('users').doc(auth.currentUser.uid).collection('profile').doc('info').set({ displayName: email.split('@')[0] });
+        }
+      }).catch(err => alert(err.message));
     } else {
       auth.signInWithEmailAndPassword(email, password).catch(err => alert(err.message));
     }
   }
 
-  // If user is not logged in, clicking profile will show login/signup options
-  // But we can also add a "Login" button in dropdown when not logged in.
-  function updateDropdownForGuest() {
+  // Event listeners for profile actions
+  saveNameBtn.onclick = () => {
+    if (!currentUser) { alert('Please login first'); return; }
+    const newName = displayNameInput.value.trim();
+    if (newName === "") { alert('Name cannot be empty'); return; }
+    saveDisplayName(currentUser.uid, newName);
+  };
+  logoutBtn.onclick = () => { auth.signOut(); window.location.reload(); };
+
+  // Add guest login/signup buttons to dropdown if not logged in
+  function addGuestButtons() {
     if (!currentUser) {
-      userEmailFull.innerHTML = '<i class="fas fa-user"></i> Not logged in';
-      // Add login/signup items dynamically if not present
-      if (!document.getElementById('guest-login')) {
-        const loginItem = document.createElement('div');
-        loginItem.id = 'guest-login';
-        loginItem.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
-        loginItem.onclick = () => showAuthModal('login');
-        const signupItem = document.createElement('div');
-        signupItem.id = 'guest-signup';
-        signupItem.innerHTML = '<i class="fas fa-user-plus"></i> Sign Up';
-        signupItem.onclick = () => showAuthModal('signup');
+      if (!document.getElementById('guest-login-btn')) {
+        const loginDiv = document.createElement('button');
+        loginDiv.id = 'guest-login-btn';
+        loginDiv.innerText = '🔐 Login';
+        loginDiv.style.background = '#E50914';
+        loginDiv.style.marginTop = '8px';
+        loginDiv.onclick = () => showAuthModal('login');
+        const signupDiv = document.createElement('button');
+        signupDiv.id = 'guest-signup-btn';
+        signupDiv.innerText = '📝 Sign Up';
+        signupDiv.style.background = '#333';
+        signupDiv.style.marginTop = '8px';
+        signupDiv.onclick = () => showAuthModal('signup');
         const dropdown = document.getElementById('dropdown-menu');
-        dropdown.insertBefore(loginItem, logoutItem);
-        dropdown.insertBefore(signupItem, logoutItem);
+        // insert before logout button
+        dropdown.insertBefore(loginDiv, logoutBtn);
+        dropdown.insertBefore(signupDiv, logoutBtn);
       }
     } else {
-      // remove guest items if exist
-      const guestLogin = document.getElementById('guest-login');
-      const guestSignup = document.getElementById('guest-signup');
-      if (guestLogin) guestLogin.remove();
-      if (guestSignup) guestSignup.remove();
+      const loginBtn = document.getElementById('guest-login-btn');
+      const signupBtn = document.getElementById('guest-signup-btn');
+      if (loginBtn) loginBtn.remove();
+      if (signupBtn) signupBtn.remove();
     }
   }
 
-  auth.onAuthStateChanged(user => {
+  auth.onAuthStateChanged(async user => {
     currentUser = user;
-    updateProfileUI();
-    updateDropdownForGuest();
-    if (currentUser) loadMyList();
-    // Also if on My List view, re-render
+    if (user) {
+      await loadUserProfile(user.uid);
+      loadMyList();
+    } else {
+      profileNameSpan.innerText = 'Guest';
+      userInfoArea.innerHTML = '<em>Not logged in</em><br><small>Click Login/Signup below</small>';
+      displayNameInput.value = '';
+    }
+    addGuestButtons();
     if (document.querySelector('[data-nav="mylist"].active')) renderMyListView();
   });
 
@@ -321,7 +376,7 @@
   document.getElementById('refresh-data-btn').onclick = async () => { const btn = document.getElementById('refresh-data-btn'); btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...'; btn.disabled = true; await loadRows(); btn.innerHTML = '<i class="fas fa-check"></i> Updated!'; setTimeout(() => { btn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh'; btn.disabled = false; }, 2000); };
   loadRows();
 
-  // Background animation (unchanged)
+  // Background animation
   const canvas = document.getElementById('bg-canvas'), ctx = canvas.getContext('2d');
   let w = window.innerWidth, h = window.innerHeight, particles = [];
   function resizeCanvas(){ w = window.innerWidth; h = window.innerHeight; canvas.width = w; canvas.height = h; initParticles(); }
