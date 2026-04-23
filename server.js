@@ -17,6 +17,8 @@ app.get('/api/movies/:category', async (req, res) => {
   else if (category === 'top_rated') url = `https://api.themoviedb.org/3/movie/top_rated?api_key=${TMDB_API_KEY}`;
   else if (category === 'action') url = `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&with_genres=28`;
   else if (category === 'comedy') url = `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&with_genres=35`;
+  else if (category === 'scifi') url = `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&with_genres=878`;
+  else if (category === 'romance') url = `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&with_genres=10749`;
   else return res.status(400).json({ error: 'Invalid category' });
   
   try {
@@ -56,13 +58,17 @@ app.get('/api/movie/:id/trailer', async (req, res) => {
   }
 });
 
-// FINAL WORKING PROVIDER (no sandbox issues)
-app.get('/api/stream/:mediaType/:id', (req, res) => {
+// Improved streaming with multiple fallbacks
+app.get('/api/stream/:id', async (req, res) => {
   const { id } = req.params;
-  // vidsrc.xyz works without sandbox restrictions
-  const streamUrl = `https://vidsrc.xyz/embed/movie/${id}`;
-  console.log(`Stream URL: ${streamUrl}`);
-  res.json({ url: streamUrl });
+  const providers = [
+    `https://vidsrc.xyz/embed/movie/${id}`,
+    `https://vidsrc.me/embed/movie/${id}?autoplay=1`,
+    `https://2embed.cc/embed/${id}`,
+    `https://embed.su/embed/movie/${id}`
+  ];
+  // Try first provider (we'll let frontend handle fallback)
+  res.json({ url: providers[0], fallbacks: providers.slice(1) });
 });
 
 app.get('*', (req, res) => {
