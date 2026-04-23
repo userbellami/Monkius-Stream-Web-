@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monkius Full Stream — Now Working</title>
+  <title>Monkius Full Stream v3 — Profile Menu</title>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -14,15 +14,103 @@
     body { font-family: 'Inter', sans-serif; background: #0b0b0b; color: white; overflow-x: hidden; }
     #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; background: radial-gradient(circle at 20% 30%, #0a0f1a, #03060c); }
     .main-content { position: relative; z-index: 2; background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.82) 100%); min-height: 100vh; }
-    .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 4%; background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 100%); backdrop-filter: blur(6px); position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 1rem; }
-    .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #E50914, #ff6b6b); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .nav-links { display: flex; gap: 2rem; align-items: center; }
-    .nav-links a { color: #e5e5e5; text-decoration: none; font-weight: 500; cursor: pointer; }
+    
+    /* Navbar: profile on left, logo in center, nav-links & search on right */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 4%;
+      background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 100%);
+      backdrop-filter: blur(6px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .navbar-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    /* Profile dropdown */
+    .profile-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .profile-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 30px;
+      transition: 0.2s;
+      color: white;
+      font-weight: 500;
+    }
+    .profile-btn:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    .profile-btn i {
+      font-size: 1.4rem;
+      color: #E50914;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 45px;
+      left: 0;
+      background-color: #111;
+      min-width: 200px;
+      border-radius: 8px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+      z-index: 200;
+      border: 1px solid #333;
+    }
+    .dropdown-content a, .dropdown-content div {
+      color: white;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .dropdown-content a:hover, .dropdown-content div:hover {
+      background-color: #E50914;
+    }
+    .profile-dropdown:hover .dropdown-content {
+      display: block;
+    }
+    /* Logo */
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #E50914, #ff6b6b);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-align: center;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    .nav-links a {
+      color: #e5e5e5;
+      text-decoration: none;
+      font-weight: 500;
+      cursor: pointer;
+    }
     .nav-links a:hover, .nav-links a.active { color: #fff; }
     .nav-icons { display: flex; gap: 1.2rem; align-items: center; }
     .nav-icons i { font-size: 1.2rem; cursor: pointer; color: #e5e5e5; transition: 0.2s; }
     .nav-icons i:hover { color: #E50914; }
-    .auth-buttons, .user-greeting { display: flex; gap: 1rem; align-items: center; }
+    .auth-buttons { display: flex; gap: 1rem; }
     .auth-btn { background: #E50914; border: none; padding: 0.4rem 1rem; border-radius: 4px; color: white; cursor: pointer; font-weight: 600; }
     .hero { padding: 4rem 4% 6rem; min-height: 70vh; display: flex; align-items: center; background: linear-gradient(90deg, #03060c 0%, transparent 70%); }
     .hero-content { max-width: 550px; }
@@ -52,65 +140,188 @@
     .live-badge { background: #E50914; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; }
     .refresh-btn { background: transparent; border: 1px solid #E50914; color: white; padding: 6px 12px; border-radius: 20px; cursor: pointer; }
     .footer { text-align: center; padding: 2rem; color: #8a8a8a; }
-    @media (max-width: 768px) { .movie-card { width: 140px; } .movie-poster { height: 200px; } .nav-links { display: none; } .hero-content h1 { font-size: 2rem; } .modal-video { height: 250px; } }
+    @media (max-width: 768px) {
+      .movie-card { width: 140px; }
+      .movie-poster { height: 200px; }
+      .nav-links { display: none; }
+      .hero-content h1 { font-size: 2rem; }
+      .modal-video { height: 250px; }
+      .navbar { flex-direction: column; align-items: center; }
+      .navbar-left, .navbar-right { width: 100%; justify-content: space-between; }
+    }
   </style>
 </head>
 <body>
 <canvas id="bg-canvas"></canvas>
 <div class="main-content">
   <div class="navbar">
-    <div class="logo">MONKIUS FULL STREAM</div>
-    <div class="nav-links"><a class="active" data-nav="home">Home</a><a data-nav="mylist">My List</a></div>
-    <div style="display: flex; gap: 1rem; align-items: center;">
+    <div class="navbar-left">
+      <!-- Profile Dropdown (top-left) -->
+      <div class="profile-dropdown" id="profile-dropdown">
+        <button class="profile-btn" id="profile-btn">
+          <i class="fas fa-user-circle"></i>
+          <span id="profile-email-short">Account</span>
+          <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i>
+        </button>
+        <div class="dropdown-content" id="dropdown-menu">
+          <div id="user-email-full">Loading...</div>
+          <div id="logout-item">Logout <i class="fas fa-sign-out-alt"></i></div>
+        </div>
+      </div>
+      <div class="logo">MONKIUS FULL STREAM</div>
+    </div>
+    <div class="navbar-right" style="display: flex; gap: 1rem; align-items: center;">
+      <div class="nav-links">
+        <a class="active" data-nav="home">Home</a>
+        <a data-nav="mylist">My List</a>
+      </div>
       <div class="nav-icons"><i class="fas fa-search" id="search-icon"></i></div>
-      <div id="auth-section"></div>
+      <div id="auth-section" style="display: none;"></div> <!-- hidden because profile handles auth -->
     </div>
   </div>
+  
   <div id="search-overlay" class="search-overlay">
     <input type="text" id="search-input" placeholder="Search movies...">
     <button id="search-btn"><i class="fas fa-search"></i> Search</button>
     <div id="search-results" class="search-results"></div>
   </div>
   <div class="refresh-bar">
-    <div><span class="live-badge">✅ FIXED</span><span style="margin-left:10px;font-size:0.8rem;">No sandbox, working provider</span></div>
+    <div><span class="live-badge">✅ V3</span><span style="margin-left:10px;font-size:0.8rem;">Profile menu at top-left</span></div>
     <button id="refresh-data-btn" class="refresh-btn"><i class="fas fa-sync-alt"></i> Refresh</button>
   </div>
-  <div class="hero"><div class="hero-content"><div class="hero-badge">🎬 FINALLY WORKING</div><h1 id="featured-title">Loading...</h1><p id="featured-desc"></p><button class="auth-btn" id="watch-trailer-btn" style="background:white;color:black;">▶ Trailer</button></div></div>
+  <div class="hero"><div class="hero-content"><div class="hero-badge">🎬 STREAM NOW</div><h1 id="featured-title">Loading...</h1><p id="featured-desc"></p><button class="auth-btn" id="watch-trailer-btn" style="background:white;color:black;">▶ Trailer</button></div></div>
   <div id="rows-container"></div>
-  <div class="footer"><p>© 2026 Monkius Full Stream — Now using vidsrc.xyz, no sandbox errors.</p></div>
+  <div class="footer"><p>© 2026 Monkius Full Stream v3 — Profile menu, better UI</p></div>
 </div>
+<!-- Trailer Modal -->
 <div id="trailer-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="trailer-iframe" class="modal-video" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="modal-title"></h3><p id="modal-overview"></p></div></div></div>
+<!-- Stream Modal -->
 <div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p></div></div></div>
+
 <script>
   const firebaseConfig = { apiKey: "AIzaSyB-9QzBOU6vFST4EvxdhFEIz5QBA1D-XW0", authDomain: "monkius-full-stream.firebaseapp.com", projectId: "monkius-full-stream", storageBucket: "monkius-full-stream.firebasestorage.app", messagingSenderId: "276409313367", appId: "1:276409313367:web:1eb2fb48df4feb9c801b12" };
   firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth(), db = firebase.firestore();
-  let currentUser = null, myList = new Set();
-  const authSection = document.getElementById('auth-section'), rowsContainer = document.getElementById('rows-container'), trailerModal = document.getElementById('trailer-modal'), streamModal = document.getElementById('stream-modal'), trailerIframe = document.getElementById('trailer-iframe'), streamIframe = document.getElementById('stream-iframe'), streamTitle = document.getElementById('stream-title'), streamDesc = document.getElementById('stream-desc'), watchTrailerBtn = document.getElementById('watch-trailer-btn'), searchIcon = document.getElementById('search-icon'), searchOverlay = document.getElementById('search-overlay'), searchInput = document.getElementById('search-input'), searchBtn = document.getElementById('search-btn'), searchResultsDiv = document.getElementById('search-results');
-  let featuredMovie = null, currentMovie = null;
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  let currentUser = null;
+  let myList = new Set();
+
+  // DOM elements
+  const rowsContainer = document.getElementById('rows-container');
+  const trailerModal = document.getElementById('trailer-modal');
+  const streamModal = document.getElementById('stream-modal');
+  const trailerIframe = document.getElementById('trailer-iframe');
+  const streamIframe = document.getElementById('stream-iframe');
+  const streamTitle = document.getElementById('stream-title');
+  const streamDesc = document.getElementById('stream-desc');
+  const watchTrailerBtn = document.getElementById('watch-trailer-btn');
+  const searchIcon = document.getElementById('search-icon');
+  const searchOverlay = document.getElementById('search-overlay');
+  const searchInput = document.getElementById('search-input');
+  const searchBtn = document.getElementById('search-btn');
+  const searchResultsDiv = document.getElementById('search-results');
+  const profileEmailShort = document.getElementById('profile-email-short');
+  const userEmailFull = document.getElementById('user-email-full');
+  const logoutItem = document.getElementById('logout-item');
+  let featuredMovie = null;
+
+  // Profile dropdown: update when user changes
+  function updateProfileUI() {
+    if (currentUser) {
+      const email = currentUser.email;
+      const shortName = email.split('@')[0];
+      profileEmailShort.innerText = shortName.length > 12 ? shortName.slice(0,10)+'..' : shortName;
+      userEmailFull.innerHTML = `<i class="fas fa-envelope"></i> ${email}`;
+      logoutItem.style.display = 'block';
+    } else {
+      profileEmailShort.innerText = 'Guest';
+      userEmailFull.innerHTML = '<i class="fas fa-user"></i> Not logged in';
+      logoutItem.style.display = 'none';
+    }
+  }
+
+  logoutItem.onclick = () => {
+    auth.signOut();
+    // Also reload page to reset state
+    window.location.reload();
+  };
+
+  // Authentication functions (still needed for sign-in/sign-up via modal)
+  function showAuthModal(mode) {
+    const email = prompt(mode === 'login' ? 'Enter your email:' : 'Enter email for signup:');
+    if (!email) return;
+    const password = prompt('Password (min 6 characters):');
+    if (!password) return;
+    if (mode === 'signup') {
+      auth.createUserWithEmailAndPassword(email, password).catch(err => alert(err.message));
+    } else {
+      auth.signInWithEmailAndPassword(email, password).catch(err => alert(err.message));
+    }
+  }
+
+  // If user is not logged in, clicking profile will show login/signup options
+  // But we can also add a "Login" button in dropdown when not logged in.
+  function updateDropdownForGuest() {
+    if (!currentUser) {
+      userEmailFull.innerHTML = '<i class="fas fa-user"></i> Not logged in';
+      // Add login/signup items dynamically if not present
+      if (!document.getElementById('guest-login')) {
+        const loginItem = document.createElement('div');
+        loginItem.id = 'guest-login';
+        loginItem.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+        loginItem.onclick = () => showAuthModal('login');
+        const signupItem = document.createElement('div');
+        signupItem.id = 'guest-signup';
+        signupItem.innerHTML = '<i class="fas fa-user-plus"></i> Sign Up';
+        signupItem.onclick = () => showAuthModal('signup');
+        const dropdown = document.getElementById('dropdown-menu');
+        dropdown.insertBefore(loginItem, logoutItem);
+        dropdown.insertBefore(signupItem, logoutItem);
+      }
+    } else {
+      // remove guest items if exist
+      const guestLogin = document.getElementById('guest-login');
+      const guestSignup = document.getElementById('guest-signup');
+      if (guestLogin) guestLogin.remove();
+      if (guestSignup) guestSignup.remove();
+    }
+  }
+
+  auth.onAuthStateChanged(user => {
+    currentUser = user;
+    updateProfileUI();
+    updateDropdownForGuest();
+    if (currentUser) loadMyList();
+    // Also if on My List view, re-render
+    if (document.querySelector('[data-nav="mylist"].active')) renderMyListView();
+  });
+
+  // ---- Search (unchanged) ----
   searchIcon.onclick = () => { searchOverlay.style.display = searchOverlay.style.display === 'block' ? 'none' : 'block'; if(searchOverlay.style.display === 'block') searchInput.focus(); };
   async function performSearch() { const query = searchInput.value.trim(); if(!query) return; const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`); const movies = await res.json(); searchResultsDiv.innerHTML = ''; if(movies.length===0){ searchResultsDiv.innerHTML='<p>No movies found</p>'; return; } movies.slice(0,12).forEach(m=>{ const card = document.createElement('div'); card.className='movie-card'; card.style.width='150px'; card.innerHTML=`<img class="movie-poster" src="https://image.tmdb.org/t/p/w200${m.poster_path}" style="height:225px;"><div class="movie-info"><div class="movie-title">${m.title}</div><div class="movie-actions"><button class="small-btn watch" data-movie='${JSON.stringify(m)}'>▶ Watch</button><button class="small-btn" data-movie-id="${m.id}" data-movie-title="${m.title}" data-movie-poster="${m.poster_path}" data-movie-overview="${m.overview}">➕ My List</button></div></div>`; card.querySelector('.watch').onclick = () => playFullMovie(m); card.querySelector('.small-btn:not(.watch)').onclick = () => addToMyList(m.id, {title:m.title, poster_path:m.poster_path, overview:m.overview}); searchResultsDiv.appendChild(card); }); }
   searchBtn.onclick = performSearch; searchInput.addEventListener('keypress', e => { if(e.key === 'Enter') performSearch(); });
+
   async function getStreamingUrl(movieId){ const res = await fetch(`/api/stream/movie/${movieId}`); const data = await res.json(); return data.url; }
-  async function playFullMovie(movie){ currentMovie = movie; streamTitle.innerText = movie.title; streamDesc.innerText = movie.overview || ''; const url = await getStreamingUrl(movie.id); if(url){ streamIframe.src = ''; streamIframe.src = url; streamModal.style.display = 'flex'; } else { alert('Stream not available for this movie.'); } }
-  function updateAuthUI(){ if(currentUser){ authSection.innerHTML = `<div class="user-greeting"><span>👤 ${currentUser.email}</span><button class="auth-btn" id="logout-btn">Logout</button></div>`; document.getElementById('logout-btn').onclick = () => auth.signOut(); loadMyList(); } else { authSection.innerHTML = `<div class="auth-buttons"><button class="auth-btn" id="login-btn">Login</button><button class="auth-btn" id="signup-btn">Sign Up</button></div>`; document.getElementById('login-btn').onclick = () => showAuthModal('login'); document.getElementById('signup-btn').onclick = () => showAuthModal('signup'); } }
-  function showAuthModal(mode){ const email = prompt(mode==='login'?'Email:':'Email for signup:'); if(!email) return; const pwd = prompt('Password (min 6 chars):'); if(!pwd) return; if(mode==='signup') auth.createUserWithEmailAndPassword(email,pwd).catch(e=>alert(e.message)); else auth.signInWithEmailAndPassword(email,pwd).catch(e=>alert(e.message)); }
-  auth.onAuthStateChanged(user => { currentUser = user; updateAuthUI(); });
+  async function playFullMovie(movie){ streamTitle.innerText = movie.title; streamDesc.innerText = movie.overview || ''; const url = await getStreamingUrl(movie.id); if(url){ streamIframe.src = ''; streamIframe.src = url; streamModal.style.display = 'flex'; } else { alert('Stream not available.'); } }
+
   async function loadMyList(){ if(!currentUser) return; const snap = await db.collection('users').doc(currentUser.uid).collection('mylist').get(); myList.clear(); snap.forEach(d=>myList.add(d.id)); if(document.querySelector('[data-nav="mylist"].active')) renderMyListView(); }
-  async function addToMyList(id,data){ if(!currentUser){ alert('Login first'); return; } await db.collection('users').doc(currentUser.uid).collection('mylist').doc(id.toString()).set(data); myList.add(id.toString()); alert('Added to My List'); }
+  async function addToMyList(id,data){ if(!currentUser){ alert('Please login'); return; } await db.collection('users').doc(currentUser.uid).collection('mylist').doc(id.toString()).set(data); myList.add(id.toString()); alert('Added'); }
   async function removeFromMyList(id){ if(!currentUser) return; await db.collection('users').doc(currentUser.uid).collection('mylist').doc(id.toString()).delete(); myList.delete(id.toString()); alert('Removed'); if(document.querySelector('[data-nav="mylist"].active')) renderMyListView(); }
+
   function renderMovieCard(m, isMyList=false){ const card = document.createElement('div'); card.className='movie-card'; card.innerHTML=`<img class="movie-poster" src="https://image.tmdb.org/t/p/w500${m.poster_path}" onerror="this.src='https://placehold.co/300x450/1e1e2a/white?text=No+Image'"><div class="movie-info"><div class="movie-title">${m.title}</div><div class="movie-actions"><button class="small-btn watch" data-movie='${JSON.stringify(m)}'>▶ Watch</button><button class="small-btn" data-movie-id="${m.id}">${isMyList ? 'Remove' : '➕ My List'}</button><button class="small-btn" data-trailer-id="${m.id}">🎬 Trailer</button></div></div>`; card.querySelector('.watch').onclick = e => { e.stopPropagation(); playFullMovie(m); }; const listBtn = card.querySelector('.small-btn:nth-child(2)'); listBtn.onclick = e => { e.stopPropagation(); if(isMyList) removeFromMyList(m.id); else addToMyList(m.id, {title:m.title, poster_path:m.poster_path, overview:m.overview}); }; card.querySelector('[data-trailer-id]').onclick = e => { e.stopPropagation(); openTrailer(m.id, m.title, m.overview); }; return card; }
-  async function openTrailer(id, title, overview){ const res = await fetch(`/api/movie/${id}/trailer`); const data = await res.json(); if(data.key){ trailerIframe.src = `https://www.youtube.com/embed/${data.key}?autoplay=1`; document.getElementById('modal-title').innerText = title; document.getElementById('modal-overview').innerText = overview || ''; trailerModal.style.display = 'flex'; } else alert('No trailer available'); }
+  async function openTrailer(id, title, overview){ const res = await fetch(`/api/movie/${id}/trailer`); const data = await res.json(); if(data.key){ trailerIframe.src = `https://www.youtube.com/embed/${data.key}?autoplay=1`; document.getElementById('modal-title').innerText = title; document.getElementById('modal-overview').innerText = overview || ''; trailerModal.style.display = 'flex'; } else alert('No trailer'); }
   async function fetchMovies(cat){ const res = await fetch(`/api/movies/${cat}`); return await res.json(); }
   async function loadRows(){ const cats = [{title:'🔥 Trending Now', cat:'trending'},{title:'🏆 Top Rated', cat:'top_rated'},{title:'💥 Action', cat:'action'},{title:'😂 Comedy', cat:'comedy'}]; rowsContainer.innerHTML = ''; for(let c of cats){ const movies = await fetchMovies(c.cat); if(!movies || movies.length===0) continue; const rowDiv = document.createElement('div'); rowDiv.className='row-section'; rowDiv.innerHTML = `<div class="row-header"><h2>${c.title}</h2></div><div class="movie-row" id="row-${c.cat}"></div>`; const movieRow = rowDiv.querySelector('.movie-row'); movies.slice(0,12).forEach(m => movieRow.appendChild(renderMovieCard(m))); rowsContainer.appendChild(rowDiv); if(c.cat === 'trending' && movies[0]){ featuredMovie = movies[0]; document.getElementById('featured-title').innerText = featuredMovie.title; document.getElementById('featured-desc').innerText = featuredMovie.overview ? featuredMovie.overview.slice(0,150)+'...' : ''; } } }
-  async function renderMyListView(){ if(!currentUser){ rowsContainer.innerHTML = '<div style="padding:2rem;text-align:center;">Please login</div>'; return; } const snap = await db.collection('users').doc(currentUser.uid).collection('mylist').get(); const myMovies = []; snap.forEach(d=>myMovies.push({id:d.id, ...d.data()})); rowsContainer.innerHTML = `<div class="row-section"><div class="row-header"><h2>📋 My List</h2></div><div class="movie-row" id="mylist-row"></div></div>`; const row = document.getElementById('mylist-row'); if(myMovies.length===0) row.innerHTML = '<p style="color:gray;">No movies yet</p>'; else myMovies.forEach(m=>{ const fake = {id:m.id, title:m.title, poster_path:m.poster_path, overview:m.overview}; row.appendChild(renderMovieCard(fake, true)); }); }
+  async function renderMyListView(){ if(!currentUser){ rowsContainer.innerHTML = '<div style="padding:2rem;text-align:center;">Please login to see your list</div>'; return; } const snap = await db.collection('users').doc(currentUser.uid).collection('mylist').get(); const myMovies = []; snap.forEach(d=>myMovies.push({id:d.id, ...d.data()})); rowsContainer.innerHTML = `<div class="row-section"><div class="row-header"><h2>📋 My List</h2></div><div class="movie-row" id="mylist-row"></div></div>`; const row = document.getElementById('mylist-row'); if(myMovies.length===0) row.innerHTML = '<p style="color:gray;">No movies yet</p>'; else myMovies.forEach(m=>{ const fake = {id:m.id, title:m.title, poster_path:m.poster_path, overview:m.overview}; row.appendChild(renderMovieCard(fake, true)); }); }
   document.querySelectorAll('[data-nav]').forEach(link => { link.addEventListener('click', () => { const nav = link.getAttribute('data-nav'); if(nav === 'home') loadRows(); else if(nav === 'mylist') renderMyListView(); document.querySelectorAll('[data-nav]').forEach(l => l.classList.remove('active')); link.classList.add('active'); searchOverlay.style.display = 'none'; }); });
   watchTrailerBtn.onclick = () => { if(featuredMovie) openTrailer(featuredMovie.id, featuredMovie.title, featuredMovie.overview); };
   document.querySelectorAll('.close-modal').forEach(btn => { btn.onclick = () => { trailerModal.style.display = 'none'; streamModal.style.display = 'none'; trailerIframe.src = ''; streamIframe.src = ''; }; });
   window.onclick = (e) => { if(e.target === trailerModal) { trailerModal.style.display = 'none'; trailerIframe.src = ''; } if(e.target === streamModal) { streamModal.style.display = 'none'; streamIframe.src = ''; } };
   document.getElementById('refresh-data-btn').onclick = async () => { const btn = document.getElementById('refresh-data-btn'); btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...'; btn.disabled = true; await loadRows(); btn.innerHTML = '<i class="fas fa-check"></i> Updated!'; setTimeout(() => { btn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh'; btn.disabled = false; }, 2000); };
   loadRows();
-  // Background animation
+
+  // Background animation (unchanged)
   const canvas = document.getElementById('bg-canvas'), ctx = canvas.getContext('2d');
   let w = window.innerWidth, h = window.innerHeight, particles = [];
   function resizeCanvas(){ w = window.innerWidth; h = window.innerHeight; canvas.width = w; canvas.height = h; initParticles(); }
