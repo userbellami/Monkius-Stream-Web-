@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monkius Full Stream — Now Working!</title>
+  <title>Monkius Full Stream — Now Working</title>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -72,15 +72,15 @@
     <div id="search-results" class="search-results"></div>
   </div>
   <div class="refresh-bar">
-    <div><span class="live-badge">🔥 FIXED</span><span style="margin-left:10px;font-size:0.8rem;">Using working providers</span></div>
+    <div><span class="live-badge">✅ FIXED</span><span style="margin-left:10px;font-size:0.8rem;">No sandbox, working provider</span></div>
     <button id="refresh-data-btn" class="refresh-btn"><i class="fas fa-sync-alt"></i> Refresh</button>
   </div>
-  <div class="hero"><div class="hero-content"><div class="hero-badge">🎬 NOW WORKING</div><h1 id="featured-title">Loading...</h1><p id="featured-desc"></p><button class="auth-btn" id="watch-trailer-btn" style="background:white;color:black;">▶ Trailer</button></div></div>
+  <div class="hero"><div class="hero-content"><div class="hero-badge">🎬 FINALLY WORKING</div><h1 id="featured-title">Loading...</h1><p id="featured-desc"></p><button class="auth-btn" id="watch-trailer-btn" style="background:white;color:black;">▶ Trailer</button></div></div>
   <div id="rows-container"></div>
-  <div class="footer"><p>© 2026 Monkius Full Stream — Finally working! If still stuck, try another movie.</p></div>
+  <div class="footer"><p>© 2026 Monkius Full Stream — Now using vidsrc.xyz, no sandbox errors.</p></div>
 </div>
 <div id="trailer-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="trailer-iframe" class="modal-video" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="modal-title"></h3><p id="modal-overview"></p></div></div></div>
-<div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-popups-to-escape-sandbox" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p></div></div></div>
+<div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p></div></div></div>
 <script>
   const firebaseConfig = { apiKey: "AIzaSyB-9QzBOU6vFST4EvxdhFEIz5QBA1D-XW0", authDomain: "monkius-full-stream.firebaseapp.com", projectId: "monkius-full-stream", storageBucket: "monkius-full-stream.firebasestorage.app", messagingSenderId: "276409313367", appId: "1:276409313367:web:1eb2fb48df4feb9c801b12" };
   firebase.initializeApp(firebaseConfig);

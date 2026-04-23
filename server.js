@@ -56,31 +56,13 @@ app.get('/api/movie/:id/trailer', async (req, res) => {
   }
 });
 
-// WORKING STREAMING PROVIDERS
-app.get('/api/stream/:mediaType/:id', async (req, res) => {
+// FINAL WORKING PROVIDER (no sandbox issues)
+app.get('/api/stream/:mediaType/:id', (req, res) => {
   const { id } = req.params;
-  // First try: moviesapi.club (most reliable currently)
-  const primaryUrl = `https://moviesapi.club/movie/${id}`;
-  // Backup: vidsrc.rip
-  const backupUrl = `https://vidsrc.rip/embed/movie/${id}`;
-  
-  // Test primary URL
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 3000);
-    const testResponse = await fetch(primaryUrl, { method: 'HEAD', signal: controller.signal });
-    clearTimeout(timeout);
-    if (testResponse.ok) {
-      console.log(`Using primary provider: ${primaryUrl}`);
-      return res.json({ url: primaryUrl });
-    }
-  } catch (err) {
-    console.log(`Primary failed: ${err.message}`);
-  }
-  
-  // Fallback to backup
-  console.log(`Using backup provider: ${backupUrl}`);
-  res.json({ url: backupUrl });
+  // vidsrc.xyz works without sandbox restrictions
+  const streamUrl = `https://vidsrc.xyz/embed/movie/${id}`;
+  console.log(`Stream URL: ${streamUrl}`);
+  res.json({ url: streamUrl });
 });
 
 app.get('*', (req, res) => {
