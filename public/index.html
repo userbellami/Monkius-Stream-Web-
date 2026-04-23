@@ -2,40 +2,59 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monkius Full Stream v4 — Profile Settings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Monkius Full Stream — Netflix Style</title>
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: #0b0b0b; color: white; overflow-x: hidden; }
-    #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; background: radial-gradient(circle at 20% 30%, #0a0f1a, #03060c); }
-    .main-content { position: relative; z-index: 2; background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.82) 100%); min-height: 100vh; }
-    
-    /* Navbar: logo left, right side contains nav-links, search, profile */
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #000;
+      color: white;
+      overflow-x: hidden;
+    }
+    /* Advanced Canvas Background */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    /* Main content overlay */
+    .main-content {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.85) 100%);
+    }
+    /* Netflix-style navbar */
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 4%;
-      background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 100%);
-      backdrop-filter: blur(6px);
+      padding: 1.2rem 4%;
+      background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 100%);
+      backdrop-filter: blur(8px);
       position: sticky;
       top: 0;
       z-index: 100;
-      flex-wrap: wrap;
-      gap: 1rem;
     }
     .logo {
-      font-size: 1.6rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #E50914, #ff6b6b);
+      font-size: 1.8rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #E50914, #ff4d4d);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+      letter-spacing: -0.5px;
     }
     .navbar-right {
       display: flex;
@@ -45,20 +64,29 @@
     .nav-links {
       display: flex;
       gap: 2rem;
-      align-items: center;
     }
     .nav-links a {
       color: #e5e5e5;
       text-decoration: none;
       font-weight: 500;
+      font-size: 0.9rem;
+      transition: 0.2s;
       cursor: pointer;
     }
     .nav-links a:hover, .nav-links a.active { color: #fff; }
-    .nav-icons { display: flex; gap: 1.2rem; align-items: center; }
-    .nav-icons i { font-size: 1.2rem; cursor: pointer; color: #e5e5e5; transition: 0.2s; }
-    .nav-icons i:hover { color: #E50914; }
-    
-    /* Profile dropdown - top right */
+    /* Sign In button (when logged out) */
+    .signin-btn {
+      background: #E50914;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 4px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .signin-btn:hover { background: #b20710; }
+    /* Profile dropdown (when logged in) */
     .profile-dropdown {
       position: relative;
       display: inline-block;
@@ -76,19 +104,15 @@
       color: white;
       font-weight: 500;
     }
-    .profile-btn:hover {
-      background: rgba(255,255,255,0.1);
-    }
-    .profile-btn i {
-      font-size: 1.4rem;
-      color: #E50914;
-    }
+    .profile-btn:hover { background: rgba(255,255,255,0.1); }
+    .profile-btn i { font-size: 1.4rem; color: #E50914; }
     .dropdown-content {
       display: none;
       position: absolute;
       top: 45px;
       right: 0;
-      background-color: #111;
+      background: rgba(0,0,0,0.95);
+      backdrop-filter: blur(10px);
       min-width: 260px;
       border-radius: 8px;
       box-shadow: 0 8px 16px rgba(0,0,0,0.5);
@@ -96,14 +120,7 @@
       border: 1px solid #333;
       padding: 12px;
     }
-    .profile-dropdown:hover .dropdown-content {
-      display: block;
-    }
-    .dropdown-content .user-info {
-      padding: 8px 0;
-      border-bottom: 1px solid #333;
-      margin-bottom: 8px;
-    }
+    .profile-dropdown:hover .dropdown-content { display: block; }
     .dropdown-content input {
       width: 100%;
       padding: 8px;
@@ -123,99 +140,326 @@
       cursor: pointer;
       margin-top: 8px;
     }
-    .dropdown-content button.secondary {
+    .dropdown-content button.secondary { background: #333; }
+
+    /* LANDING PAGE (Netflix-style) */
+    .landing-page {
+      display: flex;
+      flex-direction: column;
+    }
+    .hero-landing {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: radial-gradient(ellipse at 30% 40%, rgba(0,0,0,0.4), rgba(0,0,0,0.9));
+      padding: 2rem;
+    }
+    .hero-content-landing {
+      max-width: 800px;
+    }
+    .hero-content-landing h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+    .hero-content-landing p {
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+      color: #ddd;
+    }
+    .email-form {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .email-form input {
+      padding: 1rem;
+      width: 300px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      outline: none;
+    }
+    .email-form input::placeholder { color: #ccc; }
+    .email-form button {
+      background: #E50914;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 4px;
+      color: white;
+      cursor: pointer;
+    }
+    .signin-panel {
+      background: rgba(0,0,0,0.75);
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 450px;
+      margin: 2rem auto;
+      text-align: left;
+    }
+    .signin-panel h2 { margin-bottom: 1rem; }
+    .signin-panel input {
+      width: 100%;
+      padding: 1rem;
+      margin: 0.5rem 0;
       background: #333;
+      border: none;
+      border-radius: 4px;
+      color: white;
     }
-    .dropdown-content button:hover {
-      opacity: 0.9;
+    .signin-panel button {
+      width: 100%;
+      padding: 1rem;
+      background: #E50914;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-weight: 600;
+      margin-top: 1rem;
+      cursor: pointer;
     }
-    .hero { padding: 4rem 4% 6rem; min-height: 70vh; display: flex; align-items: center; background: linear-gradient(90deg, #03060c 0%, transparent 70%); }
-    .hero-content { max-width: 550px; }
-    .hero-badge { background: rgba(229,9,20,0.9); display: inline-block; padding: 0.2rem 1rem; border-radius: 30px; font-size: 0.8rem; margin-bottom: 1rem; }
-    .hero-content h1 { font-size: 3rem; margin-bottom: 1rem; }
+    .toggle-auth {
+      text-align: center;
+      margin-top: 1rem;
+      color: #aaa;
+      cursor: pointer;
+    }
+    .toggle-auth span { color: #E50914; }
+    /* Main App (logged in) */
+    .app-container {
+      display: none;
+    }
+    .hero-app {
+      padding: 4rem 4% 6rem;
+      min-height: 70vh;
+      background: linear-gradient(90deg, #03060c 0%, transparent 70%);
+    }
+    .hero-app-content { max-width: 550px; }
+    .hero-badge {
+      background: rgba(229,9,20,0.9);
+      display: inline-block;
+      padding: 0.2rem 1rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+    }
+    .hero-app h1 { font-size: 3rem; margin: 1rem 0; }
     .row-section { margin: 2.5rem 0 3rem 0; padding-left: 4%; }
-    .row-header { display: flex; justify-content: space-between; align-items: baseline; padding-right: 4%; margin-bottom: 1rem; }
-    .movie-row { display: flex; gap: 1rem; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 1rem; }
-    .movie-card { flex: 0 0 auto; width: 190px; border-radius: 12px; overflow: hidden; background: #111; cursor: pointer; transition: transform 0.2s; }
+    .row-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-right: 4%;
+      margin-bottom: 1rem;
+    }
+    .movie-row {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding-bottom: 1rem;
+    }
+    .movie-card {
+      flex: 0 0 auto;
+      width: 190px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #111;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
     .movie-card:hover { transform: scale(1.05); }
     .movie-poster { width: 100%; height: 270px; object-fit: cover; }
     .movie-info { padding: 0.6rem; }
     .movie-title { font-size: 0.85rem; font-weight: 600; }
-    .movie-actions { display: flex; gap: 5px; margin-top: 8px; flex-wrap: wrap; }
-    .small-btn { background: #333; border: none; padding: 4px 8px; border-radius: 4px; color: white; font-size: 0.7rem; cursor: pointer; font-weight: 600; }
+    .movie-actions {
+      display: flex;
+      gap: 5px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .small-btn {
+      background: #333;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      color: white;
+      font-size: 0.7rem;
+      cursor: pointer;
+    }
     .small-btn.watch { background: #E50914; }
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; }
-    .modal-content { background: #111; width: 90%; max-width: 1000px; border-radius: 12px; overflow: hidden; }
-    .modal-video { width: 100%; height: 500px; background: black; border: none; }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: #111;
+      width: 90%;
+      max-width: 1000px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .modal-video { width: 100%; height: 500px; border: none; }
     .modal-info { padding: 1.5rem; }
-    .close-modal { float: right; font-size: 2rem; cursor: pointer; color: white; }
-    .search-overlay { position: fixed; top: 70px; left: 0; width: 100%; background: #0a0a0a; z-index: 200; padding: 1rem; display: none; border-bottom: 2px solid #E50914; }
-    .search-overlay input { width: 80%; padding: 12px; font-size: 1rem; border: none; border-radius: 30px; margin-right: 10px; }
-    .search-overlay button { background: #E50914; border: none; padding: 12px 24px; border-radius: 30px; color: white; cursor: pointer; }
-    .search-results { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; max-height: 400px; overflow-y: auto; justify-content: center; }
-    .refresh-bar { display: flex; justify-content: space-between; align-items: center; padding: 0 4%; margin-top: 1rem; }
-    .live-badge { background: #E50914; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; }
-    .refresh-btn { background: transparent; border: 1px solid #E50914; color: white; padding: 6px 12px; border-radius: 20px; cursor: pointer; }
-    .footer { text-align: center; padding: 2rem; color: #8a8a8a; }
+    .close-modal { float: right; font-size: 2rem; cursor: pointer; }
+    .search-overlay {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      background: #0a0a0a;
+      z-index: 200;
+      padding: 1rem;
+      display: none;
+      border-bottom: 2px solid #E50914;
+    }
+    .search-overlay input {
+      width: 80%;
+      padding: 12px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 30px;
+      margin-right: 10px;
+    }
+    .search-overlay button {
+      background: #E50914;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 30px;
+      color: white;
+      cursor: pointer;
+    }
+    .search-results {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+      max-height: 400px;
+      overflow-y: auto;
+      justify-content: center;
+    }
+    .refresh-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 4%;
+      margin-top: 1rem;
+    }
+    .live-badge {
+      background: #E50914;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: #8a8a8a;
+      font-size: 0.8rem;
+    }
     @media (max-width: 768px) {
       .movie-card { width: 140px; }
       .movie-poster { height: 200px; }
-      .nav-links { display: none; }
-      .hero-content h1 { font-size: 2rem; }
+      .hero-app h1 { font-size: 2rem; }
+      .hero-content-landing h1 { font-size: 2rem; }
       .modal-video { height: 250px; }
-      .navbar { flex-direction: column; align-items: center; }
-      .navbar-right { width: 100%; justify-content: flex-end; }
+      .nav-links { display: none; }
     }
   </style>
 </head>
 <body>
 <canvas id="bg-canvas"></canvas>
 <div class="main-content">
+  <!-- Shared Navbar -->
   <div class="navbar">
     <div class="logo">MONKIUS FULL STREAM</div>
     <div class="navbar-right">
-      <div class="nav-links">
-        <a class="active" data-nav="home">Home</a>
+      <div class="nav-links" id="nav-links-auth">
+        <a data-nav="home">Home</a>
         <a data-nav="mylist">My List</a>
       </div>
-      <div class="nav-icons"><i class="fas fa-search" id="search-icon"></i></div>
-      <!-- Profile Dropdown - top right -->
-      <div class="profile-dropdown" id="profile-dropdown">
-        <button class="profile-btn" id="profile-btn">
-          <i class="fas fa-user-circle"></i>
-          <span id="profile-name">Account</span>
-          <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i>
-        </button>
-        <div class="dropdown-content" id="dropdown-menu">
-          <div class="user-info" id="user-info-area"></div>
-          <div id="profile-edit-area">
-            <input type="text" id="display-name-input" placeholder="Your display name">
-            <button id="save-name-btn">💾 Save Name</button>
-          </div>
-          <button id="logout-btn-dropdown" class="secondary">🚪 Logout</button>
+      <div id="auth-buttons"></div>
+    </div>
+  </div>
+
+  <!-- Landing Page (shown when logged out) -->
+  <div id="landing-page" class="landing-page">
+    <div class="hero-landing">
+      <div class="hero-content-landing">
+        <h1>Unlimited movies, TV shows, and more</h1>
+        <p>Starts at Ksh 200. Cancel anytime.</p>
+        <div class="email-form">
+          <input type="email" id="landing-email" placeholder="Email address">
+          <button id="get-started-btn">Get Started &nbsp; ></button>
         </div>
       </div>
     </div>
+    <div id="signin-panel" style="display: none;" class="signin-panel">
+      <h2>Sign In</h2>
+      <input type="email" id="signin-email" placeholder="Email">
+      <input type="password" id="signin-password" placeholder="Password">
+      <button id="signin-submit">Sign In</button>
+      <div class="toggle-auth" id="toggle-signup">New to Monkius? <span>Sign up now</span>.</div>
+    </div>
+    <div id="signup-panel" style="display: none;" class="signin-panel">
+      <h2>Sign Up</h2>
+      <input type="email" id="signup-email" placeholder="Email">
+      <input type="password" id="signup-password" placeholder="Password (min 6 chars)">
+      <button id="signup-submit">Create Account</button>
+      <div class="toggle-auth" id="toggle-login">Already have an account? <span>Sign In</span>.</div>
+    </div>
+    <!-- Trending rows for landing page (teaser) -->
+    <div id="landing-rows" style="margin-top: 2rem; padding: 0 4%;">
+      <div class="row-header"><h2>🔥 Trending Now</h2></div>
+      <div class="movie-row" id="landing-trending-row"></div>
+    </div>
   </div>
-  
-  <div id="search-overlay" class="search-overlay">
-    <input type="text" id="search-input" placeholder="Search movies...">
-    <button id="search-btn"><i class="fas fa-search"></i> Search</button>
-    <div id="search-results" class="search-results"></div>
+
+  <!-- Main App (logged in) -->
+  <div id="app-container" class="app-container">
+    <div id="search-overlay" class="search-overlay">
+      <input type="text" id="search-input" placeholder="Search movies...">
+      <button id="search-btn"><i class="fas fa-search"></i> Search</button>
+      <div id="search-results" class="search-results"></div>
+    </div>
+    <div class="refresh-bar">
+      <div><span class="live-badge">🎬 LIVE</span><span style="margin-left:10px;font-size:0.8rem;">Now Streaming</span></div>
+      <button id="refresh-data-btn" class="refresh-btn" style="background:transparent; border:1px solid #E50914; padding:6px 12px; border-radius:20px; color:white;"><i class="fas fa-sync-alt"></i> Refresh</button>
+    </div>
+    <div class="hero-app">
+      <div class="hero-app-content">
+        <div class="hero-badge">🎬 STREAM NOW</div>
+        <h1 id="featured-title">Loading...</h1>
+        <p id="featured-desc"></p>
+        <button class="auth-btn" id="watch-trailer-btn" style="background:white; color:black; border:none; padding:0.5rem 1.5rem; border-radius:4px; font-weight:600;">▶ Trailer</button>
+      </div>
+    </div>
+    <div id="rows-container"></div>
+    <div class="footer"><p>© 2026 Monkius Full Stream — Endless entertainment</p></div>
   </div>
-  <div class="refresh-bar">
-    <div><span class="live-badge">✅ V4</span><span style="margin-left:10px;font-size:0.8rem;">Profile top-right + name update</span></div>
-    <button id="refresh-data-btn" class="refresh-btn"><i class="fas fa-sync-alt"></i> Refresh</button>
-  </div>
-  <div class="hero"><div class="hero-content"><div class="hero-badge">🎬 STREAM NOW</div><h1 id="featured-title">Loading...</h1><p id="featured-desc"></p><button class="auth-btn" id="watch-trailer-btn" style="background:white;color:black;">▶ Trailer</button></div></div>
-  <div id="rows-container"></div>
-  <div class="footer"><p>© 2026 Monkius Full Stream v4 — Update your profile name from the top-right menu</p></div>
 </div>
-<!-- Modals unchanged -->
+
+<!-- Modals -->
 <div id="trailer-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="trailer-iframe" class="modal-video" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="modal-title"></h3><p id="modal-overview"></p></div></div></div>
 <div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p></div></div></div>
 
 <script>
+  // Firebase config
   const firebaseConfig = { apiKey: "AIzaSyB-9QzBOU6vFST4EvxdhFEIz5QBA1D-XW0", authDomain: "monkius-full-stream.firebaseapp.com", projectId: "monkius-full-stream", storageBucket: "monkius-full-stream.firebasestorage.app", messagingSenderId: "276409313367", appId: "1:276409313367:web:1eb2fb48df4feb9c801b12" };
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
@@ -223,9 +467,147 @@
 
   let currentUser = null;
   let myList = new Set();
-  let currentDisplayName = "";
+  let featuredMovie = null;
 
   // DOM elements
+  const landingPage = document.getElementById('landing-page');
+  const appContainer = document.getElementById('app-container');
+  const authButtonsDiv = document.getElementById('auth-buttons');
+  const landingEmail = document.getElementById('landing-email');
+  const getStartedBtn = document.getElementById('get-started-btn');
+  const signinPanel = document.getElementById('signin-panel');
+  const signupPanel = document.getElementById('signup-panel');
+  const landingTrendingRow = document.getElementById('landing-trending-row');
+
+  // Nav links (only visible when logged in)
+  const navLinksAuth = document.getElementById('nav-links-auth');
+  
+  // Helpers
+  function showLanding() {
+    landingPage.style.display = 'block';
+    appContainer.style.display = 'none';
+    authButtonsDiv.innerHTML = '<button class="signin-btn" id="navbar-signin">Sign In</button>';
+    document.getElementById('navbar-signin')?.addEventListener('click', () => {
+      signinPanel.style.display = 'block';
+      signupPanel.style.display = 'none';
+      landingPage.scrollIntoView({ behavior: 'smooth' });
+    });
+    // Load trending movies for landing page (teaser)
+    loadLandingTrending();
+  }
+  function showApp() {
+    landingPage.style.display = 'none';
+    appContainer.style.display = 'block';
+    // Build profile dropdown
+    if (currentUser) {
+      authButtonsDiv.innerHTML = `
+        <div class="profile-dropdown">
+          <button class="profile-btn">
+            <i class="fas fa-user-circle"></i>
+            <span id="profile-name">Account</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <div id="user-info-area"></div>
+            <input type="text" id="display-name-input" placeholder="Your display name">
+            <button id="save-name-btn">Save Name</button>
+            <button id="logout-btn-dropdown" class="secondary">Logout</button>
+          </div>
+        </div>
+      `;
+      // Load profile name from Firestore
+      loadUserProfile(currentUser.uid);
+      // Profile handlers
+      document.getElementById('save-name-btn')?.addEventListener('click', () => saveDisplayName());
+      document.getElementById('logout-btn-dropdown')?.addEventListener('click', () => auth.signOut());
+    }
+    loadRows();
+    loadMyList();
+  }
+
+  async function loadUserProfile(uid) {
+    const doc = await db.collection('users').doc(uid).collection('profile').doc('info').get();
+    const displayName = doc.exists ? doc.data().displayName : currentUser.email.split('@')[0];
+    document.getElementById('profile-name').innerText = displayName.length > 15 ? displayName.slice(0,12)+'..' : displayName;
+    document.getElementById('user-info-area').innerHTML = `<strong>${displayName}</strong><br><small>${currentUser.email}</small>`;
+    document.getElementById('display-name-input').value = displayName;
+  }
+  async function saveDisplayName() {
+    const newName = document.getElementById('display-name-input').value.trim();
+    if (!newName) return;
+    await db.collection('users').doc(currentUser.uid).collection('profile').doc('info').set({ displayName: newName }, { merge: true });
+    document.getElementById('profile-name').innerText = newName;
+    alert('Name updated!');
+  }
+
+  // Auth state
+  auth.onAuthStateChanged(user => {
+    currentUser = user;
+    if (user) {
+      showApp();
+    } else {
+      showLanding();
+    }
+  });
+
+  // Landing page auth flows
+  getStartedBtn.onclick = () => {
+    const email = landingEmail.value.trim();
+    if (!email) return;
+    signinPanel.style.display = 'block';
+    signupPanel.style.display = 'none';
+    document.getElementById('signin-email').value = email;
+    landingPage.scrollIntoView({ behavior: 'smooth' });
+  };
+  document.getElementById('signin-submit')?.addEventListener('click', () => {
+    const email = document.getElementById('signin-email').value;
+    const pwd = document.getElementById('signin-password').value;
+    auth.signInWithEmailAndPassword(email, pwd).catch(err => alert(err.message));
+  });
+  document.getElementById('signup-submit')?.addEventListener('click', () => {
+    const email = document.getElementById('signup-email').value;
+    const pwd = document.getElementById('signup-password').value;
+    auth.createUserWithEmailAndPassword(email, pwd).then(() => {
+      // create profile
+      db.collection('users').doc(auth.currentUser.uid).collection('profile').doc('info').set({ displayName: email.split('@')[0] });
+    }).catch(err => alert(err.message));
+  });
+  document.getElementById('toggle-signup')?.addEventListener('click', () => {
+    signinPanel.style.display = 'none';
+    signupPanel.style.display = 'block';
+  });
+  document.getElementById('toggle-login')?.addEventListener('click', () => {
+    signupPanel.style.display = 'none';
+    signinPanel.style.display = 'block';
+  });
+
+  // Load trending for landing page (no login required)
+  async function loadLandingTrending() {
+    const res = await fetch(`/api/movies/trending`);
+    const movies = await res.json();
+    landingTrendingRow.innerHTML = '';
+    movies.slice(0, 10).forEach(movie => {
+      const card = document.createElement('div');
+      card.className = 'movie-card';
+      card.innerHTML = `
+        <img class="movie-poster" src="https://image.tmdb.org/t/p/w300${movie.poster_path}" alt="${movie.title}">
+        <div class="movie-info">
+          <div class="movie-title">${movie.title}</div>
+          <div class="movie-actions">
+            <button class="small-btn" style="background:#E50914;">Sign in to watch</button>
+          </div>
+        </div>
+      `;
+      card.querySelector('button').onclick = () => {
+        alert('Please sign in to watch movies.');
+        signinPanel.style.display = 'block';
+        signupPanel.style.display = 'none';
+      };
+      landingTrendingRow.appendChild(card);
+    });
+  }
+
+  // ---- Main app functions (same as before, with search, streaming, my list, etc.) ----
   const rowsContainer = document.getElementById('rows-container');
   const trailerModal = document.getElementById('trailer-modal');
   const streamModal = document.getElementById('stream-modal');
@@ -239,150 +621,127 @@
   const searchInput = document.getElementById('search-input');
   const searchBtn = document.getElementById('search-btn');
   const searchResultsDiv = document.getElementById('search-results');
-  const profileNameSpan = document.getElementById('profile-name');
-  const userInfoArea = document.getElementById('user-info-area');
-  const displayNameInput = document.getElementById('display-name-input');
-  const saveNameBtn = document.getElementById('save-name-btn');
-  const logoutBtn = document.getElementById('logout-btn-dropdown');
-  let featuredMovie = null;
-
-  // Helper: load user profile from Firestore
-  async function loadUserProfile(uid) {
-    if (!uid) return;
-    const docRef = db.collection('users').doc(uid).collection('profile').doc('info');
-    const doc = await docRef.get();
-    if (doc.exists) {
-      currentDisplayName = doc.data().displayName || '';
-    } else {
-      currentDisplayName = '';
-    }
-    updateProfileUI();
-  }
-
-  async function saveDisplayName(uid, newName) {
-    if (!uid) return;
-    const docRef = db.collection('users').doc(uid).collection('profile').doc('info');
-    await docRef.set({ displayName: newName, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
-    currentDisplayName = newName;
-    updateProfileUI();
-    alert('Profile name updated!');
-  }
-
-  function updateProfileUI() {
-    if (currentUser) {
-      const email = currentUser.email;
-      const shortName = currentDisplayName && currentDisplayName.trim() !== "" ? currentDisplayName : email.split('@')[0];
-      profileNameSpan.innerText = shortName.length > 15 ? shortName.slice(0,12)+'..' : shortName;
-      userInfoArea.innerHTML = `<strong>${currentDisplayName || 'No name set'}</strong><br><small>${email}</small>`;
-      displayNameInput.value = currentDisplayName || '';
-    } else {
-      profileNameSpan.innerText = 'Guest';
-      userInfoArea.innerHTML = '<em>Not logged in</em><br><small>Click Login/Signup below</small>';
-      displayNameInput.value = '';
-    }
-  }
-
-  // Handle login/signup modal (simple prompt)
-  function showAuthModal(mode) {
-    const email = prompt(mode === 'login' ? 'Enter your email:' : 'Enter email for signup:');
-    if (!email) return;
-    const password = prompt('Password (min 6 characters):');
-    if (!password) return;
-    if (mode === 'signup') {
-      auth.createUserWithEmailAndPassword(email, password).then(() => {
-        // after signup, create profile document
-        if (auth.currentUser) {
-          db.collection('users').doc(auth.currentUser.uid).collection('profile').doc('info').set({ displayName: email.split('@')[0] });
-        }
-      }).catch(err => alert(err.message));
-    } else {
-      auth.signInWithEmailAndPassword(email, password).catch(err => alert(err.message));
-    }
-  }
-
-  // Event listeners for profile actions
-  saveNameBtn.onclick = () => {
-    if (!currentUser) { alert('Please login first'); return; }
-    const newName = displayNameInput.value.trim();
-    if (newName === "") { alert('Name cannot be empty'); return; }
-    saveDisplayName(currentUser.uid, newName);
-  };
-  logoutBtn.onclick = () => { auth.signOut(); window.location.reload(); };
-
-  // Add guest login/signup buttons to dropdown if not logged in
-  function addGuestButtons() {
-    if (!currentUser) {
-      if (!document.getElementById('guest-login-btn')) {
-        const loginDiv = document.createElement('button');
-        loginDiv.id = 'guest-login-btn';
-        loginDiv.innerText = '🔐 Login';
-        loginDiv.style.background = '#E50914';
-        loginDiv.style.marginTop = '8px';
-        loginDiv.onclick = () => showAuthModal('login');
-        const signupDiv = document.createElement('button');
-        signupDiv.id = 'guest-signup-btn';
-        signupDiv.innerText = '📝 Sign Up';
-        signupDiv.style.background = '#333';
-        signupDiv.style.marginTop = '8px';
-        signupDiv.onclick = () => showAuthModal('signup');
-        const dropdown = document.getElementById('dropdown-menu');
-        // insert before logout button
-        dropdown.insertBefore(loginDiv, logoutBtn);
-        dropdown.insertBefore(signupDiv, logoutBtn);
-      }
-    } else {
-      const loginBtn = document.getElementById('guest-login-btn');
-      const signupBtn = document.getElementById('guest-signup-btn');
-      if (loginBtn) loginBtn.remove();
-      if (signupBtn) signupBtn.remove();
-    }
-  }
-
-  auth.onAuthStateChanged(async user => {
-    currentUser = user;
-    if (user) {
-      await loadUserProfile(user.uid);
-      loadMyList();
-    } else {
-      profileNameSpan.innerText = 'Guest';
-      userInfoArea.innerHTML = '<em>Not logged in</em><br><small>Click Login/Signup below</small>';
-      displayNameInput.value = '';
-    }
-    addGuestButtons();
-    if (document.querySelector('[data-nav="mylist"].active')) renderMyListView();
-  });
-
-  // ---- Search (unchanged) ----
-  searchIcon.onclick = () => { searchOverlay.style.display = searchOverlay.style.display === 'block' ? 'none' : 'block'; if(searchOverlay.style.display === 'block') searchInput.focus(); };
-  async function performSearch() { const query = searchInput.value.trim(); if(!query) return; const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`); const movies = await res.json(); searchResultsDiv.innerHTML = ''; if(movies.length===0){ searchResultsDiv.innerHTML='<p>No movies found</p>'; return; } movies.slice(0,12).forEach(m=>{ const card = document.createElement('div'); card.className='movie-card'; card.style.width='150px'; card.innerHTML=`<img class="movie-poster" src="https://image.tmdb.org/t/p/w200${m.poster_path}" style="height:225px;"><div class="movie-info"><div class="movie-title">${m.title}</div><div class="movie-actions"><button class="small-btn watch" data-movie='${JSON.stringify(m)}'>▶ Watch</button><button class="small-btn" data-movie-id="${m.id}" data-movie-title="${m.title}" data-movie-poster="${m.poster_path}" data-movie-overview="${m.overview}">➕ My List</button></div></div>`; card.querySelector('.watch').onclick = () => playFullMovie(m); card.querySelector('.small-btn:not(.watch)').onclick = () => addToMyList(m.id, {title:m.title, poster_path:m.poster_path, overview:m.overview}); searchResultsDiv.appendChild(card); }); }
-  searchBtn.onclick = performSearch; searchInput.addEventListener('keypress', e => { if(e.key === 'Enter') performSearch(); });
 
   async function getStreamingUrl(movieId){ const res = await fetch(`/api/stream/movie/${movieId}`); const data = await res.json(); return data.url; }
   async function playFullMovie(movie){ streamTitle.innerText = movie.title; streamDesc.innerText = movie.overview || ''; const url = await getStreamingUrl(movie.id); if(url){ streamIframe.src = ''; streamIframe.src = url; streamModal.style.display = 'flex'; } else { alert('Stream not available.'); } }
-
-  async function loadMyList(){ if(!currentUser) return; const snap = await db.collection('users').doc(currentUser.uid).collection('mylist').get(); myList.clear(); snap.forEach(d=>myList.add(d.id)); if(document.querySelector('[data-nav="mylist"].active')) renderMyListView(); }
   async function addToMyList(id,data){ if(!currentUser){ alert('Please login'); return; } await db.collection('users').doc(currentUser.uid).collection('mylist').doc(id.toString()).set(data); myList.add(id.toString()); alert('Added'); }
   async function removeFromMyList(id){ if(!currentUser) return; await db.collection('users').doc(currentUser.uid).collection('mylist').doc(id.toString()).delete(); myList.delete(id.toString()); alert('Removed'); if(document.querySelector('[data-nav="mylist"].active')) renderMyListView(); }
-
-  function renderMovieCard(m, isMyList=false){ const card = document.createElement('div'); card.className='movie-card'; card.innerHTML=`<img class="movie-poster" src="https://image.tmdb.org/t/p/w500${m.poster_path}" onerror="this.src='https://placehold.co/300x450/1e1e2a/white?text=No+Image'"><div class="movie-info"><div class="movie-title">${m.title}</div><div class="movie-actions"><button class="small-btn watch" data-movie='${JSON.stringify(m)}'>▶ Watch</button><button class="small-btn" data-movie-id="${m.id}">${isMyList ? 'Remove' : '➕ My List'}</button><button class="small-btn" data-trailer-id="${m.id}">🎬 Trailer</button></div></div>`; card.querySelector('.watch').onclick = e => { e.stopPropagation(); playFullMovie(m); }; const listBtn = card.querySelector('.small-btn:nth-child(2)'); listBtn.onclick = e => { e.stopPropagation(); if(isMyList) removeFromMyList(m.id); else addToMyList(m.id, {title:m.title, poster_path:m.poster_path, overview:m.overview}); }; card.querySelector('[data-trailer-id]').onclick = e => { e.stopPropagation(); openTrailer(m.id, m.title, m.overview); }; return card; }
+  function renderMovieCard(m, isMyList=false){ const card = document.createElement('div'); card.className='movie-card'; card.innerHTML=`<img class="movie-poster" src="https://image.tmdb.org/t/p/w500${m.poster_path}" onerror="this.src='https://placehold.co/300x450/1e1e2a/white?text=No+Image'"><div class="movie-info"><div class="movie-title">${m.title}</div><div class="movie-actions"><button class="small-btn watch">▶ Watch</button><button class="small-btn">${isMyList ? 'Remove' : '➕ My List'}</button><button class="small-btn" data-trailer-id="${m.id}">🎬 Trailer</button></div></div>`; card.querySelector('.watch').onclick = e => { e.stopPropagation(); playFullMovie(m); }; const listBtn = card.querySelector('.small-btn:nth-child(2)'); listBtn.onclick = e => { e.stopPropagation(); if(isMyList) removeFromMyList(m.id); else addToMyList(m.id, {title:m.title, poster_path:m.poster_path, overview:m.overview}); }; card.querySelector('[data-trailer-id]').onclick = e => { e.stopPropagation(); openTrailer(m.id, m.title, m.overview); }; return card; }
   async function openTrailer(id, title, overview){ const res = await fetch(`/api/movie/${id}/trailer`); const data = await res.json(); if(data.key){ trailerIframe.src = `https://www.youtube.com/embed/${data.key}?autoplay=1`; document.getElementById('modal-title').innerText = title; document.getElementById('modal-overview').innerText = overview || ''; trailerModal.style.display = 'flex'; } else alert('No trailer'); }
   async function fetchMovies(cat){ const res = await fetch(`/api/movies/${cat}`); return await res.json(); }
   async function loadRows(){ const cats = [{title:'🔥 Trending Now', cat:'trending'},{title:'🏆 Top Rated', cat:'top_rated'},{title:'💥 Action', cat:'action'},{title:'😂 Comedy', cat:'comedy'}]; rowsContainer.innerHTML = ''; for(let c of cats){ const movies = await fetchMovies(c.cat); if(!movies || movies.length===0) continue; const rowDiv = document.createElement('div'); rowDiv.className='row-section'; rowDiv.innerHTML = `<div class="row-header"><h2>${c.title}</h2></div><div class="movie-row" id="row-${c.cat}"></div>`; const movieRow = rowDiv.querySelector('.movie-row'); movies.slice(0,12).forEach(m => movieRow.appendChild(renderMovieCard(m))); rowsContainer.appendChild(rowDiv); if(c.cat === 'trending' && movies[0]){ featuredMovie = movies[0]; document.getElementById('featured-title').innerText = featuredMovie.title; document.getElementById('featured-desc').innerText = featuredMovie.overview ? featuredMovie.overview.slice(0,150)+'...' : ''; } } }
   async function renderMyListView(){ if(!currentUser){ rowsContainer.innerHTML = '<div style="padding:2rem;text-align:center;">Please login to see your list</div>'; return; } const snap = await db.collection('users').doc(currentUser.uid).collection('mylist').get(); const myMovies = []; snap.forEach(d=>myMovies.push({id:d.id, ...d.data()})); rowsContainer.innerHTML = `<div class="row-section"><div class="row-header"><h2>📋 My List</h2></div><div class="movie-row" id="mylist-row"></div></div>`; const row = document.getElementById('mylist-row'); if(myMovies.length===0) row.innerHTML = '<p style="color:gray;">No movies yet</p>'; else myMovies.forEach(m=>{ const fake = {id:m.id, title:m.title, poster_path:m.poster_path, overview:m.overview}; row.appendChild(renderMovieCard(fake, true)); }); }
-  document.querySelectorAll('[data-nav]').forEach(link => { link.addEventListener('click', () => { const nav = link.getAttribute('data-nav'); if(nav === 'home') loadRows(); else if(nav === 'mylist') renderMyListView(); document.querySelectorAll('[data-nav]').forEach(l => l.classList.remove('active')); link.classList.add('active'); searchOverlay.style.display = 'none'; }); });
-  watchTrailerBtn.onclick = () => { if(featuredMovie) openTrailer(featuredMovie.id, featuredMovie.title, featuredMovie.overview); };
+  async function loadMyList(){ if(!currentUser) return; const snap = await db.collection('users').doc(currentUser.uid).collection('mylist').get(); myList.clear(); snap.forEach(d=>myList.add(d.id)); if(document.querySelector('[data-nav="mylist"].active')) renderMyListView(); }
+  
+  document.querySelectorAll('[data-nav]').forEach(link => {
+    link.addEventListener('click', () => {
+      const nav = link.getAttribute('data-nav');
+      if (nav === 'home') loadRows();
+      else if (nav === 'mylist') renderMyListView();
+      document.querySelectorAll('[data-nav]').forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      if (searchOverlay) searchOverlay.style.display = 'none';
+    });
+  });
+  watchTrailerBtn?.addEventListener('click', () => { if(featuredMovie) openTrailer(featuredMovie.id, featuredMovie.title, featuredMovie.overview); });
   document.querySelectorAll('.close-modal').forEach(btn => { btn.onclick = () => { trailerModal.style.display = 'none'; streamModal.style.display = 'none'; trailerIframe.src = ''; streamIframe.src = ''; }; });
   window.onclick = (e) => { if(e.target === trailerModal) { trailerModal.style.display = 'none'; trailerIframe.src = ''; } if(e.target === streamModal) { streamModal.style.display = 'none'; streamIframe.src = ''; } };
-  document.getElementById('refresh-data-btn').onclick = async () => { const btn = document.getElementById('refresh-data-btn'); btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...'; btn.disabled = true; await loadRows(); btn.innerHTML = '<i class="fas fa-check"></i> Updated!'; setTimeout(() => { btn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh'; btn.disabled = false; }, 2000); };
-  loadRows();
+  document.getElementById('refresh-data-btn')?.addEventListener('click', async () => { const btn = document.getElementById('refresh-data-btn'); btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...'; btn.disabled = true; await loadRows(); btn.innerHTML = '<i class="fas fa-check"></i> Updated!'; setTimeout(() => { btn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh'; btn.disabled = false; }, 2000); });
+  // Search functionality
+  if (searchIcon) {
+    searchIcon.onclick = () => { searchOverlay.style.display = searchOverlay.style.display === 'block' ? 'none' : 'block'; if(searchOverlay.style.display === 'block') searchInput.focus(); };
+  }
+  async function performSearch() { const query = searchInput.value.trim(); if(!query) return; const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`); const movies = await res.json(); searchResultsDiv.innerHTML = ''; if(movies.length===0){ searchResultsDiv.innerHTML='<p>No movies found</p>'; return; } movies.slice(0,12).forEach(m=>{ const card = document.createElement('div'); card.className='movie-card'; card.style.width='150px'; card.innerHTML=`<img class="movie-poster" src="https://image.tmdb.org/t/p/w200${m.poster_path}" style="height:225px;"><div class="movie-info"><div class="movie-title">${m.title}</div><div class="movie-actions"><button class="small-btn watch">▶ Watch</button><button class="small-btn">➕ My List</button></div></div>`; card.querySelector('.watch').onclick = () => playFullMovie(m); card.querySelector('.small-btn:not(.watch)').onclick = () => addToMyList(m.id, {title:m.title, poster_path:m.poster_path, overview:m.overview}); searchResultsDiv.appendChild(card); }); }
+  if (searchBtn) searchBtn.onclick = performSearch;
+  if (searchInput) searchInput.addEventListener('keypress', e => { if(e.key === 'Enter') performSearch(); });
 
-  // Background animation
-  const canvas = document.getElementById('bg-canvas'), ctx = canvas.getContext('2d');
-  let w = window.innerWidth, h = window.innerHeight, particles = [];
-  function resizeCanvas(){ w = window.innerWidth; h = window.innerHeight; canvas.width = w; canvas.height = h; initParticles(); }
-  function initParticles(){ particles = []; for(let i=0;i<70;i++) particles.push({x:Math.random()*w, y:Math.random()*h, vx:(Math.random()-0.5)*0.35, vy:(Math.random()-0.5)*0.35, size:Math.random()*2.5+1, color:`rgba(229,9,20,${Math.random()*0.4+0.2})`}); }
-  function draw(){ ctx.clearRect(0,0,w,h); const grad = ctx.createLinearGradient(Math.sin(Date.now()*0.001)*100,0,w-Math.cos(Date.now()*0.0007)*100,h); grad.addColorStop(0,'#03060c'); grad.addColorStop(0.5,'#121826'); grad.addColorStop(1,'#1a0e12'); ctx.fillStyle=grad; ctx.fillRect(0,0,w,h); particles.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; if(p.x<0) p.x=w; if(p.x>w) p.x=0; if(p.y<0) p.y=h; if(p.y>h) p.y=0; ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fillStyle=p.color; ctx.fill(); }); requestAnimationFrame(draw); }
-  window.addEventListener('resize', resizeCanvas); resizeCanvas(); initParticles(); draw();
+  // Advanced animated background with particles + mouse interaction
+  const canvas = document.getElementById('bg-canvas');
+  let ctx = canvas.getContext('2d');
+  let w = window.innerWidth, h = window.innerHeight;
+  let particles = [];
+  let mouseX = w/2, mouseY = h/2;
+  document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+  class Particle {
+    constructor() {
+      this.x = Math.random() * w;
+      this.y = Math.random() * h;
+      this.vx = (Math.random() - 0.5) * 0.8;
+      this.vy = (Math.random() - 0.5) * 0.8;
+      this.size = Math.random() * 3 + 1;
+      this.color = `hsl(${Math.random() * 20 + 350}, 70%, 55%)`;
+      this.alpha = Math.random() * 0.5 + 0.2;
+    }
+    update() {
+      // Mouse attraction
+      let dx = mouseX - this.x;
+      let dy = mouseY - this.y;
+      let dist = Math.hypot(dx, dy);
+      if (dist < 150) {
+        let angle = Math.atan2(dy, dx);
+        let force = (150 - dist) / 150 * 0.5;
+        this.vx += Math.cos(angle) * force;
+        this.vy += Math.sin(angle) * force;
+      }
+      // damping
+      this.vx *= 0.99;
+      this.vy *= 0.99;
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0) this.x = w;
+      if (this.x > w) this.x = 0;
+      if (this.y < 0) this.y = h;
+      if (this.y > h) this.y = 0;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.globalAlpha = this.alpha;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+  }
+  function initParticles() { particles = []; for (let i = 0; i < 120; i++) particles.push(new Particle()); }
+  function drawConnections() {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        let dx = particles[i].x - particles[j].x;
+        let dy = particles[i].y - particles[j].y;
+        let dist = Math.hypot(dx, dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(229, 9, 20, ${(1 - dist / 120) * 0.3})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+  let time = 0;
+  function animateBg() {
+    ctx.clearRect(0, 0, w, h);
+    time += 0.005;
+    const grad = ctx.createLinearGradient(
+      w/2 + Math.sin(time) * 100, h/2 + Math.cos(time*0.7) * 100,
+      w/2 - Math.sin(time*1.3) * 100, h/2 - Math.cos(time*0.9) * 100
+    );
+    grad.addColorStop(0, '#0a0b1a');
+    grad.addColorStop(0.5, '#1a0f1a');
+    grad.addColorStop(1, '#0a0a22');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+    particles.forEach(p => { p.update(); p.draw(); });
+    drawConnections();
+    requestAnimationFrame(animateBg);
+  }
+  function resizeCanvas() { w = window.innerWidth; h = window.innerHeight; canvas.width = w; canvas.height = h; initParticles(); }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+  initParticles();
+  animateBg();
 </script>
 </body>
 </html>
