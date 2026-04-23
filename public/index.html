@@ -4,11 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Monkius Full Stream — Best Streaming Platform</title>
-  <!-- Firebase SDK (including Storage) -->
+  <!-- Firebase SDK (without Storage – removed avatar upload) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
@@ -80,7 +79,7 @@
       color: #e5e5e5;
     }
     .search-icon:hover { color: #E50914; }
-    /* Profile dropdown with image upload */
+    /* Profile dropdown (without avatar upload) */
     .profile-dropdown {
       position: relative;
       display: inline-block;
@@ -95,15 +94,10 @@
       padding: 6px 12px;
       border-radius: 30px;
       transition: 0.2s;
+      color: white;
     }
     .profile-btn:hover { background: rgba(255,255,255,0.1); }
-    .profile-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #E50914;
-    }
+    .profile-btn i { font-size: 1.4rem; color: #E50914; }
     .dropdown-content {
       display: none;
       position: absolute;
@@ -111,7 +105,7 @@
       right: 0;
       background: rgba(0,0,0,0.95);
       backdrop-filter: blur(10px);
-      min-width: 280px;
+      min-width: 220px;
       border-radius: 8px;
       box-shadow: 0 8px 16px rgba(0,0,0,0.5);
       z-index: 200;
@@ -119,17 +113,6 @@
       padding: 1rem;
     }
     .profile-dropdown:hover .dropdown-content { display: block; }
-    .avatar-upload {
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-    .avatar-upload img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 2px solid #E50914;
-      cursor: pointer;
-    }
     .dropdown-content input {
       width: 100%;
       padding: 8px;
@@ -149,7 +132,7 @@
       cursor: pointer;
       margin-top: 8px;
     }
-    /* Landing Page (clean, no email form) */
+    /* Landing Page (Netflix style with email form) */
     .landing-page {
       display: flex;
       flex-direction: column;
@@ -161,10 +144,10 @@
       justify-content: center;
       text-align: center;
       background: radial-gradient(ellipse at 30% 40%, rgba(0,0,0,0.3), rgba(0,0,0,0.85));
+      padding: 2rem;
     }
     .hero-content-landing {
       max-width: 700px;
-      padding: 2rem;
     }
     .hero-content-landing h1 {
       font-size: 3.2rem;
@@ -173,13 +156,30 @@
     }
     .hero-content-landing p {
       font-size: 1.3rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
-    .signin-btn-large {
+    .email-form {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .email-form input {
+      padding: 1rem;
+      width: 350px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+    }
+    .email-form input::placeholder { color: #ddd; }
+    .email-form button {
       background: #E50914;
       border: none;
-      padding: 0.8rem 2.5rem;
-      font-size: 1.2rem;
+      padding: 1rem 2rem;
+      font-size: 1rem;
       font-weight: 600;
       border-radius: 4px;
       color: white;
@@ -204,7 +204,7 @@
     }
     .toggle-auth { text-align: center; margin-top: 1rem; color: #aaa; cursor: pointer; }
     .toggle-auth span { color: #E50914; }
-    /* Main App (logged in) - Netflix categories */
+    /* Main App (logged in) */
     .app-container { display: none; }
     .hero-app {
       padding: 4rem 4% 6rem;
@@ -325,13 +325,13 @@
       .hero-app h1 { font-size: 2rem; }
       .hero-content-landing h1 { font-size: 2rem; }
       .modal-video { height: 250px; }
+      .email-form input { width: 100%; }
     }
   </style>
 </head>
 <body>
 <canvas id="bg-canvas"></canvas>
 <div class="main-content">
-  <!-- Navbar -->
   <div class="navbar">
     <div class="logo">MONKIUS FULL STREAM</div>
     <div class="nav-links" id="nav-links-auth">
@@ -343,13 +343,16 @@
     </div>
   </div>
 
-  <!-- Landing Page (logged out) - No email form -->
+  <!-- Landing Page (Netflix style with email form) -->
   <div id="landing-page" class="landing-page">
     <div class="hero-landing">
       <div class="hero-content-landing">
         <h1>Unlimited movies, TV shows, and more</h1>
-        <p>Starts at Ksh 200. Cancel anytime.</p>
-        <button class="signin-btn-large" id="landing-signin-btn">Sign In</button>
+        <p>Starts at Ksh 150. Cancel anytime.</p>
+        <div class="email-form">
+          <input type="email" id="landing-email" placeholder="Email address">
+          <button id="get-started-btn">Get Started &nbsp; ></button>
+        </div>
       </div>
     </div>
     <div id="signin-panel" class="signin-panel" style="display: none;">
@@ -398,7 +401,7 @@
 <div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p><button id="fallback-btn" style="background:#333; border:none; padding:8px; margin-top:10px; border-radius:4px; color:white; cursor:pointer;">🔄 Try Alternate Source</button></div></div></div>
 
 <script>
-  // Firebase config
+  // Firebase config (no Storage needed for profile)
   const firebaseConfig = {
     apiKey: "AIzaSyB-9QzBOU6vFST4EvxdhFEIz5QBA1D-XW0",
     authDomain: "monkius-full-stream.firebaseapp.com",
@@ -410,7 +413,6 @@
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
   const db = firebase.firestore();
-  const storage = firebase.storage();
 
   let currentUser = null;
   let featuredMovie = null;
@@ -438,54 +440,26 @@
   const streamDesc = document.getElementById('stream-desc');
   const fallbackBtn = document.getElementById('fallback-btn');
 
-  let currentStreamUrl = null;
-
-  // ----- Profile image upload -----
-  async function uploadProfileImage(file) {
-    if (!currentUser) return;
-    const storageRef = storage.ref().child(`profile_images/${currentUser.uid}`);
-    await storageRef.put(file);
-    const downloadURL = await storageRef.getDownloadURL();
-    await db.collection('users').doc(currentUser.uid).collection('profile').doc('info').set({ photoURL: downloadURL }, { merge: true });
-    updateProfileUI();
-    return downloadURL;
-  }
-
-  // ----- UI Update for Profile -----
+  // ----- Profile UI (no avatar upload, just name + logout) -----
   async function updateProfileUI() {
     if (!currentUser) return;
     const doc = await db.collection('users').doc(currentUser.uid).collection('profile').doc('info').get();
     const data = doc.exists ? doc.data() : {};
     const displayName = data.displayName || currentUser.email.split('@')[0];
-    const photoURL = data.photoURL || 'https://via.placeholder.com/80?text=User';
     authSection.innerHTML = `
       <div class="profile-dropdown">
         <button class="profile-btn">
-          <img src="${photoURL}" class="profile-avatar" id="profile-avatar-img">
+          <i class="fas fa-user-circle"></i>
           <span id="profile-name">${displayName}</span>
           <i class="fas fa-chevron-down"></i>
         </button>
         <div class="dropdown-content">
-          <div class="avatar-upload">
-            <img src="${photoURL}" id="avatar-preview" style="width:80px;height:80px;border-radius:50%;cursor:pointer;">
-            <input type="file" id="avatar-upload-input" accept="image/*" style="display:none;">
-            <button id="upload-avatar-btn">Change Avatar</button>
-          </div>
           <input type="text" id="display-name-input" placeholder="Display Name" value="${displayName}">
           <button id="save-name-btn">Save Name</button>
           <button id="logout-btn" class="secondary">Logout</button>
         </div>
       </div>
     `;
-    // Attach events
-    document.getElementById('upload-avatar-btn')?.addEventListener('click', () => {
-      document.getElementById('avatar-upload-input').click();
-    });
-    document.getElementById('avatar-upload-input')?.addEventListener('change', async (e) => {
-      if (e.target.files[0]) {
-        await uploadProfileImage(e.target.files[0]);
-      }
-    });
     document.getElementById('save-name-btn')?.addEventListener('click', async () => {
       const newName = document.getElementById('display-name-input').value.trim();
       if (newName) {
@@ -497,11 +471,11 @@
     document.getElementById('logout-btn')?.addEventListener('click', () => auth.signOut());
   }
 
-  // ----- Authentication -----
+  // ----- Landing page with email flow -----
   function showLanding() {
     landingPage.style.display = 'block';
     appContainer.style.display = 'none';
-    authSection.innerHTML = '<button class="signin-btn-large" id="navbar-signin" style="padding:0.4rem 1rem; font-size:0.9rem;">Sign In</button>';
+    authSection.innerHTML = '<button class="signin-btn-large" id="navbar-signin" style="padding:0.4rem 1rem; background:#E50914; border:none; border-radius:4px; color:white; cursor:pointer;">Sign In</button>';
     document.getElementById('navbar-signin')?.addEventListener('click', () => {
       document.getElementById('signin-panel').style.display = 'block';
       document.getElementById('signup-panel').style.display = 'none';
@@ -515,7 +489,6 @@
     appContainer.style.display = 'block';
     updateProfileUI();
     loadCategories();
-    loadMyList(); // keep if needed but no UI for it – we'll just track internally
   }
 
   auth.onAuthStateChanged(user => {
@@ -524,11 +497,17 @@
     else showLanding();
   });
 
-  // Landing page auth buttons
-  document.getElementById('landing-signin-btn')?.addEventListener('click', () => {
-    document.getElementById('signin-panel').style.display = 'block';
-    document.getElementById('signup-panel').style.display = 'none';
+  // Landing email button
+  document.getElementById('get-started-btn')?.addEventListener('click', () => {
+    const email = document.getElementById('landing-email').value.trim();
+    if (!email) return;
+    document.getElementById('signup-panel').style.display = 'block';
+    document.getElementById('signin-panel').style.display = 'none';
+    document.getElementById('signup-email').value = email;
+    landingPage.scrollIntoView({ behavior: 'smooth' });
   });
+
+  // Auth panels
   document.getElementById('signin-submit')?.addEventListener('click', () => {
     const email = document.getElementById('signin-email').value;
     const pwd = document.getElementById('signin-password').value;
@@ -550,7 +529,7 @@
     document.getElementById('signin-panel').style.display = 'block';
   });
 
-  // ----- Load landing trending (login required to watch) -----
+  // Load landing trending (teaser)
   async function loadLandingTrending() {
     const res = await fetch('/api/movies/trending');
     const movies = await res.json();
@@ -603,7 +582,6 @@
         rowDiv.appendChild(card);
       });
       categoriesContainer.appendChild(section);
-      // set featured from trending
       if (cat.api === 'trending' && movies[0]) {
         featuredMovie = movies[0];
         featuredTitle.innerText = featuredMovie.title;
@@ -674,7 +652,7 @@
     if (featuredMovie) openTrailer(featuredMovie.id, featuredMovie.title, featuredMovie.overview);
   };
 
-  // Search functionality
+  // Search
   searchIcon.onclick = () => {
     searchOverlay.style.display = searchOverlay.style.display === 'block' ? 'none' : 'block';
     if (searchOverlay.style.display === 'block') searchInput.focus();
@@ -712,12 +690,7 @@
     if (e.target === streamModal) { streamModal.style.display = 'none'; streamIframe.src = ''; }
   };
 
-  // Dummy myList functions (kept for compatibility but no UI)
-  async function loadMyList() {}
-  async function addToMyList(id, data) {}
-  async function removeFromMyList(id) {}
-
-  // Advanced animated background (modern, interactive)
+  // Advanced animated background (mouse-interactive particles)
   const canvas = document.getElementById('bg-canvas');
   let ctx = canvas.getContext('2d');
   let w = window.innerWidth, h = window.innerHeight;
@@ -735,8 +708,7 @@
       this.alpha = Math.random() * 0.4 + 0.1;
     }
     update() {
-      let dx = mouseX - this.x;
-      let dy = mouseY - this.y;
+      let dx = mouseX - this.x, dy = mouseY - this.y;
       let dist = Math.hypot(dx, dy);
       if (dist < 150) {
         let angle = Math.atan2(dy, dx);
@@ -782,10 +754,7 @@
   function animateBg() {
     ctx.clearRect(0, 0, w, h);
     time += 0.003;
-    const grad = ctx.createLinearGradient(
-      w/2 + Math.sin(time) * 80, h/2 + Math.cos(time*0.8) * 80,
-      w/2 - Math.sin(time*1.2) * 80, h/2 - Math.cos(time*0.6) * 80
-    );
+    const grad = ctx.createLinearGradient(w/2 + Math.sin(time)*80, h/2 + Math.cos(time*0.8)*80, w/2 - Math.sin(time*1.2)*80, h/2 - Math.cos(time*0.6)*80);
     grad.addColorStop(0, '#0a0a1a');
     grad.addColorStop(0.5, '#1a0a16');
     grad.addColorStop(1, '#050510');
