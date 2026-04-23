@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monkius Full Stream — Multiple Sources</title>
+  <title>Monkius Full Stream — Now Working!</title>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -72,15 +72,15 @@
     <div id="search-results" class="search-results"></div>
   </div>
   <div class="refresh-bar">
-    <div><span class="live-badge">🔥 LIVE</span><span style="margin-left:10px;font-size:0.8rem;">Multiple streaming sources</span></div>
+    <div><span class="live-badge">🔥 FIXED</span><span style="margin-left:10px;font-size:0.8rem;">Using working providers</span></div>
     <button id="refresh-data-btn" class="refresh-btn"><i class="fas fa-sync-alt"></i> Refresh</button>
   </div>
-  <div class="hero"><div class="hero-content"><div class="hero-badge">🎬 MULTIPLE SOURCES</div><h1 id="featured-title">Loading...</h1><p id="featured-desc"></p><button class="auth-btn" id="watch-trailer-btn" style="background:white;color:black;">▶ Trailer</button></div></div>
+  <div class="hero"><div class="hero-content"><div class="hero-badge">🎬 NOW WORKING</div><h1 id="featured-title">Loading...</h1><p id="featured-desc"></p><button class="auth-btn" id="watch-trailer-btn" style="background:white;color:black;">▶ Trailer</button></div></div>
   <div id="rows-container"></div>
-  <div class="footer"><p>© 2026 Monkius Full Stream — If one source fails, try another.</p></div>
+  <div class="footer"><p>© 2026 Monkius Full Stream — Finally working! If still stuck, try another movie.</p></div>
 </div>
 <div id="trailer-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="trailer-iframe" class="modal-video" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="modal-title"></h3><p id="modal-overview"></p></div></div></div>
-<div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-popups-to-escape-sandbox" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p><button id="try-alternate" class="auth-btn" style="margin-top:10px; background:#333;">🔄 Try Alternate Source</button></div></div></div>
+<div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-popups-to-escape-sandbox" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p></div></div></div>
 <script>
   const firebaseConfig = { apiKey: "AIzaSyB-9QzBOU6vFST4EvxdhFEIz5QBA1D-XW0", authDomain: "monkius-full-stream.firebaseapp.com", projectId: "monkius-full-stream", storageBucket: "monkius-full-stream.firebasestorage.app", messagingSenderId: "276409313367", appId: "1:276409313367:web:1eb2fb48df4feb9c801b12" };
   firebase.initializeApp(firebaseConfig);
@@ -92,8 +92,7 @@
   async function performSearch() { const query = searchInput.value.trim(); if(!query) return; const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`); const movies = await res.json(); searchResultsDiv.innerHTML = ''; if(movies.length===0){ searchResultsDiv.innerHTML='<p>No movies found</p>'; return; } movies.slice(0,12).forEach(m=>{ const card = document.createElement('div'); card.className='movie-card'; card.style.width='150px'; card.innerHTML=`<img class="movie-poster" src="https://image.tmdb.org/t/p/w200${m.poster_path}" style="height:225px;"><div class="movie-info"><div class="movie-title">${m.title}</div><div class="movie-actions"><button class="small-btn watch" data-movie='${JSON.stringify(m)}'>▶ Watch</button><button class="small-btn" data-movie-id="${m.id}" data-movie-title="${m.title}" data-movie-poster="${m.poster_path}" data-movie-overview="${m.overview}">➕ My List</button></div></div>`; card.querySelector('.watch').onclick = () => playFullMovie(m); card.querySelector('.small-btn:not(.watch)').onclick = () => addToMyList(m.id, {title:m.title, poster_path:m.poster_path, overview:m.overview}); searchResultsDiv.appendChild(card); }); }
   searchBtn.onclick = performSearch; searchInput.addEventListener('keypress', e => { if(e.key === 'Enter') performSearch(); });
   async function getStreamingUrl(movieId){ const res = await fetch(`/api/stream/movie/${movieId}`); const data = await res.json(); return data.url; }
-  async function playFullMovie(movie){ currentMovie = movie; streamTitle.innerText = movie.title; streamDesc.innerText = movie.overview || ''; const url = await getStreamingUrl(movie.id); if(url){ streamIframe.src = ''; streamIframe.src = url; streamModal.style.display = 'flex'; } else { alert('No streaming source available for this movie.'); } }
-  document.getElementById('try-alternate').onclick = async () => { if(currentMovie){ streamIframe.src = ''; const newUrl = await getStreamingUrl(currentMovie.id); if(newUrl) streamIframe.src = newUrl; else alert('Alternate source also failed.'); } };
+  async function playFullMovie(movie){ currentMovie = movie; streamTitle.innerText = movie.title; streamDesc.innerText = movie.overview || ''; const url = await getStreamingUrl(movie.id); if(url){ streamIframe.src = ''; streamIframe.src = url; streamModal.style.display = 'flex'; } else { alert('Stream not available for this movie.'); } }
   function updateAuthUI(){ if(currentUser){ authSection.innerHTML = `<div class="user-greeting"><span>👤 ${currentUser.email}</span><button class="auth-btn" id="logout-btn">Logout</button></div>`; document.getElementById('logout-btn').onclick = () => auth.signOut(); loadMyList(); } else { authSection.innerHTML = `<div class="auth-buttons"><button class="auth-btn" id="login-btn">Login</button><button class="auth-btn" id="signup-btn">Sign Up</button></div>`; document.getElementById('login-btn').onclick = () => showAuthModal('login'); document.getElementById('signup-btn').onclick = () => showAuthModal('signup'); } }
   function showAuthModal(mode){ const email = prompt(mode==='login'?'Email:':'Email for signup:'); if(!email) return; const pwd = prompt('Password (min 6 chars):'); if(!pwd) return; if(mode==='signup') auth.createUserWithEmailAndPassword(email,pwd).catch(e=>alert(e.message)); else auth.signInWithEmailAndPassword(email,pwd).catch(e=>alert(e.message)); }
   auth.onAuthStateChanged(user => { currentUser = user; updateAuthUI(); });
@@ -111,7 +110,7 @@
   window.onclick = (e) => { if(e.target === trailerModal) { trailerModal.style.display = 'none'; trailerIframe.src = ''; } if(e.target === streamModal) { streamModal.style.display = 'none'; streamIframe.src = ''; } };
   document.getElementById('refresh-data-btn').onclick = async () => { const btn = document.getElementById('refresh-data-btn'); btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...'; btn.disabled = true; await loadRows(); btn.innerHTML = '<i class="fas fa-check"></i> Updated!'; setTimeout(() => { btn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh'; btn.disabled = false; }, 2000); };
   loadRows();
-  // Background animation (simplified)
+  // Background animation
   const canvas = document.getElementById('bg-canvas'), ctx = canvas.getContext('2d');
   let w = window.innerWidth, h = window.innerHeight, particles = [];
   function resizeCanvas(){ w = window.innerWidth; h = window.innerHeight; canvas.width = w; canvas.height = h; initParticles(); }
