@@ -2,70 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Monkius Full Stream — Best Streaming Platform</title>
-  <!-- Firebase SDK (without Storage – removed avatar upload) -->
-  // Remove annoying overlays and video call notifications from streaming iframe
-  function cleanStreamingAds() {
-    const iframe = document.getElementById("stream-iframe");
-    if (iframe && iframe.contentDocument) {
-      try {
-        const iframeDoc = iframe.contentDocument;
-        const ads = iframeDoc.querySelectorAll(".ad, .notification, .modal, .overlay, [class*="alert"], [class*="call"], [class*="video-call"]");
-        ads.forEach(ad => ad.remove());
-      } catch(e) { /* cross-origin restrictions – cannot access */ }
-    }
-    setTimeout(cleanStreamingAds, 2000);
-  }
-  const originalPlay = playFullMovie;
-  window.playFullMovie = async function(movie) {
-    await originalPlay(movie);
-    setTimeout(cleanStreamingAds, 3000);
-    setTimeout(cleanStreamingAds, 8000);
-  };
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monkius Full Stream</title>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  // Remove annoying overlays and video call notifications from streaming iframe
-  function cleanStreamingAds() {
-    const iframe = document.getElementById("stream-iframe");
-    if (iframe && iframe.contentDocument) {
-      try {
-        const iframeDoc = iframe.contentDocument;
-        const ads = iframeDoc.querySelectorAll(".ad, .notification, .modal, .overlay, [class*="alert"], [class*="call"], [class*="video-call"]");
-        ads.forEach(ad => ad.remove());
-      } catch(e) { /* cross-origin restrictions – cannot access */ }
-    }
-    setTimeout(cleanStreamingAds, 2000);
-  }
-  const originalPlay = playFullMovie;
-  window.playFullMovie = async function(movie) {
-    await originalPlay(movie);
-    setTimeout(cleanStreamingAds, 3000);
-    setTimeout(cleanStreamingAds, 8000);
-  };
-
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  // Remove annoying overlays and video call notifications from streaming iframe
-  function cleanStreamingAds() {
-    const iframe = document.getElementById("stream-iframe");
-    if (iframe && iframe.contentDocument) {
-      try {
-        const iframeDoc = iframe.contentDocument;
-        const ads = iframeDoc.querySelectorAll(".ad, .notification, .modal, .overlay, [class*="alert"], [class*="call"], [class*="video-call"]");
-        ads.forEach(ad => ad.remove());
-      } catch(e) { /* cross-origin restrictions – cannot access */ }
-    }
-    setTimeout(cleanStreamingAds, 2000);
-  }
-  const originalPlay = playFullMovie;
-  window.playFullMovie = async function(movie) {
-    await originalPlay(movie);
-    setTimeout(cleanStreamingAds, 3000);
-    setTimeout(cleanStreamingAds, 8000);
-  };
-
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -75,7 +17,6 @@
       color: white;
       overflow-x: hidden;
     }
-    /* Advanced animated background */
     #bg-canvas {
       position: fixed;
       top: 0;
@@ -88,10 +29,9 @@
     .main-content {
       position: relative;
       z-index: 2;
-      min-height: 100vh;
       background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.9) 100%);
+      min-height: 100vh;
     }
-    /* Netflix-style navbar */
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -111,36 +51,13 @@
       background-clip: text;
       color: transparent;
     }
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      align-items: center;
-    }
-    .nav-links a {
-      color: #e5e5e5;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 0.9rem;
-      transition: 0.2s;
-      cursor: pointer;
-    }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { color: #e5e5e5; text-decoration: none; font-weight: 500; cursor: pointer; }
     .nav-links a:hover, .nav-links a.active { color: #fff; }
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-    .search-icon {
-      font-size: 1.2rem;
-      cursor: pointer;
-      color: #e5e5e5;
-    }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .search-icon { font-size: 1.2rem; cursor: pointer; color: #e5e5e5; }
     .search-icon:hover { color: #E50914; }
-    /* Profile dropdown (without avatar upload) */
-    .profile-dropdown {
-      position: relative;
-      display: inline-block;
-    }
+    .profile-dropdown { position: relative; display: inline-block; }
     .profile-btn {
       background: transparent;
       border: none;
@@ -150,7 +67,6 @@
       gap: 8px;
       padding: 6px 12px;
       border-radius: 30px;
-      transition: 0.2s;
       color: white;
     }
     .profile-btn:hover { background: rgba(255,255,255,0.1); }
@@ -164,10 +80,8 @@
       backdrop-filter: blur(10px);
       min-width: 220px;
       border-radius: 8px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
-      z-index: 200;
-      border: 1px solid #333;
       padding: 1rem;
+      border: 1px solid #333;
     }
     .profile-dropdown:hover .dropdown-content { display: block; }
     .dropdown-content input {
@@ -187,12 +101,6 @@
       border-radius: 4px;
       color: white;
       cursor: pointer;
-      margin-top: 8px;
-    }
-    /* Landing Page (Netflix style with email form) */
-    .landing-page {
-      display: flex;
-      flex-direction: column;
     }
     .hero-landing {
       min-height: 85vh;
@@ -200,21 +108,11 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      background: radial-gradient(ellipse at 30% 40%, rgba(0,0,0,0.3), rgba(0,0,0,0.85));
       padding: 2rem;
     }
-    .hero-content-landing {
-      max-width: 700px;
-    }
-    .hero-content-landing h1 {
-      font-size: 3.2rem;
-      font-weight: 800;
-      margin-bottom: 1rem;
-    }
-    .hero-content-landing p {
-      font-size: 1.3rem;
-      margin-bottom: 1.5rem;
-    }
+    .hero-content-landing { max-width: 700px; }
+    .hero-content-landing h1 { font-size: 3.2rem; margin-bottom: 1rem; }
+    .hero-content-landing p { font-size: 1.3rem; margin-bottom: 1.5rem; }
     .email-form {
       display: flex;
       flex-wrap: wrap;
@@ -225,18 +123,15 @@
     .email-form input {
       padding: 1rem;
       width: 350px;
-      font-size: 1rem;
+      background: rgba(255,255,255,0.2);
       border: none;
       border-radius: 4px;
-      background: rgba(255,255,255,0.2);
       color: white;
     }
-    .email-form input::placeholder { color: #ddd; }
     .email-form button {
       background: #E50914;
       border: none;
       padding: 1rem 2rem;
-      font-size: 1rem;
       font-weight: 600;
       border-radius: 4px;
       color: white;
@@ -249,110 +144,35 @@
       max-width: 450px;
       margin: 2rem auto;
     }
-    .signin-panel h2, .signup-panel h2 { margin-bottom: 1rem; }
-    .signin-panel input, .signup-panel input {
-      width: 100%;
-      padding: 1rem;
-      margin: 0.5rem 0;
-      background: #333;
-      border: none;
-      border-radius: 4px;
-      color: white;
-    }
-    .toggle-auth { text-align: center; margin-top: 1rem; color: #aaa; cursor: pointer; }
-    .toggle-auth span { color: #E50914; }
-    /* Main App (logged in) */
-    .app-container { display: none; }
-    .hero-app {
-      padding: 4rem 4% 6rem;
-      min-height: 70vh;
-      background: linear-gradient(90deg, #03060c 0%, transparent 70%);
-    }
-    .hero-app-content { max-width: 550px; }
-    .hero-badge {
-      background: rgba(229,9,20,0.9);
-      display: inline-block;
-      padding: 0.2rem 1rem;
-      border-radius: 30px;
-      font-size: 0.8rem;
-    }
-    .hero-app h1 { font-size: 3rem; margin: 1rem 0; }
     .category-section {
-      margin: 2.5rem 0 3rem 0;
+      margin: 2.5rem 0;
       padding-left: 4%;
     }
     .category-header {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
       padding-right: 4%;
       margin-bottom: 1rem;
     }
-    .category-header h2 { font-size: 1.5rem; font-weight: 700; }
     .movie-row {
       display: flex;
       gap: 1rem;
       overflow-x: auto;
-      scroll-behavior: smooth;
       padding-bottom: 1rem;
-      scrollbar-width: thin;
     }
-    .movie-row::-webkit-scrollbar { height: 6px; }
-    .movie-row::-webkit-scrollbar-track { background: #222; border-radius: 8px; }
-    .movie-row::-webkit-scrollbar-thumb { background: #E50914; border-radius: 8px; }
     .movie-card {
       flex: 0 0 auto;
       width: 200px;
       border-radius: 8px;
       overflow: hidden;
       background: #111;
-      transition: transform 0.3s, box-shadow 0.3s;
+      transition: transform 0.3s;
       cursor: pointer;
     }
-    .movie-card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-    }
+    .movie-card:hover { transform: scale(1.05); }
     .movie-poster { width: 100%; height: 280px; object-fit: cover; }
     .movie-info { padding: 0.6rem; }
-    .movie-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.3rem; }
-    .movie-year { font-size: 0.7rem; color: #aaa; }
-    .search-overlay {
-      position: fixed;
-      top: 70px;
-      left: 0;
-      width: 100%;
-      background: #0a0a0a;
-      z-index: 200;
-      padding: 1rem;
-      display: none;
-      border-bottom: 2px solid #E50914;
-    }
-    .search-overlay input {
-      width: 80%;
-      padding: 12px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 30px;
-      margin-right: 10px;
-    }
-    .search-overlay button {
-      background: #E50914;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 30px;
-      color: white;
-      cursor: pointer;
-    }
-    .search-results {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-top: 1rem;
-      max-height: 400px;
-      overflow-y: auto;
-      justify-content: center;
-    }
+    .movie-title { font-size: 0.9rem; font-weight: 600; }
     .modal {
       display: none;
       position: fixed;
@@ -373,24 +193,14 @@
       overflow: hidden;
     }
     .modal-video { width: 100%; height: 550px; border: none; }
-    .modal-info { padding: 1.5rem; }
     .close-modal { float: right; font-size: 2rem; cursor: pointer; }
-    .footer { text-align: center; padding: 2rem; color: #8a8a8a; font-size: 0.8rem; }
+    .footer { text-align: center; padding: 2rem; color: #aaa; }
     @media (max-width: 768px) {
       .movie-card { width: 140px; }
       .movie-poster { height: 200px; }
-      .hero-app h1 { font-size: 2rem; }
       .hero-content-landing h1 { font-size: 2rem; }
       .modal-video { height: 250px; }
-      .email-form input { width: 100%; }
     }
-    /* Hide intrusive popups and overlays from streaming providers */
-    iframe[src*="vidsrc"] + div, 
-    iframe[src*="vidsrc"] ~ div, 
-    .overlay, .ad-container, .notification-bubble, .modal-dialog, 
-    div[class*="alert"], div[class*="notification"] { display: none !important; }
-    body > div:not(.modal):not(.main-content) { display: none !important; }
-
   </style>
 </head>
 <body>
@@ -407,8 +217,8 @@
     </div>
   </div>
 
-  <!-- Landing Page (Netflix style with email form) -->
-  <div id="landing-page" class="landing-page">
+  <!-- Landing page -->
+  <div id="landing-page">
     <div class="hero-landing">
       <div class="hero-content-landing">
         <h1>Unlimited movies, TV shows, and more</h1>
@@ -424,48 +234,46 @@
       <input type="email" id="signin-email" placeholder="Email">
       <input type="password" id="signin-password" placeholder="Password">
       <button id="signin-submit">Sign In</button>
-      <div class="toggle-auth" id="toggle-signup">New to Monkius? <span>Sign up now</span>.</div>
+      <div class="toggle-auth" id="toggle-signup">New? <span>Sign up</span></div>
     </div>
     <div id="signup-panel" class="signup-panel" style="display: none;">
       <h2>Sign Up</h2>
       <input type="email" id="signup-email" placeholder="Email">
       <input type="password" id="signup-password" placeholder="Password (min 6 chars)">
       <button id="signup-submit">Create Account</button>
-      <div class="toggle-auth" id="toggle-login">Already have an account? <span>Sign In</span>.</div>
+      <div class="toggle-auth" id="toggle-login">Already have account? <span>Sign In</span></div>
     </div>
-    <!-- Trending teaser row (requires login) -->
     <div class="category-section">
       <div class="category-header"><h2>🔥 Trending Now</h2></div>
       <div class="movie-row" id="landing-trending-row"></div>
     </div>
   </div>
 
-  <!-- Main App (logged in) -->
-  <div id="app-container" class="app-container">
-    <div id="search-overlay" class="search-overlay">
-      <input type="text" id="search-input" placeholder="Search movies...">
-      <button id="search-btn"><i class="fas fa-search"></i> Search</button>
-      <div id="search-results" class="search-results"></div>
+  <!-- App (logged in) -->
+  <div id="app-container" style="display: none;">
+    <div id="search-overlay" style="display:none; position:fixed; top:70px; left:0; width:100%; background:#0a0a0a; padding:1rem; z-index:200;">
+      <input type="text" id="search-input" placeholder="Search movies..." style="width:80%; padding:12px;">
+      <button id="search-btn">Search</button>
+      <div id="search-results"></div>
     </div>
-    <div class="hero-app">
+    <div class="hero-app" style="padding:4rem 4% 6rem;">
       <div class="hero-app-content">
-        <div class="hero-badge">🎬 NOW STREAMING</div>
+        <div class="hero-badge" style="background:#E50914; display:inline-block; padding:0.2rem 1rem; border-radius:30px;">🎬 NOW STREAMING</div>
         <h1 id="featured-title">Loading...</h1>
         <p id="featured-desc"></p>
-        <button class="auth-btn" id="watch-trailer-btn" style="background:white; color:black; border:none; padding:0.5rem 1.5rem; border-radius:4px; font-weight:600; margin-top:1rem;">▶ Watch Trailer</button>
+        <button id="watch-trailer-btn" style="background:white; color:black; border:none; padding:0.5rem 1.5rem; border-radius:4px; margin-top:1rem;">▶ Watch Trailer</button>
       </div>
     </div>
     <div id="categories-container"></div>
-    <div class="footer"><p>© 2026 Monkius Full Stream — The Best Streaming Experience</p></div>
+    <div class="footer"><p>© 2026 Monkius Full Stream</p></div>
   </div>
 </div>
 
 <!-- Modals -->
 <div id="trailer-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="trailer-iframe" class="modal-video" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="modal-title"></h3><p id="modal-overview"></p></div></div></div>
-<div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" allow="autoplay; fullscreen" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-popups-to-escape-sandbox allow-modals" style="background:#000;"></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p><button id="fallback-btn" style="background:#333; border:none; padding:8px; margin-top:10px; border-radius:4px; color:white; cursor:pointer;">🔄 Try Alternate Source</button></div></div></div>
+<div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p><button id="fallback-btn" style="background:#333; padding:8px; margin-top:10px; border-radius:4px; color:white;">🔄 Try Alternate Source</button></div></div></div>
 
 <script>
-  // Firebase config (no Storage needed for profile)
   const firebaseConfig = {
     apiKey: "AIzaSyB-9QzBOU6vFST4EvxdhFEIz5QBA1D-XW0",
     authDomain: "monkius-full-stream.firebaseapp.com",
@@ -480,7 +288,6 @@
 
   let currentUser = null;
   let featuredMovie = null;
-  let currentMovie = null;
   let currentFallbacks = [];
 
   // DOM elements
@@ -504,23 +311,18 @@
   const streamDesc = document.getElementById('stream-desc');
   const fallbackBtn = document.getElementById('fallback-btn');
 
-  // ----- Profile UI (no avatar upload, just name + logout) -----
+  // Profile UI
   async function updateProfileUI() {
     if (!currentUser) return;
     const doc = await db.collection('users').doc(currentUser.uid).collection('profile').doc('info').get();
-    const data = doc.exists ? doc.data() : {};
-    const displayName = data.displayName || currentUser.email.split('@')[0];
+    const displayName = doc.exists ? doc.data().displayName : currentUser.email.split('@')[0];
     authSection.innerHTML = `
       <div class="profile-dropdown">
-        <button class="profile-btn">
-          <i class="fas fa-user-circle"></i>
-          <span id="profile-name">${displayName}</span>
-          <i class="fas fa-chevron-down"></i>
-        </button>
+        <button class="profile-btn"><i class="fas fa-user-circle"></i><span>${displayName}</span><i class="fas fa-chevron-down"></i></button>
         <div class="dropdown-content">
           <input type="text" id="display-name-input" placeholder="Display Name" value="${displayName}">
           <button id="save-name-btn">Save Name</button>
-          <button id="logout-btn" class="secondary">Logout</button>
+          <button id="logout-btn">Logout</button>
         </div>
       </div>
     `;
@@ -528,22 +330,20 @@
       const newName = document.getElementById('display-name-input').value.trim();
       if (newName) {
         await db.collection('users').doc(currentUser.uid).collection('profile').doc('info').set({ displayName: newName }, { merge: true });
-        document.getElementById('profile-name').innerText = newName;
+        document.querySelector('#auth-section .profile-dropdown span').innerText = newName;
         alert('Name updated');
       }
     });
     document.getElementById('logout-btn')?.addEventListener('click', () => auth.signOut());
   }
 
-  // ----- Landing page with email flow -----
   function showLanding() {
     landingPage.style.display = 'block';
     appContainer.style.display = 'none';
-    authSection.innerHTML = '<button class="signin-btn-large" id="navbar-signin" style="padding:0.4rem 1rem; background:#E50914; border:none; border-radius:4px; color:white; cursor:pointer;">Sign In</button>';
+    authSection.innerHTML = '<button id="navbar-signin" style="background:#E50914; border:none; padding:0.4rem 1rem; border-radius:4px; color:white;">Sign In</button>';
     document.getElementById('navbar-signin')?.addEventListener('click', () => {
       document.getElementById('signin-panel').style.display = 'block';
       document.getElementById('signup-panel').style.display = 'none';
-      landingPage.scrollIntoView({ behavior: 'smooth' });
     });
     loadLandingTrending();
   }
@@ -561,17 +361,15 @@
     else showLanding();
   });
 
-  // Landing email button
+  // Auth panels
   document.getElementById('get-started-btn')?.addEventListener('click', () => {
     const email = document.getElementById('landing-email').value.trim();
-    if (!email) return;
-    document.getElementById('signup-panel').style.display = 'block';
-    document.getElementById('signin-panel').style.display = 'none';
-    document.getElementById('signup-email').value = email;
-    landingPage.scrollIntoView({ behavior: 'smooth' });
+    if (email) {
+      document.getElementById('signup-panel').style.display = 'block';
+      document.getElementById('signin-panel').style.display = 'none';
+      document.getElementById('signup-email').value = email;
+    }
   });
-
-  // Auth panels
   document.getElementById('signin-submit')?.addEventListener('click', () => {
     const email = document.getElementById('signin-email').value;
     const pwd = document.getElementById('signin-password').value;
@@ -593,7 +391,6 @@
     document.getElementById('signin-panel').style.display = 'block';
   });
 
-  // Load landing trending (teaser)
   async function loadLandingTrending() {
     const res = await fetch('/api/movies/trending');
     const movies = await res.json();
@@ -602,22 +399,14 @@
     movies.slice(0, 10).forEach(m => {
       const card = document.createElement('div');
       card.className = 'movie-card';
-      card.innerHTML = `
-        <img class="movie-poster" src="https://image.tmdb.org/t/p/w300${m.poster_path}">
-        <div class="movie-info">
-          <div class="movie-title">${m.title}</div>
-          <button class="small-btn" style="background:#E50914; margin-top:5px; padding:4px 8px; border:none; border-radius:4px; color:white;">Sign in to watch</button>
-        </div>
-      `;
+      card.innerHTML = `<img class="movie-poster" src="https://image.tmdb.org/t/p/w300${m.poster_path}"><div class="movie-info"><div class="movie-title">${m.title}</div><button style="background:#E50914; margin-top:5px; padding:4px 8px; border:none; border-radius:4px; color:white;">Sign in to watch</button></div>`;
       card.querySelector('button').onclick = () => {
         document.getElementById('signin-panel').style.display = 'block';
-        document.getElementById('signup-panel').style.display = 'none';
       };
       row.appendChild(card);
     });
   }
 
-  // ----- Main app categories (Netflix style) -----
   const categories = [
     { title: '🔥 Trending Now', api: 'trending' },
     { title: '🏆 Top Rated', api: 'top_rated' },
@@ -627,8 +416,8 @@
     { title: '💖 Romance', api: 'romance' }
   ];
 
-  async function fetchMovies(category) {
-    const res = await fetch(`/api/movies/${category}`);
+  async function fetchMovies(cat) {
+    const res = await fetch(`/api/movies/${cat}`);
     return await res.json();
   }
 
@@ -658,46 +447,35 @@
     const card = document.createElement('div');
     card.className = 'movie-card';
     card.innerHTML = `
-      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}">
       <div class="movie-info">
         <div class="movie-title">${movie.title}</div>
-        <div class="movie-year">${new Date(movie.release_date).getFullYear() || '2024'}</div>
-        <div class="movie-actions" style="display:flex; gap:5px; margin-top:8px;">
-          <button class="small-btn watch" style="background:#E50914;">▶ Watch</button>
-          <button class="small-btn trailer">🎬 Trailer</button>
+        <div style="display:flex; gap:5px; margin-top:8px;">
+          <button class="watch-btn" style="background:#E50914; border:none; padding:4px 8px; border-radius:4px; color:white;">▶ Watch</button>
+          <button class="trailer-btn" style="background:#333; border:none; padding:4px 8px; border-radius:4px; color:white;">🎬 Trailer</button>
         </div>
       </div>
     `;
-    card.querySelector('.watch').onclick = (e) => {
-      e.stopPropagation();
-      playFullMovie(movie);
-    };
-    card.querySelector('.trailer').onclick = (e) => {
-      e.stopPropagation();
-      openTrailer(movie.id, movie.title, movie.overview);
-    };
+    card.querySelector('.watch-btn').onclick = (e) => { e.stopPropagation(); playFullMovie(movie); };
+    card.querySelector('.trailer-btn').onclick = (e) => { e.stopPropagation(); openTrailer(movie.id, movie.title, movie.overview); };
     return card;
   }
 
-  // ----- Streaming with fallback -----
   async function playFullMovie(movie) {
-    currentMovie = movie;
     streamTitle.innerText = movie.title;
     streamDesc.innerText = movie.overview || '';
     const res = await fetch(`/api/stream/${movie.id}`);
     const data = await res.json();
-    currentStreamUrl = data.url;
+    streamIframe.src = data.url;
     currentFallbacks = data.fallbacks || [];
-    streamIframe.src = currentStreamUrl;
     streamModal.style.display = 'flex';
   }
 
   fallbackBtn.onclick = () => {
     if (currentFallbacks.length > 0) {
-      currentStreamUrl = currentFallbacks.shift();
-      streamIframe.src = currentStreamUrl;
+      streamIframe.src = currentFallbacks.shift();
     } else {
-      alert('No more fallback sources.');
+      alert('No alternate source');
     }
   };
 
@@ -716,10 +494,8 @@
     if (featuredMovie) openTrailer(featuredMovie.id, featuredMovie.title, featuredMovie.overview);
   };
 
-  // Search
   searchIcon.onclick = () => {
     searchOverlay.style.display = searchOverlay.style.display === 'block' ? 'none' : 'block';
-    if (searchOverlay.style.display === 'block') searchInput.focus();
   };
   async function performSearch() {
     const query = searchInput.value.trim();
@@ -727,10 +503,7 @@
     const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
     const movies = await res.json();
     searchResultsDiv.innerHTML = '';
-    if (movies.length === 0) {
-      searchResultsDiv.innerHTML = '<p>No movies found</p>';
-      return;
-    }
+    if (movies.length === 0) { searchResultsDiv.innerHTML = '<p>No movies found</p>'; return; }
     movies.slice(0, 12).forEach(m => {
       const card = createMovieCard(m);
       card.style.width = '150px';
@@ -740,7 +513,6 @@
   searchBtn.onclick = performSearch;
   searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
 
-  // Close modals
   document.querySelectorAll('.close-modal').forEach(btn => {
     btn.onclick = () => {
       trailerModal.style.display = 'none';
@@ -754,9 +526,9 @@
     if (e.target === streamModal) { streamModal.style.display = 'none'; streamIframe.src = ''; }
   };
 
-  // Advanced animated background (mouse-interactive particles)
+  // Background animation
   const canvas = document.getElementById('bg-canvas');
-  let ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d');
   let w = window.innerWidth, h = window.innerHeight;
   let particles = [];
   let mouseX = w/2, mouseY = h/2;
@@ -772,8 +544,7 @@
       this.alpha = Math.random() * 0.4 + 0.1;
     }
     update() {
-      let dx = mouseX - this.x, dy = mouseY - this.y;
-      let dist = Math.hypot(dx, dy);
+      let dx = mouseX - this.x, dy = mouseY - this.y, dist = Math.hypot(dx, dy);
       if (dist < 150) {
         let angle = Math.atan2(dy, dx);
         let force = (150 - dist) / 150 * 0.3;
@@ -800,9 +571,7 @@
   function drawConnections() {
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
-        let dx = particles[i].x - particles[j].x;
-        let dy = particles[i].y - particles[j].y;
-        let dist = Math.hypot(dx, dy);
+        let dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y, dist = Math.hypot(dx, dy);
         if (dist < 100) {
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
@@ -833,25 +602,6 @@
   resizeCanvas();
   initParticles();
   animateBg();
-  // Remove annoying overlays and video call notifications from streaming iframe
-  function cleanStreamingAds() {
-    const iframe = document.getElementById("stream-iframe");
-    if (iframe && iframe.contentDocument) {
-      try {
-        const iframeDoc = iframe.contentDocument;
-        const ads = iframeDoc.querySelectorAll(".ad, .notification, .modal, .overlay, [class*="alert"], [class*="call"], [class*="video-call"]");
-        ads.forEach(ad => ad.remove());
-      } catch(e) { /* cross-origin restrictions – cannot access */ }
-    }
-    setTimeout(cleanStreamingAds, 2000);
-  }
-  const originalPlay = playFullMovie;
-  window.playFullMovie = async function(movie) {
-    await originalPlay(movie);
-    setTimeout(cleanStreamingAds, 3000);
-    setTimeout(cleanStreamingAds, 8000);
-  };
-
 </script>
 </body>
 </html>

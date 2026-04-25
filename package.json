@@ -1,7 +1,7 @@
 {
   "name": "monkius-full-stream",
-  "version": "2.0.0",
-  "description": "Full movie streaming with VidSrc (no redirects)",
+  "version": "7.0.0",
+  "description": "Streaming platform",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

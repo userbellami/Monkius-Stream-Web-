@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static('public'));
 app.use(express.json());
 
-// TMDB endpoints (unchanged)
+// TMDB API endpoints
 app.get('/api/movies/:category', async (req, res) => {
   const { category } = req.params;
   const TMDB_API_KEY = process.env.TMDB_API_KEY;
@@ -58,17 +58,10 @@ app.get('/api/movie/:id/trailer', async (req, res) => {
   }
 });
 
-// Cleaner streaming providers (prioritize vidsrc.me which has fewer overlays)
-app.get('/api/stream/:id', async (req, res) => {
+// Streaming provider (clean)
+app.get('/api/stream/:id', (req, res) => {
   const { id } = req.params;
-  const providers = [
-    `https://vidsrc.me/embed/movie/${id}?autoplay=1`,
-    `https://vidsrc.xyz/embed/movie/${id}`,
-    `https://2embed.cc/embed/${id}`,
-    `https://embed.su/embed/movie/${id}`
-  ];
-  // Return the first (cleanest) provider
-  res.json({ url: providers[0], fallbacks: providers.slice(1) });
+  res.json({ url: `https://vidsrc.me/embed/movie/${id}?autoplay=1` });
 });
 
 app.get('*', (req, res) => {
