@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monkius Full Stream</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Monkius Full Stream V6 — Best Streaming Experience</title>
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -17,6 +18,7 @@
       color: white;
       overflow-x: hidden;
     }
+    /* PRO-LEVEL ANIMATED BACKGROUND */
     #bg-canvas {
       position: fixed;
       top: 0;
@@ -32,16 +34,18 @@
       background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.9) 100%);
       min-height: 100vh;
     }
+    /* PREMIUM HEADER */
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 1rem 4%;
-      background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 100%);
-      backdrop-filter: blur(8px);
+      background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 100%);
+      backdrop-filter: blur(12px);
       position: sticky;
       top: 0;
       z-index: 100;
+      border-bottom: 1px solid rgba(229,9,20,0.3);
     }
     .logo {
       font-size: 1.8rem;
@@ -50,14 +54,80 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+      letter-spacing: -0.5px;
     }
     .nav-links { display: flex; gap: 2rem; }
-    .nav-links a { color: #e5e5e5; text-decoration: none; font-weight: 500; cursor: pointer; }
+    .nav-links a {
+      color: #e5e5e5;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: 0.2s;
+      cursor: pointer;
+    }
     .nav-links a:hover, .nav-links a.active { color: #fff; }
-    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
-    .search-icon { font-size: 1.2rem; cursor: pointer; color: #e5e5e5; }
+    /* NETFLIX-STYLE SEARCH ICON + OVERLAY */
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .search-icon {
+      font-size: 1.3rem;
+      cursor: pointer;
+      color: #e5e5e5;
+      transition: 0.2s;
+    }
     .search-icon:hover { color: #E50914; }
-    .profile-dropdown { position: relative; display: inline-block; }
+    .search-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.98);
+      z-index: 1000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(10px);
+    }
+    .search-box {
+      width: 80%;
+      max-width: 800px;
+      position: relative;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.5rem;
+      background: #222;
+      border: none;
+      border-radius: 50px;
+      color: white;
+      text-align: center;
+    }
+    .search-close {
+      position: absolute;
+      top: -50px;
+      right: 0;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+    .search-results-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 2rem;
+      max-height: 60vh;
+      overflow-y: auto;
+      justify-content: center;
+    }
+    /* PROFILE DROPDOWN */
+    .profile-dropdown {
+      position: relative;
+      display: inline-block;
+    }
     .profile-btn {
       background: transparent;
       border: none;
@@ -102,6 +172,7 @@
       color: white;
       cursor: pointer;
     }
+    /* LANDING PAGE (SAME AS BEFORE) */
     .hero-landing {
       min-height: 85vh;
       display: flex;
@@ -118,7 +189,6 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 0.5rem;
-      margin-top: 1rem;
     }
     .email-form input {
       padding: 1rem;
@@ -134,7 +204,6 @@
       padding: 1rem 2rem;
       font-weight: 600;
       border-radius: 4px;
-      color: white;
       cursor: pointer;
     }
     .signin-panel, .signup-panel {
@@ -144,6 +213,7 @@
       max-width: 450px;
       margin: 2rem auto;
     }
+    /* MOVIE ROWS */
     .category-section {
       margin: 2.5rem 0;
       padding-left: 4%;
@@ -154,25 +224,52 @@
       padding-right: 4%;
       margin-bottom: 1rem;
     }
+    .category-header h2 { font-size: 1.5rem; font-weight: 700; }
     .movie-row {
       display: flex;
       gap: 1rem;
       overflow-x: auto;
+      scroll-behavior: smooth;
       padding-bottom: 1rem;
     }
+    .movie-row::-webkit-scrollbar { height: 6px; }
+    .movie-row::-webkit-scrollbar-track { background: #222; border-radius: 8px; }
+    .movie-row::-webkit-scrollbar-thumb { background: #E50914; border-radius: 8px; }
     .movie-card {
       flex: 0 0 auto;
       width: 200px;
       border-radius: 8px;
       overflow: hidden;
       background: #111;
-      transition: transform 0.3s;
+      transition: transform 0.3s, box-shadow 0.3s;
       cursor: pointer;
     }
-    .movie-card:hover { transform: scale(1.05); }
+    .movie-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    }
     .movie-poster { width: 100%; height: 280px; object-fit: cover; }
     .movie-info { padding: 0.6rem; }
     .movie-title { font-size: 0.9rem; font-weight: 600; }
+    .movie-year { font-size: 0.7rem; color: #aaa; margin-top: 0.2rem; }
+    .movie-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .btn-watch, .btn-trailer {
+      flex: 1;
+      background: #E50914;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+    }
+    .btn-trailer { background: #333; }
+    /* MODALS */
     .modal {
       display: none;
       position: fixed;
@@ -192,20 +289,69 @@
       border-radius: 12px;
       overflow: hidden;
     }
-    .modal-video { width: 100%; height: 550px; border: none; }
-    .close-modal { float: right; font-size: 2rem; cursor: pointer; }
-    .footer { text-align: center; padding: 2rem; color: #aaa; }
+    .modal-video { width: 100%; height: 550px; border: none; background: black; }
+    .close-modal {
+      float: right;
+      font-size: 2rem;
+      cursor: pointer;
+      padding: 10px;
+    }
+    /* ADVANCED FOOTER */
+    .footer {
+      background: linear-gradient(90deg, #0a0a0a, #111);
+      margin-top: 3rem;
+      padding: 2rem 4%;
+      border-top: 1px solid #222;
+    }
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    .footer-section h4 {
+      color: #E50914;
+      margin-bottom: 1rem;
+    }
+    .footer-section ul {
+      list-style: none;
+    }
+    .footer-section li {
+      margin: 0.5rem 0;
+      color: #aaa;
+      font-size: 0.85rem;
+    }
+    .social-icons {
+      display: flex;
+      gap: 1rem;
+    }
+    .social-icons i {
+      font-size: 1.3rem;
+      color: #aaa;
+      transition: 0.2s;
+    }
+    .social-icons i:hover { color: #E50914; }
+    .copyright {
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid #222;
+      font-size: 0.75rem;
+      color: #666;
+    }
     @media (max-width: 768px) {
       .movie-card { width: 140px; }
       .movie-poster { height: 200px; }
       .hero-content-landing h1 { font-size: 2rem; }
       .modal-video { height: 250px; }
+      .footer-content { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
 <body>
 <canvas id="bg-canvas"></canvas>
 <div class="main-content">
+  <!-- PREMIUM HEADER -->
   <div class="navbar">
     <div class="logo">MONKIUS FULL STREAM</div>
     <div class="nav-links" id="nav-links-auth">
@@ -217,7 +363,16 @@
     </div>
   </div>
 
-  <!-- Landing page -->
+  <!-- SEARCH OVERLAY (Netflix Style) -->
+  <div id="search-overlay" class="search-overlay">
+    <div class="search-box">
+      <i class="fas fa-times search-close" id="search-close"></i>
+      <input type="text" id="search-input" placeholder="Search for a movie...">
+      <div id="search-results" class="search-results-grid"></div>
+    </div>
+  </div>
+
+  <!-- LANDING PAGE (Logged Out) -->
   <div id="landing-page">
     <div class="hero-landing">
       <div class="hero-content-landing">
@@ -249,31 +404,50 @@
     </div>
   </div>
 
-  <!-- App (logged in) -->
+  <!-- MAIN APP (Logged In) -->
   <div id="app-container" style="display: none;">
-    <div id="search-overlay" style="display:none; position:fixed; top:70px; left:0; width:100%; background:#0a0a0a; padding:1rem; z-index:200;">
-      <input type="text" id="search-input" placeholder="Search movies..." style="width:80%; padding:12px;">
-      <button id="search-btn">Search</button>
-      <div id="search-results"></div>
-    </div>
     <div class="hero-app" style="padding:4rem 4% 6rem;">
       <div class="hero-app-content">
         <div class="hero-badge" style="background:#E50914; display:inline-block; padding:0.2rem 1rem; border-radius:30px;">🎬 NOW STREAMING</div>
-        <h1 id="featured-title">Loading...</h1>
+        <h1 id="featured-title" style="margin:1rem 0;">Loading...</h1>
         <p id="featured-desc"></p>
-        <button id="watch-trailer-btn" style="background:white; color:black; border:none; padding:0.5rem 1.5rem; border-radius:4px; margin-top:1rem;">▶ Watch Trailer</button>
+        <button id="watch-trailer-btn" style="background:white; color:black; border:none; padding:0.5rem 1.5rem; border-radius:4px; margin-top:1rem; font-weight:600;">▶ Watch Trailer</button>
       </div>
     </div>
     <div id="categories-container"></div>
-    <div class="footer"><p>© 2026 Monkius Full Stream</p></div>
+  </div>
+
+  <!-- ADVANCED FOOTER -->
+  <div class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Monkius Full Stream</h4>
+        <ul><li>© 2026 All rights reserved</li><li>Premium Streaming</li></ul>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul><li>Help Center</li><li>Terms of Use</li><li>Privacy</li></ul>
+      </div>
+      <div class="footer-section">
+        <h4>Connect</h4>
+        <div class="social-icons">
+          <i class="fab fa-facebook"></i>
+          <i class="fab fa-twitter"></i>
+          <i class="fab fa-instagram"></i>
+          <i class="fab fa-youtube"></i>
+        </div>
+      </div>
+    </div>
+    <div class="copyright">The best streaming experience — Watch anywhere, anytime.</div>
   </div>
 </div>
 
-<!-- Modals -->
+<!-- MODALS -->
 <div id="trailer-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="trailer-iframe" class="modal-video" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="modal-title"></h3><p id="modal-overview"></p></div></div></div>
 <div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p><button id="fallback-btn" style="background:#333; padding:8px; margin-top:10px; border-radius:4px; color:white;">🔄 Try Alternate Source</button></div></div></div>
 
 <script>
+  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyB-9QzBOU6vFST4EvxdhFEIz5QBA1D-XW0",
     authDomain: "monkius-full-stream.firebaseapp.com",
@@ -301,8 +475,8 @@
   const searchIcon = document.getElementById('search-icon');
   const searchOverlay = document.getElementById('search-overlay');
   const searchInput = document.getElementById('search-input');
-  const searchBtn = document.getElementById('search-btn');
   const searchResultsDiv = document.getElementById('search-results');
+  const searchClose = document.getElementById('search-close');
   const trailerModal = document.getElementById('trailer-modal');
   const streamModal = document.getElementById('stream-modal');
   const trailerIframe = document.getElementById('trailer-iframe');
@@ -311,7 +485,7 @@
   const streamDesc = document.getElementById('stream-desc');
   const fallbackBtn = document.getElementById('fallback-btn');
 
-  // Profile UI
+  // ---------- PROFILE UI ----------
   async function updateProfileUI() {
     if (!currentUser) return;
     const doc = await db.collection('users').doc(currentUser.uid).collection('profile').doc('info').get();
@@ -361,7 +535,7 @@
     else showLanding();
   });
 
-  // Auth panels
+  // ---------- AUTH PANELS ----------
   document.getElementById('get-started-btn')?.addEventListener('click', () => {
     const email = document.getElementById('landing-email').value.trim();
     if (email) {
@@ -391,6 +565,7 @@
     document.getElementById('signin-panel').style.display = 'block';
   });
 
+  // ---------- LANDING TRENDING ----------
   async function loadLandingTrending() {
     const res = await fetch('/api/movies/trending');
     const movies = await res.json();
@@ -399,7 +574,14 @@
     movies.slice(0, 10).forEach(m => {
       const card = document.createElement('div');
       card.className = 'movie-card';
-      card.innerHTML = `<img class="movie-poster" src="https://image.tmdb.org/t/p/w300${m.poster_path}"><div class="movie-info"><div class="movie-title">${m.title}</div><button style="background:#E50914; margin-top:5px; padding:4px 8px; border:none; border-radius:4px; color:white;">Sign in to watch</button></div>`;
+      card.innerHTML = `
+        <img class="movie-poster" src="https://image.tmdb.org/t/p/w300${m.poster_path}">
+        <div class="movie-info">
+          <div class="movie-title">${m.title}</div>
+          <div class="movie-year">${new Date(m.release_date).getFullYear() || 'N/A'}</div>
+          <button class="btn-watch" style="margin-top:8px;">Sign in to watch</button>
+        </div>
+      `;
       card.querySelector('button').onclick = () => {
         document.getElementById('signin-panel').style.display = 'block';
       };
@@ -407,6 +589,7 @@
     });
   }
 
+  // ---------- MAIN CATEGORIES ----------
   const categories = [
     { title: '🔥 Trending Now', api: 'trending' },
     { title: '🏆 Top Rated', api: 'top_rated' },
@@ -446,21 +629,30 @@
   function createMovieCard(movie) {
     const card = document.createElement('div');
     card.className = 'movie-card';
+    const year = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
     card.innerHTML = `
       <img class="movie-poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}">
       <div class="movie-info">
         <div class="movie-title">${movie.title}</div>
-        <div style="display:flex; gap:5px; margin-top:8px;">
-          <button class="watch-btn" style="background:#E50914; border:none; padding:4px 8px; border-radius:4px; color:white;">▶ Watch</button>
-          <button class="trailer-btn" style="background:#333; border:none; padding:4px 8px; border-radius:4px; color:white;">🎬 Trailer</button>
+        <div class="movie-year">${year}</div>
+        <div class="movie-actions">
+          <button class="btn-watch">▶ Watch</button>
+          <button class="btn-trailer">🎬 Trailer</button>
         </div>
       </div>
     `;
-    card.querySelector('.watch-btn').onclick = (e) => { e.stopPropagation(); playFullMovie(movie); };
-    card.querySelector('.trailer-btn').onclick = (e) => { e.stopPropagation(); openTrailer(movie.id, movie.title, movie.overview); };
+    card.querySelector('.btn-watch').onclick = (e) => {
+      e.stopPropagation();
+      playFullMovie(movie);
+    };
+    card.querySelector('.btn-trailer').onclick = (e) => {
+      e.stopPropagation();
+      openTrailer(movie.id, movie.title, movie.overview);
+    };
     return card;
   }
 
+  // ---------- STREAMING (NO POPUPS) ----------
   async function playFullMovie(movie) {
     streamTitle.innerText = movie.title;
     streamDesc.innerText = movie.overview || '';
@@ -487,15 +679,23 @@
       document.getElementById('modal-title').innerText = title;
       document.getElementById('modal-overview').innerText = overview || '';
       trailerModal.style.display = 'flex';
-    } else alert('No trailer');
+    } else {
+      alert('No trailer available');
+    }
   }
 
   watchTrailerBtn.onclick = () => {
     if (featuredMovie) openTrailer(featuredMovie.id, featuredMovie.title, featuredMovie.overview);
   };
 
+  // ---------- NETFLIX-STYLE SEARCH ----------
   searchIcon.onclick = () => {
-    searchOverlay.style.display = searchOverlay.style.display === 'block' ? 'none' : 'block';
+    searchOverlay.style.display = 'flex';
+    searchInput.focus();
+  };
+  searchClose.onclick = () => {
+    searchOverlay.style.display = 'none';
+    searchResultsDiv.innerHTML = '';
   };
   async function performSearch() {
     const query = searchInput.value.trim();
@@ -503,16 +703,19 @@
     const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
     const movies = await res.json();
     searchResultsDiv.innerHTML = '';
-    if (movies.length === 0) { searchResultsDiv.innerHTML = '<p>No movies found</p>'; return; }
+    if (movies.length === 0) {
+      searchResultsDiv.innerHTML = '<p>No movies found</p>';
+      return;
+    }
     movies.slice(0, 12).forEach(m => {
       const card = createMovieCard(m);
       card.style.width = '150px';
       searchResultsDiv.appendChild(card);
     });
   }
-  searchBtn.onclick = performSearch;
   searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
 
+  // ---------- CLOSE MODALS ----------
   document.querySelectorAll('.close-modal').forEach(btn => {
     btn.onclick = () => {
       trailerModal.style.display = 'none';
@@ -522,34 +725,48 @@
     };
   });
   window.onclick = (e) => {
-    if (e.target === trailerModal) { trailerModal.style.display = 'none'; trailerIframe.src = ''; }
-    if (e.target === streamModal) { streamModal.style.display = 'none'; streamIframe.src = ''; }
+    if (e.target === trailerModal) {
+      trailerModal.style.display = 'none';
+      trailerIframe.src = '';
+    }
+    if (e.target === streamModal) {
+      streamModal.style.display = 'none';
+      streamIframe.src = '';
+    }
   };
 
-  // Background animation
+  // ---------- PRO-LEVEL ANIMATED BACKGROUND (3D particles, mouse-reactive, dynamic glow) ----------
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
   let w = window.innerWidth, h = window.innerHeight;
   let particles = [];
   let mouseX = w/2, mouseY = h/2;
   document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+
   class Particle {
     constructor() {
       this.x = Math.random() * w;
       this.y = Math.random() * h;
       this.vx = (Math.random() - 0.5) * 0.6;
       this.vy = (Math.random() - 0.5) * 0.6;
-      this.size = Math.random() * 2.5 + 1;
+      this.size = Math.random() * 3 + 1;
       this.hue = 350 + Math.random() * 20;
-      this.alpha = Math.random() * 0.4 + 0.1;
+      this.alpha = Math.random() * 0.5 + 0.1;
+      this.originalSize = this.size;
     }
     update() {
-      let dx = mouseX - this.x, dy = mouseY - this.y, dist = Math.hypot(dx, dy);
+      // Mouse attraction
+      let dx = mouseX - this.x;
+      let dy = mouseY - this.y;
+      let dist = Math.hypot(dx, dy);
       if (dist < 150) {
         let angle = Math.atan2(dy, dx);
         let force = (150 - dist) / 150 * 0.3;
         this.vx += Math.cos(angle) * force;
         this.vy += Math.sin(angle) * force;
+        this.size = this.originalSize + (150 - dist) / 100;
+      } else {
+        this.size = this.originalSize;
       }
       this.vx *= 0.99;
       this.vy *= 0.99;
@@ -567,29 +784,38 @@
       ctx.fill();
     }
   }
-  function initParticles() { particles = []; for (let i = 0; i < 150; i++) particles.push(new Particle()); }
+
+  function initParticles() {
+    particles = [];
+    for (let i = 0; i < 180; i++) particles.push(new Particle());
+  }
+
   function drawConnections() {
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
-        let dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y, dist = Math.hypot(dx, dy);
+        let dx = particles[i].x - particles[j].x;
+        let dy = particles[i].y - particles[j].y;
+        let dist = Math.hypot(dx, dy);
         if (dist < 100) {
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(229, 9, 20, ${(1 - dist / 100) * 0.2})`;
+          ctx.strokeStyle = `rgba(229, 9, 20, ${(1 - dist / 100) * 0.25})`;
           ctx.lineWidth = 0.6;
           ctx.stroke();
         }
       }
     }
   }
+
   let time = 0;
   function animateBg() {
     ctx.clearRect(0, 0, w, h);
     time += 0.003;
-    const grad = ctx.createLinearGradient(w/2 + Math.sin(time)*80, h/2 + Math.cos(time*0.8)*80, w/2 - Math.sin(time*1.2)*80, h/2 - Math.cos(time*0.6)*80);
+    // Dynamic radial gradient that moves with mouse
+    const grad = ctx.createRadialGradient(mouseX, mouseY, 100, w/2, h/2, 800);
     grad.addColorStop(0, '#0a0a1a');
-    grad.addColorStop(0.5, '#1a0a16');
+    grad.addColorStop(0.4, '#1a0a1e');
     grad.addColorStop(1, '#050510');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, w, h);
@@ -597,7 +823,14 @@
     drawConnections();
     requestAnimationFrame(animateBg);
   }
-  function resizeCanvas() { w = window.innerWidth; h = window.innerHeight; canvas.width = w; canvas.height = h; initParticles(); }
+
+  function resizeCanvas() {
+    w = window.innerWidth;
+    h = window.innerHeight;
+    canvas.width = w;
+    canvas.height = h;
+    initParticles();
+  }
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
   initParticles();
