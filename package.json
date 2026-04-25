@@ -1,7 +1,7 @@
 {
   "name": "monkius-full-stream",
-  "version": "6.0.0",
-  "description": "Premium streaming platform",
+  "version": "7.0.0",
+  "description": "Premium streaming platform with SEO optimization",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

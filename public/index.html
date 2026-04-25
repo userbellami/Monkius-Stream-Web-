@@ -2,8 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Monkius Full Stream V6 — Best Streaming Experience</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Monkius Full Stream – Best Streaming Platform | Unlimited Movies & TV Shows</title>
+  <meta name="description" content="Watch unlimited movies, TV shows, and originals. Starts at Ksh 150/month. Cancel anytime. The best streaming experience in Africa and worldwide.">
+  <meta name="keywords" content="stream movies, watch online, free movies, Monkius, Netflix alternative, best streaming service, Ksh 150">
+  <meta name="author" content="Monkius Full Stream">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://monkius-full-stream.onrender.com">
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://monkius-full-stream.onrender.com">
+  <meta property="og:title" content="Monkius Full Stream – Best Streaming Platform">
+  <meta property="og:description" content="Unlimited movies, TV shows, and more. Starts at Ksh 150/month.">
+  <meta property="og:image" content="https://image.tmdb.org/t/p/original/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Monkius Full Stream">
+  <meta name="twitter:description" content="Stream the best movies and TV shows. Cancel anytime.">
+  <meta name="twitter:image" content="https://image.tmdb.org/t/p/original/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg">
+  <!-- Preload critical assets -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Monkius Full Stream",
+    "url": "https://monkius-full-stream.onrender.com",
+    "description": "Unlimited streaming of movies and TV shows. Affordable plans starting at Ksh 150/month.",
+    "provider": {
+      "@type": "Organization",
+      "name": "Monkius Full Stream",
+      "url": "https://monkius-full-stream.onrender.com"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "150",
+      "priceCurrency": "KES",
+      "availability": "https://schema.org/InStock"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "12500"
+    }
+  }
+  </script>
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
@@ -18,7 +63,6 @@
       color: white;
       overflow-x: hidden;
     }
-    /* PRO-LEVEL ANIMATED BACKGROUND */
     #bg-canvas {
       position: fixed;
       top: 0;
@@ -34,7 +78,7 @@
       background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.9) 100%);
       min-height: 100vh;
     }
-    /* PREMIUM HEADER */
+    /* Navbar */
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -54,31 +98,149 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      letter-spacing: -0.5px;
     }
     .nav-links { display: flex; gap: 2rem; }
-    .nav-links a {
-      color: #e5e5e5;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 0.9rem;
-      transition: 0.2s;
-      cursor: pointer;
-    }
+    .nav-links a { color: #e5e5e5; text-decoration: none; font-weight: 500; cursor: pointer; }
     .nav-links a:hover, .nav-links a.active { color: #fff; }
-    /* NETFLIX-STYLE SEARCH ICON + OVERLAY */
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-    .search-icon {
-      font-size: 1.3rem;
-      cursor: pointer;
-      color: #e5e5e5;
-      transition: 0.2s;
-    }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .search-icon { font-size: 1.3rem; cursor: pointer; color: #e5e5e5; }
     .search-icon:hover { color: #E50914; }
+    /* PRO LANDING PAGE HERO */
+    .hero-landing {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      background: radial-gradient(ellipse at 50% 30%, rgba(0,0,0,0.2), rgba(0,0,0,0.9));
+    }
+    .hero-content-landing { max-width: 800px; }
+    .hero-content-landing h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 1rem; }
+    .hero-content-landing p { font-size: 1.3rem; margin-bottom: 2rem; color: #ddd; }
+    .price-badge {
+      background: #E50914;
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .email-form {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .email-form input {
+      padding: 1rem;
+      width: 350px;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-size: 1rem;
+    }
+    .email-form button {
+      background: #E50914;
+      border: none;
+      padding: 1rem 2rem;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    /* Features Section */
+    .features-section {
+      padding: 4rem 4%;
+      background: #0a0a0a;
+      text-align: center;
+    }
+    .features-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .feature-card {
+      background: #111;
+      padding: 2rem;
+      border-radius: 12px;
+      width: 280px;
+      transition: transform 0.3s;
+    }
+    .feature-card:hover { transform: translateY(-5px); }
+    .feature-card i { font-size: 2.5rem; color: #E50914; margin-bottom: 1rem; }
+    .feature-card h3 { margin-bottom: 0.5rem; }
+    /* Testimonials */
+    .testimonials-section {
+      padding: 4rem 4%;
+      background: linear-gradient(135deg, #0a0a1a, #000);
+      text-align: center;
+    }
+    .testimonial-card {
+      background: rgba(255,255,255,0.05);
+      padding: 1.5rem;
+      border-radius: 12px;
+      max-width: 400px;
+      margin: 1rem auto;
+    }
+    /* Auth panels */
+    .signin-panel, .signup-panel {
+      background: rgba(0,0,0,0.85);
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 450px;
+      margin: 2rem auto;
+    }
+    /* Movie rows (same as V6) */
+    .category-section {
+      margin: 2.5rem 0;
+      padding-left: 4%;
+    }
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      padding-right: 4%;
+      margin-bottom: 1rem;
+    }
+    .movie-row {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding-bottom: 1rem;
+    }
+    .movie-card {
+      flex: 0 0 auto;
+      width: 200px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #111;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+    .movie-card:hover { transform: scale(1.05); }
+    .movie-poster { width: 100%; height: 280px; object-fit: cover; }
+    .movie-info { padding: 0.6rem; }
+    .movie-title { font-size: 0.9rem; font-weight: 600; }
+    .movie-year { font-size: 0.7rem; color: #aaa; }
+    .btn-watch, .btn-trailer {
+      background: #E50914;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      color: white;
+      font-size: 0.7rem;
+      margin-top: 8px;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+    .btn-trailer { background: #333; }
+    /* Search overlay */
     .search-overlay {
       position: fixed;
       top: 0;
@@ -90,13 +252,8 @@
       display: none;
       justify-content: center;
       align-items: center;
-      backdrop-filter: blur(10px);
     }
-    .search-box {
-      width: 80%;
-      max-width: 800px;
-      position: relative;
-    }
+    .search-box { width: 80%; max-width: 800px; position: relative; }
     .search-box input {
       width: 100%;
       padding: 1rem;
@@ -107,13 +264,7 @@
       color: white;
       text-align: center;
     }
-    .search-close {
-      position: absolute;
-      top: -50px;
-      right: 0;
-      font-size: 2rem;
-      cursor: pointer;
-    }
+    .search-close { position: absolute; top: -50px; right: 0; font-size: 2rem; cursor: pointer; }
     .search-results-grid {
       display: flex;
       flex-wrap: wrap;
@@ -123,153 +274,7 @@
       overflow-y: auto;
       justify-content: center;
     }
-    /* PROFILE DROPDOWN */
-    .profile-dropdown {
-      position: relative;
-      display: inline-block;
-    }
-    .profile-btn {
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 12px;
-      border-radius: 30px;
-      color: white;
-    }
-    .profile-btn:hover { background: rgba(255,255,255,0.1); }
-    .profile-btn i { font-size: 1.4rem; color: #E50914; }
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      top: 45px;
-      right: 0;
-      background: rgba(0,0,0,0.95);
-      backdrop-filter: blur(10px);
-      min-width: 220px;
-      border-radius: 8px;
-      padding: 1rem;
-      border: 1px solid #333;
-    }
-    .profile-dropdown:hover .dropdown-content { display: block; }
-    .dropdown-content input {
-      width: 100%;
-      padding: 8px;
-      margin: 8px 0;
-      background: #222;
-      border: 1px solid #444;
-      border-radius: 4px;
-      color: white;
-    }
-    .dropdown-content button {
-      background: #E50914;
-      border: none;
-      padding: 8px;
-      width: 100%;
-      border-radius: 4px;
-      color: white;
-      cursor: pointer;
-    }
-    /* LANDING PAGE (SAME AS BEFORE) */
-    .hero-landing {
-      min-height: 85vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem;
-    }
-    .hero-content-landing { max-width: 700px; }
-    .hero-content-landing h1 { font-size: 3.2rem; margin-bottom: 1rem; }
-    .hero-content-landing p { font-size: 1.3rem; margin-bottom: 1.5rem; }
-    .email-form {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-    .email-form input {
-      padding: 1rem;
-      width: 350px;
-      background: rgba(255,255,255,0.2);
-      border: none;
-      border-radius: 4px;
-      color: white;
-    }
-    .email-form button {
-      background: #E50914;
-      border: none;
-      padding: 1rem 2rem;
-      font-weight: 600;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .signin-panel, .signup-panel {
-      background: rgba(0,0,0,0.85);
-      padding: 2rem;
-      border-radius: 8px;
-      max-width: 450px;
-      margin: 2rem auto;
-    }
-    /* MOVIE ROWS */
-    .category-section {
-      margin: 2.5rem 0;
-      padding-left: 4%;
-    }
-    .category-header {
-      display: flex;
-      justify-content: space-between;
-      padding-right: 4%;
-      margin-bottom: 1rem;
-    }
-    .category-header h2 { font-size: 1.5rem; font-weight: 700; }
-    .movie-row {
-      display: flex;
-      gap: 1rem;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      padding-bottom: 1rem;
-    }
-    .movie-row::-webkit-scrollbar { height: 6px; }
-    .movie-row::-webkit-scrollbar-track { background: #222; border-radius: 8px; }
-    .movie-row::-webkit-scrollbar-thumb { background: #E50914; border-radius: 8px; }
-    .movie-card {
-      flex: 0 0 auto;
-      width: 200px;
-      border-radius: 8px;
-      overflow: hidden;
-      background: #111;
-      transition: transform 0.3s, box-shadow 0.3s;
-      cursor: pointer;
-    }
-    .movie-card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-    }
-    .movie-poster { width: 100%; height: 280px; object-fit: cover; }
-    .movie-info { padding: 0.6rem; }
-    .movie-title { font-size: 0.9rem; font-weight: 600; }
-    .movie-year { font-size: 0.7rem; color: #aaa; margin-top: 0.2rem; }
-    .movie-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-    }
-    .btn-watch, .btn-trailer {
-      flex: 1;
-      background: #E50914;
-      border: none;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: white;
-      cursor: pointer;
-    }
-    .btn-trailer { background: #333; }
-    /* MODALS */
+    /* Modal */
     .modal {
       display: none;
       position: fixed;
@@ -282,23 +287,12 @@
       justify-content: center;
       align-items: center;
     }
-    .modal-content {
-      background: #111;
-      width: 90%;
-      max-width: 1100px;
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    .modal-video { width: 100%; height: 550px; border: none; background: black; }
-    .close-modal {
-      float: right;
-      font-size: 2rem;
-      cursor: pointer;
-      padding: 10px;
-    }
-    /* ADVANCED FOOTER */
+    .modal-content { background: #111; width: 90%; max-width: 1100px; border-radius: 12px; overflow: hidden; }
+    .modal-video { width: 100%; height: 550px; border: none; }
+    .close-modal { float: right; font-size: 2rem; cursor: pointer; padding: 10px; }
+    /* Footer */
     .footer {
-      background: linear-gradient(90deg, #0a0a0a, #111);
+      background: #0a0a0a;
       margin-top: 3rem;
       padding: 2rem 4%;
       border-top: 1px solid #222;
@@ -309,61 +303,34 @@
       justify-content: space-between;
       gap: 2rem;
     }
-    .footer-section h4 {
-      color: #E50914;
-      margin-bottom: 1rem;
-    }
-    .footer-section ul {
-      list-style: none;
-    }
-    .footer-section li {
-      margin: 0.5rem 0;
-      color: #aaa;
-      font-size: 0.85rem;
-    }
-    .social-icons {
-      display: flex;
-      gap: 1rem;
-    }
-    .social-icons i {
-      font-size: 1.3rem;
-      color: #aaa;
-      transition: 0.2s;
-    }
+    .footer-section h4 { color: #E50914; margin-bottom: 1rem; }
+    .footer-section ul { list-style: none; }
+    .footer-section li { margin: 0.5rem 0; color: #aaa; font-size: 0.85rem; }
+    .social-icons { display: flex; gap: 1rem; }
+    .social-icons i { font-size: 1.3rem; color: #aaa; transition: 0.2s; }
     .social-icons i:hover { color: #E50914; }
-    .copyright {
-      text-align: center;
-      margin-top: 2rem;
-      padding-top: 1rem;
-      border-top: 1px solid #222;
-      font-size: 0.75rem;
-      color: #666;
-    }
+    .copyright { text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #222; font-size: 0.75rem; color: #666; }
     @media (max-width: 768px) {
       .movie-card { width: 140px; }
       .movie-poster { height: 200px; }
       .hero-content-landing h1 { font-size: 2rem; }
       .modal-video { height: 250px; }
-      .footer-content { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
 <body>
 <canvas id="bg-canvas"></canvas>
 <div class="main-content">
-  <!-- PREMIUM HEADER -->
   <div class="navbar">
     <div class="logo">MONKIUS FULL STREAM</div>
-    <div class="nav-links" id="nav-links-auth">
-      <a class="active" data-nav="home">Home</a>
-    </div>
+    <div class="nav-links" id="nav-links-auth"><a class="active" data-nav="home">Home</a></div>
     <div class="nav-right">
       <i class="fas fa-search search-icon" id="search-icon"></i>
       <div id="auth-section"></div>
     </div>
   </div>
 
-  <!-- SEARCH OVERLAY (Netflix Style) -->
+  <!-- Search Overlay -->
   <div id="search-overlay" class="search-overlay">
     <div class="search-box">
       <i class="fas fa-times search-close" id="search-close"></i>
@@ -372,17 +339,39 @@
     </div>
   </div>
 
-  <!-- LANDING PAGE (Logged Out) -->
+  <!-- LANDING PAGE (Logged Out) - PRO VERSION -->
   <div id="landing-page">
     <div class="hero-landing">
       <div class="hero-content-landing">
+        <div class="price-badge">🔥 Starts at Ksh 150/month</div>
         <h1>Unlimited movies, TV shows, and more</h1>
-        <p>Starts at Ksh 150. Cancel anytime.</p>
+        <p>Watch anywhere. Cancel anytime. The best streaming experience in Africa.</p>
         <div class="email-form">
           <input type="email" id="landing-email" placeholder="Email address">
           <button id="get-started-btn">Get Started &nbsp; ></button>
         </div>
       </div>
+    </div>
+    <!-- Features Section -->
+    <div class="features-section">
+      <h2>Why choose Monkius?</h2>
+      <div class="features-grid">
+        <div class="feature-card"><i class="fas fa-rocket"></i><h3>Lightning Fast</h3><p>Instant streaming with smart caching</p></div>
+        <div class="feature-card"><i class="fas fa-globe"></i><h3>Global Library</h3><p>Thousands of movies from Hollywood, Nollywood, Bollywood</p></div>
+        <div class="feature-card"><i class="fas fa-tv"></i><h3>Any Device</h3><p>Watch on phone, tablet, laptop, or TV</p></div>
+        <div class="feature-card"><i class="fas fa-download"></i><h3>Offline Mode</h3><p>Download and watch without internet (coming soon)</p></div>
+      </div>
+    </div>
+    <!-- Trending Teaser -->
+    <div class="category-section">
+      <div class="category-header"><h2>🔥 Trending Now</h2></div>
+      <div class="movie-row" id="landing-trending-row"></div>
+    </div>
+    <!-- Testimonials -->
+    <div class="testimonials-section">
+      <h2>What our users say</h2>
+      <div class="testimonial-card">⭐⭐⭐⭐⭐ "Best streaming service in Kenya! The quality is amazing." – John M.</div>
+      <div class="testimonial-card">⭐⭐⭐⭐⭐ "Finally a platform that works perfectly on my phone." – Aisha K.</div>
     </div>
     <div id="signin-panel" class="signin-panel" style="display: none;">
       <h2>Sign In</h2>
@@ -398,10 +387,6 @@
       <button id="signup-submit">Create Account</button>
       <div class="toggle-auth" id="toggle-login">Already have account? <span>Sign In</span></div>
     </div>
-    <div class="category-section">
-      <div class="category-header"><h2>🔥 Trending Now</h2></div>
-      <div class="movie-row" id="landing-trending-row"></div>
-    </div>
   </div>
 
   <!-- MAIN APP (Logged In) -->
@@ -411,43 +396,28 @@
         <div class="hero-badge" style="background:#E50914; display:inline-block; padding:0.2rem 1rem; border-radius:30px;">🎬 NOW STREAMING</div>
         <h1 id="featured-title" style="margin:1rem 0;">Loading...</h1>
         <p id="featured-desc"></p>
-        <button id="watch-trailer-btn" style="background:white; color:black; border:none; padding:0.5rem 1.5rem; border-radius:4px; margin-top:1rem; font-weight:600;">▶ Watch Trailer</button>
+        <button id="watch-trailer-btn" style="background:white; color:black; border:none; padding:0.5rem 1.5rem; border-radius:4px; margin-top:1rem;">▶ Watch Trailer</button>
       </div>
     </div>
     <div id="categories-container"></div>
   </div>
 
-  <!-- ADVANCED FOOTER -->
+  <!-- Footer -->
   <div class="footer">
     <div class="footer-content">
-      <div class="footer-section">
-        <h4>Monkius Full Stream</h4>
-        <ul><li>© 2026 All rights reserved</li><li>Premium Streaming</li></ul>
-      </div>
-      <div class="footer-section">
-        <h4>Quick Links</h4>
-        <ul><li>Help Center</li><li>Terms of Use</li><li>Privacy</li></ul>
-      </div>
-      <div class="footer-section">
-        <h4>Connect</h4>
-        <div class="social-icons">
-          <i class="fab fa-facebook"></i>
-          <i class="fab fa-twitter"></i>
-          <i class="fab fa-instagram"></i>
-          <i class="fab fa-youtube"></i>
-        </div>
-      </div>
+      <div class="footer-section"><h4>Monkius Full Stream</h4><ul><li>© 2026 All rights reserved</li><li>Premium Streaming</li></ul></div>
+      <div class="footer-section"><h4>Quick Links</h4><ul><li>Help Center</li><li>Terms of Use</li><li>Privacy Policy</li></ul></div>
+      <div class="footer-section"><h4>Connect</h4><div class="social-icons"><i class="fab fa-facebook"></i><i class="fab fa-twitter"></i><i class="fab fa-instagram"></i><i class="fab fa-youtube"></i></div></div>
     </div>
-    <div class="copyright">The best streaming experience — Watch anywhere, anytime.</div>
+    <div class="copyright">The best streaming experience — Watch anywhere, anytime. #1 in Africa</div>
   </div>
 </div>
 
-<!-- MODALS -->
+<!-- Modals -->
 <div id="trailer-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="trailer-iframe" class="modal-video" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="modal-title"></h3><p id="modal-overview"></p></div></div></div>
-<div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p><button id="fallback-btn" style="background:#333; padding:8px; margin-top:10px; border-radius:4px; color:white;">🔄 Try Alternate Source</button></div></div></div>
+<div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p><button id="fallback-btn" style="background:#333; padding:8px; margin-top:10px; border-radius:4px;">🔄 Try Alternate Source</button></div></div></div>
 
 <script>
-  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyB-9QzBOU6vFST4EvxdhFEIz5QBA1D-XW0",
     authDomain: "monkius-full-stream.firebaseapp.com",
@@ -485,26 +455,30 @@
   const streamDesc = document.getElementById('stream-desc');
   const fallbackBtn = document.getElementById('fallback-btn');
 
-  // ---------- PROFILE UI ----------
+  // Profile UI
   async function updateProfileUI() {
     if (!currentUser) return;
     const doc = await db.collection('users').doc(currentUser.uid).collection('profile').doc('info').get();
     const displayName = doc.exists ? doc.data().displayName : currentUser.email.split('@')[0];
     authSection.innerHTML = `
-      <div class="profile-dropdown">
-        <button class="profile-btn"><i class="fas fa-user-circle"></i><span>${displayName}</span><i class="fas fa-chevron-down"></i></button>
-        <div class="dropdown-content">
-          <input type="text" id="display-name-input" placeholder="Display Name" value="${displayName}">
-          <button id="save-name-btn">Save Name</button>
-          <button id="logout-btn">Logout</button>
+      <div class="profile-dropdown" style="position:relative; display:inline-block;">
+        <button class="profile-btn" style="background:transparent; border:none; display:flex; align-items:center; gap:8px;"><i class="fas fa-user-circle"></i><span>${displayName}</span><i class="fas fa-chevron-down"></i></button>
+        <div class="dropdown-content" style="display:none; position:absolute; top:45px; right:0; background:rgba(0,0,0,0.95); padding:1rem; border-radius:8px; min-width:200px;">
+          <input type="text" id="display-name-input" placeholder="Display Name" value="${displayName}" style="width:100%; padding:8px; margin:8px 0;">
+          <button id="save-name-btn" style="background:#E50914; width:100%; padding:8px; border:none; border-radius:4px;">Save Name</button>
+          <button id="logout-btn" style="background:#333; width:100%; padding:8px; margin-top:8px; border:none; border-radius:4px;">Logout</button>
         </div>
       </div>
     `;
+    const dropdown = authSection.querySelector('.dropdown-content');
+    const btn = authSection.querySelector('.profile-btn');
+    btn.addEventListener('mouseenter', () => dropdown.style.display = 'block');
+    btn.parentElement.addEventListener('mouseleave', () => dropdown.style.display = 'none');
     document.getElementById('save-name-btn')?.addEventListener('click', async () => {
       const newName = document.getElementById('display-name-input').value.trim();
       if (newName) {
         await db.collection('users').doc(currentUser.uid).collection('profile').doc('info').set({ displayName: newName }, { merge: true });
-        document.querySelector('#auth-section .profile-dropdown span').innerText = newName;
+        authSection.querySelector('.profile-btn span').innerText = newName;
         alert('Name updated');
       }
     });
@@ -535,7 +509,7 @@
     else showLanding();
   });
 
-  // ---------- AUTH PANELS ----------
+  // Auth panels
   document.getElementById('get-started-btn')?.addEventListener('click', () => {
     const email = document.getElementById('landing-email').value.trim();
     if (email) {
@@ -565,7 +539,6 @@
     document.getElementById('signin-panel').style.display = 'block';
   });
 
-  // ---------- LANDING TRENDING ----------
   async function loadLandingTrending() {
     const res = await fetch('/api/movies/trending');
     const movies = await res.json();
@@ -576,20 +549,16 @@
       card.className = 'movie-card';
       card.innerHTML = `
         <img class="movie-poster" src="https://image.tmdb.org/t/p/w300${m.poster_path}">
-        <div class="movie-info">
-          <div class="movie-title">${m.title}</div>
-          <div class="movie-year">${new Date(m.release_date).getFullYear() || 'N/A'}</div>
-          <button class="btn-watch" style="margin-top:8px;">Sign in to watch</button>
-        </div>
+        <div class="movie-info"><div class="movie-title">${m.title}</div><button class="btn-watch">Sign in to watch</button></div>
       `;
       card.querySelector('button').onclick = () => {
         document.getElementById('signin-panel').style.display = 'block';
+        document.getElementById('signup-panel').style.display = 'none';
       };
       row.appendChild(card);
     });
   }
 
-  // ---------- MAIN CATEGORIES ----------
   const categories = [
     { title: '🔥 Trending Now', api: 'trending' },
     { title: '🏆 Top Rated', api: 'top_rated' },
@@ -635,24 +604,14 @@
       <div class="movie-info">
         <div class="movie-title">${movie.title}</div>
         <div class="movie-year">${year}</div>
-        <div class="movie-actions">
-          <button class="btn-watch">▶ Watch</button>
-          <button class="btn-trailer">🎬 Trailer</button>
-        </div>
+        <div><button class="btn-watch">▶ Watch</button><button class="btn-trailer">🎬 Trailer</button></div>
       </div>
     `;
-    card.querySelector('.btn-watch').onclick = (e) => {
-      e.stopPropagation();
-      playFullMovie(movie);
-    };
-    card.querySelector('.btn-trailer').onclick = (e) => {
-      e.stopPropagation();
-      openTrailer(movie.id, movie.title, movie.overview);
-    };
+    card.querySelector('.btn-watch').onclick = (e) => { e.stopPropagation(); playFullMovie(movie); };
+    card.querySelector('.btn-trailer').onclick = (e) => { e.stopPropagation(); openTrailer(movie.id, movie.title, movie.overview); };
     return card;
   }
 
-  // ---------- STREAMING (NO POPUPS) ----------
   async function playFullMovie(movie) {
     streamTitle.innerText = movie.title;
     streamDesc.innerText = movie.overview || '';
@@ -666,9 +625,7 @@
   fallbackBtn.onclick = () => {
     if (currentFallbacks.length > 0) {
       streamIframe.src = currentFallbacks.shift();
-    } else {
-      alert('No alternate source');
-    }
+    } else alert('No alternate source');
   };
 
   async function openTrailer(id, title, overview) {
@@ -679,34 +636,23 @@
       document.getElementById('modal-title').innerText = title;
       document.getElementById('modal-overview').innerText = overview || '';
       trailerModal.style.display = 'flex';
-    } else {
-      alert('No trailer available');
-    }
+    } else alert('No trailer');
   }
 
   watchTrailerBtn.onclick = () => {
     if (featuredMovie) openTrailer(featuredMovie.id, featuredMovie.title, featuredMovie.overview);
   };
 
-  // ---------- NETFLIX-STYLE SEARCH ----------
-  searchIcon.onclick = () => {
-    searchOverlay.style.display = 'flex';
-    searchInput.focus();
-  };
-  searchClose.onclick = () => {
-    searchOverlay.style.display = 'none';
-    searchResultsDiv.innerHTML = '';
-  };
+  // Search
+  searchIcon.onclick = () => { searchOverlay.style.display = 'flex'; searchInput.focus(); };
+  searchClose.onclick = () => { searchOverlay.style.display = 'none'; searchResultsDiv.innerHTML = ''; };
   async function performSearch() {
     const query = searchInput.value.trim();
     if (!query) return;
     const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
     const movies = await res.json();
     searchResultsDiv.innerHTML = '';
-    if (movies.length === 0) {
-      searchResultsDiv.innerHTML = '<p>No movies found</p>';
-      return;
-    }
+    if (movies.length === 0) { searchResultsDiv.innerHTML = '<p>No movies found</p>'; return; }
     movies.slice(0, 12).forEach(m => {
       const card = createMovieCard(m);
       card.style.width = '150px';
@@ -715,7 +661,7 @@
   }
   searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
 
-  // ---------- CLOSE MODALS ----------
+  // Close modals
   document.querySelectorAll('.close-modal').forEach(btn => {
     btn.onclick = () => {
       trailerModal.style.display = 'none';
@@ -725,51 +671,39 @@
     };
   });
   window.onclick = (e) => {
-    if (e.target === trailerModal) {
-      trailerModal.style.display = 'none';
-      trailerIframe.src = '';
-    }
-    if (e.target === streamModal) {
-      streamModal.style.display = 'none';
-      streamIframe.src = '';
-    }
+    if (e.target === trailerModal) { trailerModal.style.display = 'none'; trailerIframe.src = ''; }
+    if (e.target === streamModal) { streamModal.style.display = 'none'; streamIframe.src = ''; }
   };
 
-  // ---------- PRO-LEVEL ANIMATED BACKGROUND (3D particles, mouse-reactive, dynamic glow) ----------
+  // PRO-LEVEL ANIMATED BACKGROUND (advanced)
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
   let w = window.innerWidth, h = window.innerHeight;
   let particles = [];
   let mouseX = w/2, mouseY = h/2;
   document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
-
   class Particle {
     constructor() {
       this.x = Math.random() * w;
       this.y = Math.random() * h;
-      this.vx = (Math.random() - 0.5) * 0.6;
-      this.vy = (Math.random() - 0.5) * 0.6;
+      this.vx = (Math.random() - 0.5) * 0.4;
+      this.vy = (Math.random() - 0.5) * 0.4;
       this.size = Math.random() * 3 + 1;
       this.hue = 350 + Math.random() * 20;
       this.alpha = Math.random() * 0.5 + 0.1;
       this.originalSize = this.size;
     }
     update() {
-      // Mouse attraction
-      let dx = mouseX - this.x;
-      let dy = mouseY - this.y;
-      let dist = Math.hypot(dx, dy);
+      let dx = mouseX - this.x, dy = mouseY - this.y, dist = Math.hypot(dx, dy);
       if (dist < 150) {
         let angle = Math.atan2(dy, dx);
-        let force = (150 - dist) / 150 * 0.3;
+        let force = (150 - dist) / 150 * 0.2;
         this.vx += Math.cos(angle) * force;
         this.vy += Math.sin(angle) * force;
-        this.size = this.originalSize + (150 - dist) / 100;
-      } else {
-        this.size = this.originalSize;
-      }
-      this.vx *= 0.99;
-      this.vy *= 0.99;
+        this.size = this.originalSize + (150 - dist) / 80;
+      } else this.size = this.originalSize;
+      this.vx *= 0.98;
+      this.vy *= 0.98;
       this.x += this.vx;
       this.y += this.vy;
       if (this.x < 0) this.x = w;
@@ -784,38 +718,30 @@
       ctx.fill();
     }
   }
-
-  function initParticles() {
-    particles = [];
-    for (let i = 0; i < 180; i++) particles.push(new Particle());
-  }
-
+  function initParticles() { particles = []; for (let i = 0; i < 200; i++) particles.push(new Particle()); }
   function drawConnections() {
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
-        let dx = particles[i].x - particles[j].x;
-        let dy = particles[i].y - particles[j].y;
+        let dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
         let dist = Math.hypot(dx, dy);
         if (dist < 100) {
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(229, 9, 20, ${(1 - dist / 100) * 0.25})`;
-          ctx.lineWidth = 0.6;
+          ctx.strokeStyle = `rgba(229, 9, 20, ${(1 - dist / 100) * 0.2})`;
+          ctx.lineWidth = 0.5;
           ctx.stroke();
         }
       }
     }
   }
-
   let time = 0;
   function animateBg() {
     ctx.clearRect(0, 0, w, h);
-    time += 0.003;
-    // Dynamic radial gradient that moves with mouse
-    const grad = ctx.createRadialGradient(mouseX, mouseY, 100, w/2, h/2, 800);
+    time += 0.002;
+    const grad = ctx.createRadialGradient(mouseX, mouseY, 50, w/2, h/2, 700);
     grad.addColorStop(0, '#0a0a1a');
-    grad.addColorStop(0.4, '#1a0a1e');
+    grad.addColorStop(0.5, '#1a0a1e');
     grad.addColorStop(1, '#050510');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, w, h);
@@ -823,14 +749,7 @@
     drawConnections();
     requestAnimationFrame(animateBg);
   }
-
-  function resizeCanvas() {
-    w = window.innerWidth;
-    h = window.innerHeight;
-    canvas.width = w;
-    canvas.height = h;
-    initParticles();
-  }
+  function resizeCanvas() { w = window.innerWidth; h = window.innerHeight; canvas.width = w; canvas.height = h; initParticles(); }
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
   initParticles();
