@@ -306,9 +306,25 @@
     .footer-section h4 { color: #E50914; margin-bottom: 1rem; }
     .footer-section ul { list-style: none; }
     .footer-section li { margin: 0.5rem 0; color: #aaa; font-size: 0.85rem; }
-    .social-icons { display: flex; gap: 1rem; }
-    .social-icons i { font-size: 1.3rem; color: #aaa; transition: 0.2s; }
-    .social-icons i:hover { color: #E50914; }
+    .social-icons { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .social-icons a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      color: #aaa;
+      font-size: 1.3rem;
+      transition: 0.3s;
+      text-decoration: none;
+    }
+    .social-icons a:hover {
+      color: #fff;
+      background: #E50914;
+      transform: translateY(-3px);
+    }
     .copyright { text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #222; font-size: 0.75rem; color: #666; }
     @media (max-width: 768px) {
       .movie-card { width: 140px; }
@@ -402,12 +418,19 @@
     <div id="categories-container"></div>
   </div>
 
-  <!-- Footer -->
+  <!-- Footer with social links -->
   <div class="footer">
     <div class="footer-content">
       <div class="footer-section"><h4>Monkius Full Stream</h4><ul><li>© 2026 All rights reserved</li><li>Premium Streaming</li></ul></div>
       <div class="footer-section"><h4>Quick Links</h4><ul><li>Help Center</li><li>Terms of Use</li><li>Privacy Policy</li></ul></div>
-      <div class="footer-section"><h4>Connect</h4><div class="social-icons"><i class="fab fa-facebook"></i><i class="fab fa-twitter"></i><i class="fab fa-instagram"></i><i class="fab fa-youtube"></i></div></div>
+      <div class="footer-section"><h4>Connect With Us</h4>
+        <div class="social-icons">
+          <a href="https://youtube.com/@dreamcasestudio?si=H3IAVrsO20QCQPIP" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="https://www.facebook.com/usermarichacker" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://wa.me/254797618847" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://t.me/2547597618847" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+        </div>
+      </div>
     </div>
     <div class="copyright">The best streaming experience — Watch anywhere, anytime. #1 in Africa</div>
   </div>
