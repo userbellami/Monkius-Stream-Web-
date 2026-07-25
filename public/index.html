@@ -3,27 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Monkius Full Stream – Best Streaming Platform | Unlimited Movies & TV Shows</title>
-  <meta name="description" content="Watch unlimited movies, TV shows, and originals. Starts at Ksh 150/month. Cancel anytime. The best streaming experience in Africa and worldwide.">
-  <meta name="keywords" content="stream movies, watch online, free movies, Monkius, Netflix alternative, best streaming service, Ksh 150">
+  <title>Monkius Full Stream – Best Streaming Platform</title>
+  <meta name="description" content="Watch unlimited movies, TV shows, and originals. Starts at Ksh 150/month.">
+  <meta name="keywords" content="stream movies, watch online, Monkius, best streaming service">
   <meta name="author" content="Monkius Full Stream">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://monkius-full-stream.onrender.com">
-  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://monkius-full-stream.onrender.com">
   <meta property="og:title" content="Monkius Full Stream – Best Streaming Platform">
   <meta property="og:description" content="Unlimited movies, TV shows, and more. Starts at Ksh 150/month.">
   <meta property="og:image" content="https://image.tmdb.org/t/p/original/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg">
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Monkius Full Stream">
   <meta name="twitter:description" content="Stream the best movies and TV shows. Cancel anytime.">
   <meta name="twitter:image" content="https://image.tmdb.org/t/p/original/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg">
-  <!-- Preload critical assets -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -49,7 +45,6 @@
     }
   }
   </script>
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -57,281 +52,69 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #000;
-      color: white;
-      overflow-x: hidden;
-    }
-    #bg-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .main-content {
-      position: relative;
-      z-index: 2;
-      background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.9) 100%);
-      min-height: 100vh;
-    }
-    /* Navbar */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 4%;
-      background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 100%);
-      backdrop-filter: blur(12px);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      border-bottom: 1px solid rgba(229,9,20,0.3);
-    }
-    .logo {
-      font-size: 1.8rem;
-      font-weight: 900;
-      background: linear-gradient(135deg, #E50914, #ff4d4d);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
+    body { font-family: 'Inter', sans-serif; background: #000; color: white; overflow-x: hidden; }
+    #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+    .main-content { position: relative; z-index: 2; background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.9) 100%); min-height: 100vh; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 4%; background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 100%); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(229,9,20,0.3); }
+    .logo { font-size: 1.8rem; font-weight: 900; background: linear-gradient(135deg, #E50914, #ff4d4d); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .nav-links { display: flex; gap: 2rem; }
     .nav-links a { color: #e5e5e5; text-decoration: none; font-weight: 500; cursor: pointer; }
     .nav-links a:hover, .nav-links a.active { color: #fff; }
     .nav-right { display: flex; align-items: center; gap: 1.5rem; }
     .search-icon { font-size: 1.3rem; cursor: pointer; color: #e5e5e5; }
     .search-icon:hover { color: #E50914; }
-    /* PRO LANDING PAGE HERO */
-    .hero-landing {
-      min-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 4rem 2rem;
-      background: radial-gradient(ellipse at 50% 30%, rgba(0,0,0,0.2), rgba(0,0,0,0.9));
-    }
+    .hero-landing { min-height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem 2rem; background: radial-gradient(ellipse at 50% 30%, rgba(0,0,0,0.2), rgba(0,0,0,0.9)); }
     .hero-content-landing { max-width: 800px; }
     .hero-content-landing h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 1rem; }
     .hero-content-landing p { font-size: 1.3rem; margin-bottom: 2rem; color: #ddd; }
-    .price-badge {
-      background: #E50914;
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      border-radius: 50px;
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-    .email-form {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-    .email-form input {
-      padding: 1rem;
-      width: 350px;
-      background: rgba(255,255,255,0.2);
-      border: none;
-      border-radius: 4px;
-      color: white;
-      font-size: 1rem;
-    }
-    .email-form button {
-      background: #E50914;
-      border: none;
-      padding: 1rem 2rem;
-      font-weight: 700;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-    /* Features Section */
-    .features-section {
-      padding: 4rem 4%;
-      background: #0a0a0a;
-      text-align: center;
-    }
-    .features-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-    .feature-card {
-      background: #111;
-      padding: 2rem;
-      border-radius: 12px;
-      width: 280px;
-      transition: transform 0.3s;
-    }
+    .price-badge { background: #E50914; display: inline-block; padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; margin-bottom: 1rem; }
+    .email-form { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 1rem; }
+    .email-form input { padding: 1rem; width: 350px; background: rgba(255,255,255,0.2); border: none; border-radius: 4px; color: white; font-size: 1rem; }
+    .email-form button { background: #E50914; border: none; padding: 1rem 2rem; font-weight: 700; border-radius: 4px; cursor: pointer; font-size: 1rem; }
+    .features-section { padding: 4rem 4%; background: #0a0a0a; text-align: center; }
+    .features-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; margin-top: 2rem; }
+    .feature-card { background: #111; padding: 2rem; border-radius: 12px; width: 280px; transition: transform 0.3s; }
     .feature-card:hover { transform: translateY(-5px); }
     .feature-card i { font-size: 2.5rem; color: #E50914; margin-bottom: 1rem; }
     .feature-card h3 { margin-bottom: 0.5rem; }
-    /* Testimonials */
-    .testimonials-section {
-      padding: 4rem 4%;
-      background: linear-gradient(135deg, #0a0a1a, #000);
-      text-align: center;
-    }
-    .testimonial-card {
-      background: rgba(255,255,255,0.05);
-      padding: 1.5rem;
-      border-radius: 12px;
-      max-width: 400px;
-      margin: 1rem auto;
-    }
-    /* Auth panels */
-    .signin-panel, .signup-panel {
-      background: rgba(0,0,0,0.85);
-      padding: 2rem;
-      border-radius: 8px;
-      max-width: 450px;
-      margin: 2rem auto;
-    }
-    /* Movie rows (same as V6) */
-    .category-section {
-      margin: 2.5rem 0;
-      padding-left: 4%;
-    }
-    .category-header {
-      display: flex;
-      justify-content: space-between;
-      padding-right: 4%;
-      margin-bottom: 1rem;
-    }
-    .movie-row {
-      display: flex;
-      gap: 1rem;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      padding-bottom: 1rem;
-    }
-    .movie-card {
-      flex: 0 0 auto;
-      width: 200px;
-      border-radius: 8px;
-      overflow: hidden;
-      background: #111;
-      transition: transform 0.3s;
-      cursor: pointer;
-    }
-    .movie-card:hover { transform: scale(1.05); }
+    .testimonials-section { padding: 4rem 4%; background: linear-gradient(135deg, #0a0a1a, #000); text-align: center; }
+    .testimonial-card { background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 12px; max-width: 400px; margin: 1rem auto; }
+    .signin-panel, .signup-panel { background: rgba(0,0,0,0.85); padding: 2rem; border-radius: 8px; max-width: 450px; margin: 2rem auto; }
+    .category-section { margin: 2.5rem 0; padding-left: 4%; }
+    .category-header { display: flex; justify-content: space-between; padding-right: 4%; margin-bottom: 1rem; }
+    .category-header h2 { font-size: 1.5rem; font-weight: 700; }
+    .movie-row { display: flex; gap: 1rem; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 1rem; }
+    .movie-row::-webkit-scrollbar { height: 6px; }
+    .movie-row::-webkit-scrollbar-track { background: #222; border-radius: 8px; }
+    .movie-row::-webkit-scrollbar-thumb { background: #E50914; border-radius: 8px; }
+    .movie-card { flex: 0 0 auto; width: 200px; border-radius: 8px; overflow: hidden; background: #111; transition: transform 0.3s; cursor: pointer; }
+    .movie-card:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
     .movie-poster { width: 100%; height: 280px; object-fit: cover; }
     .movie-info { padding: 0.6rem; }
     .movie-title { font-size: 0.9rem; font-weight: 600; }
     .movie-year { font-size: 0.7rem; color: #aaa; }
-    .btn-watch, .btn-trailer {
-      background: #E50914;
-      border: none;
-      padding: 4px 8px;
-      border-radius: 4px;
-      color: white;
-      font-size: 0.7rem;
-      margin-top: 8px;
-      margin-right: 5px;
-      cursor: pointer;
-    }
+    .btn-watch, .btn-trailer { background: #E50914; border: none; padding: 4px 8px; border-radius: 4px; color: white; font-size: 0.7rem; margin-top: 8px; margin-right: 5px; cursor: pointer; }
     .btn-trailer { background: #333; }
-    /* Search overlay */
-    .search-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.98);
-      z-index: 1000;
-      display: none;
-      justify-content: center;
-      align-items: center;
-    }
+    .search-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 1000; display: none; justify-content: center; align-items: center; }
     .search-box { width: 80%; max-width: 800px; position: relative; }
-    .search-box input {
-      width: 100%;
-      padding: 1rem;
-      font-size: 1.5rem;
-      background: #222;
-      border: none;
-      border-radius: 50px;
-      color: white;
-      text-align: center;
-    }
+    .search-box input { width: 100%; padding: 1rem; font-size: 1.5rem; background: #222; border: none; border-radius: 50px; color: white; text-align: center; }
     .search-close { position: absolute; top: -50px; right: 0; font-size: 2rem; cursor: pointer; }
-    .search-results-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-top: 2rem;
-      max-height: 60vh;
-      overflow-y: auto;
-      justify-content: center;
-    }
-    /* Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.95);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-    }
+    .search-results-grid { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; max-height: 60vh; overflow-y: auto; justify-content: center; }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; }
     .modal-content { background: #111; width: 90%; max-width: 1100px; border-radius: 12px; overflow: hidden; }
     .modal-video { width: 100%; height: 550px; border: none; }
     .close-modal { float: right; font-size: 2rem; cursor: pointer; padding: 10px; }
-    /* Footer */
-    .footer {
-      background: #0a0a0a;
-      margin-top: 3rem;
-      padding: 2rem 4%;
-      border-top: 1px solid #222;
-    }
-    .footer-content {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 2rem;
-    }
+    .footer { background: #0a0a0a; margin-top: 3rem; padding: 2rem 4%; border-top: 1px solid #222; }
+    .footer-content { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem; }
     .footer-section h4 { color: #E50914; margin-bottom: 1rem; }
     .footer-section ul { list-style: none; }
-    .footer-section li { margin: 0.5rem 0; color: #aaa; font-size: 0.85rem; }
+    .footer-section li { margin: 0.5rem 0; color: #aaa; font-size: 0.85rem; cursor: pointer; }
+    .footer-section li:hover { color: #fff; }
     .social-icons { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .social-icons a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.05);
-      color: #aaa;
-      font-size: 1.3rem;
-      transition: 0.3s;
-      text-decoration: none;
-    }
-    .social-icons a:hover {
-      color: #fff;
-      background: #E50914;
-      transform: translateY(-3px);
-    }
+    .social-icons a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.05); color: #aaa; font-size: 1.3rem; transition: 0.3s; text-decoration: none; }
+    .social-icons a:hover { color: #fff; background: #E50914; transform: translateY(-3px); }
     .copyright { text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #222; font-size: 0.75rem; color: #666; }
-    @media (max-width: 768px) {
-      .movie-card { width: 140px; }
-      .movie-poster { height: 200px; }
-      .hero-content-landing h1 { font-size: 2rem; }
-      .modal-video { height: 250px; }
-    }
+    @media (max-width: 768px) { .movie-card { width: 140px; } .movie-poster { height: 200px; } .hero-content-landing h1 { font-size: 2rem; } .modal-video { height: 250px; } }
   </style>
 </head>
 <body>
@@ -355,7 +138,7 @@
     </div>
   </div>
 
-  <!-- LANDING PAGE (Logged Out) - PRO VERSION -->
+  <!-- LANDING PAGE -->
   <div id="landing-page">
     <div class="hero-landing">
       <div class="hero-content-landing">
@@ -368,22 +151,19 @@
         </div>
       </div>
     </div>
-    <!-- Features Section -->
     <div class="features-section">
       <h2>Why choose Monkius?</h2>
       <div class="features-grid">
         <div class="feature-card"><i class="fas fa-rocket"></i><h3>Lightning Fast</h3><p>Instant streaming with smart caching</p></div>
         <div class="feature-card"><i class="fas fa-globe"></i><h3>Global Library</h3><p>Thousands of movies from Hollywood, Nollywood, Bollywood</p></div>
         <div class="feature-card"><i class="fas fa-tv"></i><h3>Any Device</h3><p>Watch on phone, tablet, laptop, or TV</p></div>
-        <div class="feature-card"><i class="fas fa-download"></i><h3>Offline Mode</h3><p>Download and watch without internet (coming soon)</p></div>
+        <div class="feature-card"><i class="fas fa-shield-alt"></i><h3>Safe Streaming</h3><p>No popups, no redirects</p></div>
       </div>
     </div>
-    <!-- Trending Teaser -->
     <div class="category-section">
       <div class="category-header"><h2>🔥 Trending Now</h2></div>
       <div class="movie-row" id="landing-trending-row"></div>
     </div>
-    <!-- Testimonials -->
     <div class="testimonials-section">
       <h2>What our users say</h2>
       <div class="testimonial-card">⭐⭐⭐⭐⭐ "Best streaming service in Kenya! The quality is amazing." – John M.</div>
@@ -405,7 +185,7 @@
     </div>
   </div>
 
-  <!-- MAIN APP (Logged In) -->
+  <!-- MAIN APP -->
   <div id="app-container" style="display: none;">
     <div class="hero-app" style="padding:4rem 4% 6rem;">
       <div class="hero-app-content">
@@ -418,17 +198,17 @@
     <div id="categories-container"></div>
   </div>
 
-  <!-- Footer with social links -->
+  <!-- FOOTER -->
   <div class="footer">
     <div class="footer-content">
       <div class="footer-section"><h4>Monkius Full Stream</h4><ul><li>© 2026 All rights reserved</li><li>Premium Streaming</li></ul></div>
-      <div class="footer-section"><h4>Quick Links</h4><ul><li>Help Center</li><li>Terms of Use</li><li>Privacy Policy</li></ul></div>
+      <div class="footer-section"><h4>Quick Links</h4><ul><li id="link-help">Help Center</li><li id="link-terms">Terms of Use</li><li id="link-privacy">Privacy Policy</li></ul></div>
       <div class="footer-section"><h4>Connect With Us</h4>
         <div class="social-icons">
-          <a href="https://youtube.com/@dreamcasestudio?si=H3IAVrsO20QCQPIP" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-          <a href="https://www.facebook.com/usermarichacker" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://wa.me/254797618847" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-          <a href="https://t.me/2547597618847" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+          <a href="https://youtube.com/@dreamcasestudio?si=H3IAVrsO20QCQPIP" target="_blank"><i class="fab fa-youtube"></i></a>
+          <a href="https://www.facebook.com/usermarichacker" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://wa.me/254797618847" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://t.me/2547597618847" target="_blank"><i class="fab fa-telegram-plane"></i></a>
         </div>
       </div>
     </div>
@@ -436,7 +216,7 @@
   </div>
 </div>
 
-<!-- Modals -->
+<!-- MODALS -->
 <div id="trailer-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="trailer-iframe" class="modal-video" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="modal-title"></h3><p id="modal-overview"></p></div></div></div>
 <div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p><button id="fallback-btn" style="background:#333; padding:8px; margin-top:10px; border-radius:4px;">🔄 Try Alternate Source</button></div></div></div>
 
@@ -666,7 +446,6 @@
     if (featuredMovie) openTrailer(featuredMovie.id, featuredMovie.title, featuredMovie.overview);
   };
 
-  // Search
   searchIcon.onclick = () => { searchOverlay.style.display = 'flex'; searchInput.focus(); };
   searchClose.onclick = () => { searchOverlay.style.display = 'none'; searchResultsDiv.innerHTML = ''; };
   async function performSearch() {
@@ -684,7 +463,6 @@
   }
   searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
 
-  // Close modals
   document.querySelectorAll('.close-modal').forEach(btn => {
     btn.onclick = () => {
       trailerModal.style.display = 'none';
@@ -698,7 +476,75 @@
     if (e.target === streamModal) { streamModal.style.display = 'none'; streamIframe.src = ''; }
   };
 
-  // PRO-LEVEL ANIMATED BACKGROUND (advanced)
+  // Quick Links
+  document.getElementById('link-help')?.addEventListener('click', () => alert('Help Center\n\nHow to stream?\nAccount issues?\nContact: support@monkius.com'));
+  document.getElementById('link-terms')?.addEventListener('click', () => alert('Terms of Use\n\n1. Must be 18+\n2. Personal use only\n3. No redistribution'));
+  document.getElementById('link-privacy')?.addEventListener('click', () => alert('Privacy Policy\n\nWe collect email and watch history.\nNo third-party sharing.'));
+
+  document.querySelectorAll('[data-nav]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      document.querySelectorAll('[data-nav]').forEach(l => l.classList.remove('active'));
+      e.target.classList.add('active');
+    });
+  });
+
+  loadCategories();
+
+  // ======= POPUP BLOCKER (Fix close button redirects) =======
+  // Intercept close button clicks
+  document.addEventListener('click', function(e) {
+    const target = e.target;
+    const isCloseBtn = target.matches('.close, .close-btn, .modal-close, .popup-close, [class*="close"], [id*="close"], .fa-times, .fa-xmark');
+    if (isCloseBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      const popup = target.closest('.modal, .overlay, .popup, .ad-container, .notification, [class*="modal"], [class*="overlay"], [class*="popup"]');
+      if (popup) {
+        popup.style.display = 'none';
+        popup.style.pointerEvents = 'none';
+        popup.querySelectorAll('iframe').forEach(iframe => iframe.src = '');
+      }
+      return false;
+    }
+  }, true);
+
+  // Block window.open
+  window.open = function(url) {
+    console.log('Blocked popup:', url);
+    return null;
+  };
+
+  // Prevent redirects
+  window.addEventListener('beforeunload', function(e) {
+    const iframe = document.getElementById('stream-iframe');
+    if (iframe && iframe.src && iframe.src.includes('embed')) {
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  });
+
+  // Remove new popups automatically
+  const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      mutation.addedNodes.forEach(function(node) {
+        if (node.nodeType === 1) {
+          const classes = node.className || '';
+          const id = node.id || '';
+          if (classes.includes('modal') || classes.includes('overlay') || classes.includes('popup') || 
+              classes.includes('ad') || classes.includes('notification') || 
+              id.includes('modal') || id.includes('overlay') || id.includes('popup')) {
+            node.style.display = 'none';
+            node.style.pointerEvents = 'none';
+            node.querySelectorAll('iframe').forEach(iframe => iframe.src = '');
+          }
+        }
+      });
+    });
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+  console.log('✅ Popup blocker active');
+
+  // Background animation
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
   let w = window.innerWidth, h = window.innerHeight;
@@ -709,50 +555,56 @@
     constructor() {
       this.x = Math.random() * w;
       this.y = Math.random() * h;
-      this.vx = (Math.random() - 0.5) * 0.4;
-      this.vy = (Math.random() - 0.5) * 0.4;
-      this.size = Math.random() * 3 + 1;
-      this.hue = 350 + Math.random() * 20;
-      this.alpha = Math.random() * 0.5 + 0.1;
+      this.vx = (Math.random() - 0.5) * 0.3;
+      this.vy = (Math.random() - 0.5) * 0.3;
+      this.size = Math.random() * 4 + 1;
+      this.hue = 340 + Math.random() * 30;
+      this.alpha = Math.random() * 0.4 + 0.1;
       this.originalSize = this.size;
+      this.glow = Math.random() * 20 + 10;
     }
     update() {
       let dx = mouseX - this.x, dy = mouseY - this.y, dist = Math.hypot(dx, dy);
       if (dist < 150) {
         let angle = Math.atan2(dy, dx);
-        let force = (150 - dist) / 150 * 0.2;
+        let force = (150 - dist) / 150 * 0.15;
         this.vx += Math.cos(angle) * force;
         this.vy += Math.sin(angle) * force;
-        this.size = this.originalSize + (150 - dist) / 80;
-      } else this.size = this.originalSize;
+        this.size = this.originalSize + (150 - dist) / 60;
+      } else {
+        this.size += (this.originalSize - this.size) * 0.02;
+      }
       this.vx *= 0.98;
       this.vy *= 0.98;
       this.x += this.vx;
       this.y += this.vy;
-      if (this.x < 0) this.x = w;
-      if (this.x > w) this.x = 0;
-      if (this.y < 0) this.y = h;
-      if (this.y > h) this.y = 0;
+      if (this.x < -10) this.x = w + 10;
+      if (this.x > w + 10) this.x = -10;
+      if (this.y < -10) this.y = h + 10;
+      if (this.y > h + 10) this.y = -10;
     }
     draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fillStyle = `hsla(${this.hue}, 80%, 55%, ${this.alpha})`;
+      ctx.fillStyle = `hsla(${this.hue}, 80%, 60%, ${this.alpha})`;
+      ctx.shadowColor = `hsla(${this.hue}, 80%, 60%, ${this.alpha * 0.5})`;
+      ctx.shadowBlur = this.glow;
       ctx.fill();
+      ctx.shadowBlur = 0;
     }
   }
-  function initParticles() { particles = []; for (let i = 0; i < 200; i++) particles.push(new Particle()); }
+  function initParticles() { particles = []; for (let i = 0; i < 180; i++) particles.push(new Particle()); }
   function drawConnections() {
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         let dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
         let dist = Math.hypot(dx, dy);
-        if (dist < 100) {
+        if (dist < 120) {
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(229, 9, 20, ${(1 - dist / 100) * 0.2})`;
-          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = `rgba(229, 9, 20, ${(1 - dist / 120) * 0.15})`;
+          ctx.lineWidth = 0.6;
           ctx.stroke();
         }
       }
@@ -762,9 +614,9 @@
   function animateBg() {
     ctx.clearRect(0, 0, w, h);
     time += 0.002;
-    const grad = ctx.createRadialGradient(mouseX, mouseY, 50, w/2, h/2, 700);
-    grad.addColorStop(0, '#0a0a1a');
-    grad.addColorStop(0.5, '#1a0a1e');
+    const grad = ctx.createRadialGradient(mouseX, mouseY, 100, w/2, h/2, 800);
+    grad.addColorStop(0, '#120a1a');
+    grad.addColorStop(0.5, '#0a0a1e');
     grad.addColorStop(1, '#050510');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, w, h);

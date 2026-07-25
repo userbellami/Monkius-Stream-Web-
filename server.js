@@ -57,11 +57,14 @@ app.get('/api/movie/:id/trailer', async (req, res) => {
   }
 });
 
-// Use embed.su – known for fewer popups
 app.get('/api/stream/:id', (req, res) => {
   const { id } = req.params;
-  const url = `https://embed.su/embed/movie/${id}`;
-  res.json({ url: url, fallbacks: [] });
+  const providers = [
+    `https://vidsrc.me/embed/movie/${id}?autoplay=1`,
+    `https://2embed.cc/embed/${id}`,
+    `https://embed.su/embed/movie/${id}`
+  ];
+  res.json({ url: providers[0], fallbacks: providers.slice(1) });
 });
 
 app.get('/robots.txt', (req, res) => {
@@ -105,11 +108,6 @@ app.get('/sitemap.xml', async (req, res) => {
 
 app.get('/movie/:id', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-app.get('/sw.js', (req, res) => {
-  res.type('application/javascript');
-  res.sendFile(path.join(__dirname, 'public', 'sw.js'));
 });
 
 app.get('*', (req, res) => {
