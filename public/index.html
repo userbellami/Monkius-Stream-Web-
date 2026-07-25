@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Monkius Full Stream – Best Streaming Platform</title>
+  <title>Monkius Full Stream – Netflix Style</title>
   <meta name="description" content="Watch unlimited movies, TV shows, and originals. Starts at Ksh 150/month.">
   <meta name="keywords" content="stream movies, watch online, Monkius, best streaming service">
   <meta name="author" content="Monkius Full Stream">
@@ -11,7 +11,7 @@
   <link rel="canonical" href="https://monkius-full-stream.onrender.com">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://monkius-full-stream.onrender.com">
-  <meta property="og:title" content="Monkius Full Stream – Best Streaming Platform">
+  <meta property="og:title" content="Monkius Full Stream – Netflix Style">
   <meta property="og:description" content="Unlimited movies, TV shows, and more. Starts at Ksh 150/month.">
   <meta property="og:image" content="https://image.tmdb.org/t/p/original/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg">
   <meta name="twitter:card" content="summary_large_image">
@@ -53,73 +53,386 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Inter', sans-serif; background: #000; color: white; overflow-x: hidden; }
-    #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
-    .main-content { position: relative; z-index: 2; background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.9) 100%); min-height: 100vh; }
-    .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 4%; background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 100%); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(229,9,20,0.3); }
-    .logo { font-size: 1.8rem; font-weight: 900; background: linear-gradient(135deg, #E50914, #ff4d4d); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    
+    /* ======= ANIMATED BACKGROUND ======= */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      transition: opacity 1.5s ease;
+    }
+    .bg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      background: rgba(0,0,0,0.5);
+      pointer-events: none;
+    }
+    .main-content {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+    }
+    
+    /* ======= NETFLIX-STYLE NAVBAR ======= */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 4%;
+      background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 100%);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #E50914, #ff4d4d);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+    }
     .nav-links { display: flex; gap: 2rem; }
-    .nav-links a { color: #e5e5e5; text-decoration: none; font-weight: 500; cursor: pointer; }
+    .nav-links a { color: #e5e5e5; text-decoration: none; font-weight: 500; font-size: 0.9rem; cursor: pointer; }
     .nav-links a:hover, .nav-links a.active { color: #fff; }
     .nav-right { display: flex; align-items: center; gap: 1.5rem; }
-    .search-icon { font-size: 1.3rem; cursor: pointer; color: #e5e5e5; }
+    .search-icon { font-size: 1.2rem; cursor: pointer; color: #e5e5e5; }
     .search-icon:hover { color: #E50914; }
-    .hero-landing { min-height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem 2rem; background: radial-gradient(ellipse at 50% 30%, rgba(0,0,0,0.2), rgba(0,0,0,0.9)); }
-    .hero-content-landing { max-width: 800px; }
-    .hero-content-landing h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 1rem; }
-    .hero-content-landing p { font-size: 1.3rem; margin-bottom: 2rem; color: #ddd; }
-    .price-badge { background: #E50914; display: inline-block; padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; margin-bottom: 1rem; }
-    .email-form { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 1rem; }
-    .email-form input { padding: 1rem; width: 350px; background: rgba(255,255,255,0.2); border: none; border-radius: 4px; color: white; font-size: 1rem; }
-    .email-form button { background: #E50914; border: none; padding: 1rem 2rem; font-weight: 700; border-radius: 4px; cursor: pointer; font-size: 1rem; }
-    .features-section { padding: 4rem 4%; background: #0a0a0a; text-align: center; }
-    .features-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; margin-top: 2rem; }
-    .feature-card { background: #111; padding: 2rem; border-radius: 12px; width: 280px; transition: transform 0.3s; }
-    .feature-card:hover { transform: translateY(-5px); }
-    .feature-card i { font-size: 2.5rem; color: #E50914; margin-bottom: 1rem; }
-    .feature-card h3 { margin-bottom: 0.5rem; }
-    .testimonials-section { padding: 4rem 4%; background: linear-gradient(135deg, #0a0a1a, #000); text-align: center; }
-    .testimonial-card { background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 12px; max-width: 400px; margin: 1rem auto; }
-    .signin-panel, .signup-panel { background: rgba(0,0,0,0.85); padding: 2rem; border-radius: 8px; max-width: 450px; margin: 2rem auto; }
-    .category-section { margin: 2.5rem 0; padding-left: 4%; }
-    .category-header { display: flex; justify-content: space-between; padding-right: 4%; margin-bottom: 1rem; }
+    
+    /* ======= NETFLIX-STYLE HERO ======= */
+    .hero-landing {
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      background: radial-gradient(ellipse at 50% 40%, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%);
+    }
+    .hero-content-landing { max-width: 700px; }
+    .hero-content-landing h1 {
+      font-size: 3.8rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+    }
+    .hero-content-landing .subtitle {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: #ddd;
+    }
+    .hero-content-landing .price-text {
+      font-size: 1.1rem;
+      color: #aaa;
+      margin-bottom: 2rem;
+    }
+    .email-form {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .email-form input {
+      padding: 1rem 1.2rem;
+      width: 380px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 4px;
+      color: white;
+      font-size: 1rem;
+    }
+    .email-form input::placeholder { color: #bbb; }
+    .email-form button {
+      background: #E50914;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .email-form button:hover { background: #b20710; }
+    
+    /* ======= FEATURES (Netflix Style) ======= */
+    .features-section {
+      padding: 3rem 4%;
+      background: #0a0a0a;
+      text-align: center;
+      border-top: 8px solid #222;
+    }
+    .features-section h2 { font-size: 2.2rem; margin-bottom: 1.5rem; }
+    .features-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+    .feature-card {
+      background: #111;
+      padding: 2rem;
+      border-radius: 12px;
+      width: 280px;
+      transition: transform 0.3s;
+      border: 1px solid #222;
+    }
+    .feature-card:hover { transform: translateY(-5px); border-color: #E50914; }
+    .feature-card i { font-size: 2.8rem; color: #E50914; margin-bottom: 1rem; }
+    .feature-card h3 { margin-bottom: 0.5rem; font-size: 1.2rem; }
+    .feature-card p { color: #aaa; font-size: 0.9rem; }
+    
+    /* ======= MOVIE ROWS ======= */
+    .category-section {
+      margin: 2.5rem 0;
+      padding-left: 4%;
+    }
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-right: 4%;
+      margin-bottom: 1rem;
+    }
     .category-header h2 { font-size: 1.5rem; font-weight: 700; }
-    .movie-row { display: flex; gap: 1rem; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 1rem; }
+    .movie-row {
+      display: flex;
+      gap: 0.8rem;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding-bottom: 1rem;
+    }
     .movie-row::-webkit-scrollbar { height: 6px; }
-    .movie-row::-webkit-scrollbar-track { background: #222; border-radius: 8px; }
+    .movie-row::-webkit-scrollbar-track { background: #1a1a1a; border-radius: 8px; }
     .movie-row::-webkit-scrollbar-thumb { background: #E50914; border-radius: 8px; }
-    .movie-card { flex: 0 0 auto; width: 200px; border-radius: 8px; overflow: hidden; background: #111; transition: transform 0.3s; cursor: pointer; }
-    .movie-card:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+    .movie-card {
+      flex: 0 0 auto;
+      width: 200px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #111;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+    .movie-card:hover { transform: scale(1.05); }
     .movie-poster { width: 100%; height: 280px; object-fit: cover; }
     .movie-info { padding: 0.6rem; }
     .movie-title { font-size: 0.9rem; font-weight: 600; }
-    .movie-year { font-size: 0.7rem; color: #aaa; }
-    .btn-watch, .btn-trailer { background: #E50914; border: none; padding: 4px 8px; border-radius: 4px; color: white; font-size: 0.7rem; margin-top: 8px; margin-right: 5px; cursor: pointer; }
+    .movie-year { font-size: 0.7rem; color: #aaa; margin-top: 0.2rem; }
+    .btn-watch, .btn-trailer {
+      background: #E50914;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 4px;
+      color: white;
+      font-size: 0.7rem;
+      margin-top: 8px;
+      margin-right: 5px;
+      cursor: pointer;
+    }
     .btn-trailer { background: #333; }
-    .search-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 1000; display: none; justify-content: center; align-items: center; }
-    .search-box { width: 80%; max-width: 800px; position: relative; }
-    .search-box input { width: 100%; padding: 1rem; font-size: 1.5rem; background: #222; border: none; border-radius: 50px; color: white; text-align: center; }
-    .search-close { position: absolute; top: -50px; right: 0; font-size: 2rem; cursor: pointer; }
-    .search-results-grid { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; max-height: 60vh; overflow-y: auto; justify-content: center; }
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; }
+    .btn-watch:hover { background: #b20710; }
+    .btn-trailer:hover { background: #444; }
+    
+    /* ======= AUTH PANELS ======= */
+    .signin-panel, .signup-panel {
+      background: rgba(0,0,0,0.92);
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 450px;
+      margin: 2rem auto;
+    }
+    .signin-panel input, .signup-panel input {
+      width: 100%;
+      padding: 1rem;
+      margin: 0.5rem 0;
+      background: #333;
+      border: none;
+      border-radius: 4px;
+      color: white;
+    }
+    .signin-panel button, .signup-panel button {
+      width: 100%;
+      padding: 1rem;
+      background: #E50914;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .toggle-auth { text-align: center; margin-top: 1rem; color: #aaa; cursor: pointer; }
+    .toggle-auth span { color: #E50914; }
+    
+    /* ======= MODALS ======= */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
     .modal-content { background: #111; width: 90%; max-width: 1100px; border-radius: 12px; overflow: hidden; }
     .modal-video { width: 100%; height: 550px; border: none; }
     .close-modal { float: right; font-size: 2rem; cursor: pointer; padding: 10px; }
-    .footer { background: #0a0a0a; margin-top: 3rem; padding: 2rem 4%; border-top: 1px solid #222; }
-    .footer-content { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem; }
+    .modal-info { padding: 1.5rem; }
+    
+    /* ======= SEARCH OVERLAY ======= */
+    .search-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.97);
+      z-index: 1000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+    .search-box { width: 80%; max-width: 800px; position: relative; }
+    .search-box input {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.5rem;
+      background: #222;
+      border: none;
+      border-radius: 50px;
+      color: white;
+      text-align: center;
+    }
+    .search-close { position: absolute; top: -50px; right: 0; font-size: 2rem; cursor: pointer; }
+    .search-results-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 2rem;
+      max-height: 60vh;
+      overflow-y: auto;
+      justify-content: center;
+    }
+    
+    /* ======= FOOTER ======= */
+    .footer {
+      background: #0a0a0a;
+      margin-top: 3rem;
+      padding: 2rem 4%;
+      border-top: 8px solid #222;
+    }
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+    }
     .footer-section h4 { color: #E50914; margin-bottom: 1rem; }
     .footer-section ul { list-style: none; }
-    .footer-section li { margin: 0.5rem 0; color: #aaa; font-size: 0.85rem; cursor: pointer; }
+    .footer-section li {
+      margin: 0.5rem 0;
+      color: #aaa;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
     .footer-section li:hover { color: #fff; }
     .social-icons { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .social-icons a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.05); color: #aaa; font-size: 1.3rem; transition: 0.3s; text-decoration: none; }
+    .social-icons a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      color: #aaa;
+      font-size: 1.3rem;
+      transition: 0.3s;
+      text-decoration: none;
+    }
     .social-icons a:hover { color: #fff; background: #E50914; transform: translateY(-3px); }
     .copyright { text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #222; font-size: 0.75rem; color: #666; }
-    @media (max-width: 768px) { .movie-card { width: 140px; } .movie-poster { height: 200px; } .hero-content-landing h1 { font-size: 2rem; } .modal-video { height: 250px; } }
+    
+    /* ======= PROFILE DROPDOWN ======= */
+    .profile-dropdown { position: relative; display: inline-block; }
+    .profile-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 30px;
+      color: white;
+    }
+    .profile-btn:hover { background: rgba(255,255,255,0.1); }
+    .profile-btn i { font-size: 1.4rem; color: #E50914; }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 45px;
+      right: 0;
+      background: rgba(0,0,0,0.95);
+      backdrop-filter: blur(10px);
+      min-width: 220px;
+      border-radius: 8px;
+      padding: 1rem;
+      border: 1px solid #333;
+    }
+    .profile-dropdown:hover .dropdown-content { display: block; }
+    .dropdown-content input {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 4px;
+      color: white;
+    }
+    .dropdown-content button {
+      background: #E50914;
+      border: none;
+      padding: 8px;
+      width: 100%;
+      border-radius: 4px;
+      color: white;
+      cursor: pointer;
+    }
+    .dropdown-content button.secondary { background: #333; }
+    
+    @media (max-width: 768px) {
+      .movie-card { width: 140px; }
+      .movie-poster { height: 200px; }
+      .hero-content-landing h1 { font-size: 2.2rem; }
+      .hero-content-landing .subtitle { font-size: 1.1rem; }
+      .email-form input { width: 100%; }
+      .modal-video { height: 250px; }
+      .nav-links { display: none; }
+    }
   </style>
 </head>
 <body>
+<!-- Background Canvas -->
 <canvas id="bg-canvas"></canvas>
+<div class="bg-overlay"></div>
+
 <div class="main-content">
+  <!-- Navbar -->
   <div class="navbar">
     <div class="logo">MONKIUS FULL STREAM</div>
     <div class="nav-links" id="nav-links-auth"><a class="active" data-nav="home">Home</a></div>
@@ -138,43 +451,42 @@
     </div>
   </div>
 
-  <!-- LANDING PAGE -->
+  <!-- LANDING PAGE (Netflix Style) -->
   <div id="landing-page">
     <div class="hero-landing">
       <div class="hero-content-landing">
-        <div class="price-badge">🔥 Starts at Ksh 150/month</div>
         <h1>Unlimited movies, TV shows, and more</h1>
-        <p>Watch anywhere. Cancel anytime. The best streaming experience in Africa.</p>
+        <div class="subtitle">Watch anywhere. Cancel anytime.</div>
+        <div class="price-text">Starts at Ksh 150/month. Ready to watch?</div>
         <div class="email-form">
           <input type="email" id="landing-email" placeholder="Email address">
           <button id="get-started-btn">Get Started &nbsp; ></button>
         </div>
       </div>
     </div>
+    
+    <!-- Features (Netflix Style) -->
     <div class="features-section">
       <h2>Why choose Monkius?</h2>
       <div class="features-grid">
-        <div class="feature-card"><i class="fas fa-rocket"></i><h3>Lightning Fast</h3><p>Instant streaming with smart caching</p></div>
-        <div class="feature-card"><i class="fas fa-globe"></i><h3>Global Library</h3><p>Thousands of movies from Hollywood, Nollywood, Bollywood</p></div>
-        <div class="feature-card"><i class="fas fa-tv"></i><h3>Any Device</h3><p>Watch on phone, tablet, laptop, or TV</p></div>
-        <div class="feature-card"><i class="fas fa-shield-alt"></i><h3>Safe Streaming</h3><p>No popups, no redirects</p></div>
+        <div class="feature-card"><i class="fas fa-tv"></i><h3>Watch on any device</h3><p>Smartphones, tablets, laptops, and TVs</p></div>
+        <div class="feature-card"><i class="fas fa-download"></i><h3>Download and go</h3><p>Watch offline on the go (coming soon)</p></div>
+        <div class="feature-card"><i class="fas fa-infinity"></i><h3>No contracts</h3><p>Cancel anytime, no long-term commitments</p></div>
       </div>
     </div>
+    
+    <!-- Trending -->
     <div class="category-section">
       <div class="category-header"><h2>🔥 Trending Now</h2></div>
       <div class="movie-row" id="landing-trending-row"></div>
     </div>
-    <div class="testimonials-section">
-      <h2>What our users say</h2>
-      <div class="testimonial-card">⭐⭐⭐⭐⭐ "Best streaming service in Kenya! The quality is amazing." – John M.</div>
-      <div class="testimonial-card">⭐⭐⭐⭐⭐ "Finally a platform that works perfectly on my phone." – Aisha K.</div>
-    </div>
+    
     <div id="signin-panel" class="signin-panel" style="display: none;">
       <h2>Sign In</h2>
       <input type="email" id="signin-email" placeholder="Email">
       <input type="password" id="signin-password" placeholder="Password">
       <button id="signin-submit">Sign In</button>
-      <div class="toggle-auth" id="toggle-signup">New? <span>Sign up</span></div>
+      <div class="toggle-auth" id="toggle-signup">New? <span>Sign up now</span></div>
     </div>
     <div id="signup-panel" class="signup-panel" style="display: none;">
       <h2>Sign Up</h2>
@@ -187,9 +499,9 @@
 
   <!-- MAIN APP -->
   <div id="app-container" style="display: none;">
-    <div class="hero-app" style="padding:4rem 4% 6rem;">
-      <div class="hero-app-content">
-        <div class="hero-badge" style="background:#E50914; display:inline-block; padding:0.2rem 1rem; border-radius:30px;">🎬 NOW STREAMING</div>
+    <div style="padding:4rem 4% 6rem;">
+      <div style="max-width:550px;">
+        <div style="background:#E50914; display:inline-block; padding:0.2rem 1rem; border-radius:30px;">🎬 NOW STREAMING</div>
         <h1 id="featured-title" style="margin:1rem 0;">Loading...</h1>
         <p id="featured-desc"></p>
         <button id="watch-trailer-btn" style="background:white; color:black; border:none; padding:0.5rem 1.5rem; border-radius:4px; margin-top:1rem;">▶ Watch Trailer</button>
@@ -201,8 +513,11 @@
   <!-- FOOTER -->
   <div class="footer">
     <div class="footer-content">
-      <div class="footer-section"><h4>Monkius Full Stream</h4><ul><li>© 2026 All rights reserved</li><li>Premium Streaming</li></ul></div>
-      <div class="footer-section"><h4>Quick Links</h4><ul><li id="link-help">Help Center</li><li id="link-terms">Terms of Use</li><li id="link-privacy">Privacy Policy</li></ul></div>
+      <div class="footer-section"><h4>Monkius Full Stream</h4><ul><li>© 2026 All rights reserved</li></ul></div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul><li id="link-help">Help Center</li><li id="link-terms">Terms of Use</li><li id="link-privacy">Privacy Policy</li></ul>
+      </div>
       <div class="footer-section"><h4>Connect With Us</h4>
         <div class="social-icons">
           <a href="https://youtube.com/@dreamcasestudio?si=H3IAVrsO20QCQPIP" target="_blank"><i class="fab fa-youtube"></i></a>
@@ -237,7 +552,7 @@
   let featuredMovie = null;
   let currentFallbacks = [];
 
-  // DOM elements
+  // DOM refs
   const landingPage = document.getElementById('landing-page');
   const appContainer = document.getElementById('app-container');
   const authSection = document.getElementById('auth-section');
@@ -258,30 +573,26 @@
   const streamDesc = document.getElementById('stream-desc');
   const fallbackBtn = document.getElementById('fallback-btn');
 
-  // Profile UI
+  // ======= PROFILE UI =======
   async function updateProfileUI() {
     if (!currentUser) return;
     const doc = await db.collection('users').doc(currentUser.uid).collection('profile').doc('info').get();
     const displayName = doc.exists ? doc.data().displayName : currentUser.email.split('@')[0];
     authSection.innerHTML = `
-      <div class="profile-dropdown" style="position:relative; display:inline-block;">
-        <button class="profile-btn" style="background:transparent; border:none; display:flex; align-items:center; gap:8px;"><i class="fas fa-user-circle"></i><span>${displayName}</span><i class="fas fa-chevron-down"></i></button>
-        <div class="dropdown-content" style="display:none; position:absolute; top:45px; right:0; background:rgba(0,0,0,0.95); padding:1rem; border-radius:8px; min-width:200px;">
-          <input type="text" id="display-name-input" placeholder="Display Name" value="${displayName}" style="width:100%; padding:8px; margin:8px 0;">
-          <button id="save-name-btn" style="background:#E50914; width:100%; padding:8px; border:none; border-radius:4px;">Save Name</button>
-          <button id="logout-btn" style="background:#333; width:100%; padding:8px; margin-top:8px; border:none; border-radius:4px;">Logout</button>
+      <div class="profile-dropdown">
+        <button class="profile-btn"><i class="fas fa-user-circle"></i><span>${displayName}</span><i class="fas fa-chevron-down"></i></button>
+        <div class="dropdown-content">
+          <input type="text" id="display-name-input" placeholder="Display Name" value="${displayName}">
+          <button id="save-name-btn">Save Name</button>
+          <button id="logout-btn" class="secondary">Logout</button>
         </div>
       </div>
     `;
-    const dropdown = authSection.querySelector('.dropdown-content');
-    const btn = authSection.querySelector('.profile-btn');
-    btn.addEventListener('mouseenter', () => dropdown.style.display = 'block');
-    btn.parentElement.addEventListener('mouseleave', () => dropdown.style.display = 'none');
     document.getElementById('save-name-btn')?.addEventListener('click', async () => {
       const newName = document.getElementById('display-name-input').value.trim();
       if (newName) {
         await db.collection('users').doc(currentUser.uid).collection('profile').doc('info').set({ displayName: newName }, { merge: true });
-        authSection.querySelector('.profile-btn span').innerText = newName;
+        document.querySelector('#auth-section .profile-btn span').innerText = newName;
         alert('Name updated');
       }
     });
@@ -291,7 +602,7 @@
   function showLanding() {
     landingPage.style.display = 'block';
     appContainer.style.display = 'none';
-    authSection.innerHTML = '<button id="navbar-signin" style="background:#E50914; border:none; padding:0.4rem 1rem; border-radius:4px; color:white;">Sign In</button>';
+    authSection.innerHTML = '<button id="navbar-signin" style="background:#E50914; border:none; padding:0.4rem 1rem; border-radius:4px; color:white; cursor:pointer;">Sign In</button>';
     document.getElementById('navbar-signin')?.addEventListener('click', () => {
       document.getElementById('signin-panel').style.display = 'block';
       document.getElementById('signup-panel').style.display = 'none';
@@ -312,7 +623,7 @@
     else showLanding();
   });
 
-  // Auth panels
+  // Auth
   document.getElementById('get-started-btn')?.addEventListener('click', () => {
     const email = document.getElementById('landing-email').value.trim();
     if (email) {
@@ -342,6 +653,7 @@
     document.getElementById('signin-panel').style.display = 'block';
   });
 
+  // Landing trending
   async function loadLandingTrending() {
     const res = await fetch('/api/movies/trending');
     const movies = await res.json();
@@ -362,6 +674,7 @@
     });
   }
 
+  // Categories
   const categories = [
     { title: '🔥 Trending Now', api: 'trending' },
     { title: '🏆 Top Rated', api: 'top_rated' },
@@ -446,6 +759,7 @@
     if (featuredMovie) openTrailer(featuredMovie.id, featuredMovie.title, featuredMovie.overview);
   };
 
+  // Search
   searchIcon.onclick = () => { searchOverlay.style.display = 'flex'; searchInput.focus(); };
   searchClose.onclick = () => { searchOverlay.style.display = 'none'; searchResultsDiv.innerHTML = ''; };
   async function performSearch() {
@@ -463,6 +777,7 @@
   }
   searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
 
+  // Close modals
   document.querySelectorAll('.close-modal').forEach(btn => {
     btn.onclick = () => {
       trailerModal.style.display = 'none';
@@ -477,10 +792,11 @@
   };
 
   // Quick Links
-  document.getElementById('link-help')?.addEventListener('click', () => alert('Help Center\n\nHow to stream?\nAccount issues?\nContact: support@monkius.com'));
-  document.getElementById('link-terms')?.addEventListener('click', () => alert('Terms of Use\n\n1. Must be 18+\n2. Personal use only\n3. No redistribution'));
-  document.getElementById('link-privacy')?.addEventListener('click', () => alert('Privacy Policy\n\nWe collect email and watch history.\nNo third-party sharing.'));
+  document.getElementById('link-help')?.addEventListener('click', () => alert('Help Center\n\nContact: support@monkius.com'));
+  document.getElementById('link-terms')?.addEventListener('click', () => alert('Terms of Use'));
+  document.getElementById('link-privacy')?.addEventListener('click', () => alert('Privacy Policy'));
 
+  // Navigation
   document.querySelectorAll('[data-nav]').forEach(link => {
     link.addEventListener('click', (e) => {
       document.querySelectorAll('[data-nav]').forEach(l => l.classList.remove('active'));
@@ -490,8 +806,7 @@
 
   loadCategories();
 
-  // ======= POPUP BLOCKER (Fix close button redirects) =======
-  // Intercept close button clicks
+  // ======= POPUP BLOCKER =======
   document.addEventListener('click', function(e) {
     const target = e.target;
     const isCloseBtn = target.matches('.close, .close-btn, .modal-close, .popup-close, [class*="close"], [id*="close"], .fa-times, .fa-xmark');
@@ -508,49 +823,29 @@
     }
   }, true);
 
-  // Block window.open
   window.open = function(url) {
     console.log('Blocked popup:', url);
     return null;
   };
 
-  // Prevent redirects
-  window.addEventListener('beforeunload', function(e) {
-    const iframe = document.getElementById('stream-iframe');
-    if (iframe && iframe.src && iframe.src.includes('embed')) {
-      e.preventDefault();
-      e.returnValue = '';
-    }
-  });
-
-  // Remove new popups automatically
-  const observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-      mutation.addedNodes.forEach(function(node) {
-        if (node.nodeType === 1) {
-          const classes = node.className || '';
-          const id = node.id || '';
-          if (classes.includes('modal') || classes.includes('overlay') || classes.includes('popup') || 
-              classes.includes('ad') || classes.includes('notification') || 
-              id.includes('modal') || id.includes('overlay') || id.includes('popup')) {
-            node.style.display = 'none';
-            node.style.pointerEvents = 'none';
-            node.querySelectorAll('iframe').forEach(iframe => iframe.src = '');
-          }
-        }
-      });
-    });
-  });
-  observer.observe(document.body, { childList: true, subtree: true });
-  console.log('✅ Popup blocker active');
-
-  // Background animation
+  // ======= DYNAMIC BACKGROUND (CHANGES EVERY 3 SECONDS) =======
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
   let w = window.innerWidth, h = window.innerHeight;
   let particles = [];
   let mouseX = w/2, mouseY = h/2;
+  let bgStyle = 0;
+  const BG_STYLES = [
+    { colors: ['#120a1a', '#0a0a1e', '#050510'], hue: 340 },
+    { colors: ['#0a1a1a', '#0a1e1e', '#051010'], hue: 180 },
+    { colors: ['#1a0a0a', '#1e0a0a', '#100505'], hue: 20 },
+    { colors: ['#0a0a2a', '#0a1a3e', '#050520'], hue: 240 },
+    { colors: ['#1a1a0a', '#2a2a0a', '#151505'], hue: 60 },
+    { colors: ['#2a0a1a', '#3e0a2a', '#200515'], hue: 300 }
+  ];
+
   document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+
   class Particle {
     constructor() {
       this.x = Math.random() * w;
@@ -583,18 +878,21 @@
       if (this.y < -10) this.y = h + 10;
       if (this.y > h + 10) this.y = -10;
     }
-    draw() {
+    draw(hueOffset) {
+      const hue = (this.hue + hueOffset) % 360;
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fillStyle = `hsla(${this.hue}, 80%, 60%, ${this.alpha})`;
-      ctx.shadowColor = `hsla(${this.hue}, 80%, 60%, ${this.alpha * 0.5})`;
+      ctx.fillStyle = `hsla(${hue}, 80%, 60%, ${this.alpha})`;
+      ctx.shadowColor = `hsla(${hue}, 80%, 60%, ${this.alpha * 0.5})`;
       ctx.shadowBlur = this.glow;
       ctx.fill();
       ctx.shadowBlur = 0;
     }
   }
+
   function initParticles() { particles = []; for (let i = 0; i < 180; i++) particles.push(new Particle()); }
-  function drawConnections() {
+
+  function drawConnections(hueOffset) {
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         let dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
@@ -610,21 +908,49 @@
       }
     }
   }
+
   let time = 0;
+  let styleTimer = 0;
+  let currentStyle = 0;
+
   function animateBg() {
     ctx.clearRect(0, 0, w, h);
     time += 0.002;
+    styleTimer += 0.002;
+
+    // Change background style every 3 seconds
+    if (styleTimer > 3) {
+      styleTimer = 0;
+      currentStyle = (currentStyle + 1) % BG_STYLES.length;
+      bgStyle = currentStyle;
+    }
+
+    const style = BG_STYLES[currentStyle];
+    const hueOffset = style.hue || 0;
+
+    // Dynamic gradient
     const grad = ctx.createRadialGradient(mouseX, mouseY, 100, w/2, h/2, 800);
-    grad.addColorStop(0, '#120a1a');
-    grad.addColorStop(0.5, '#0a0a1e');
-    grad.addColorStop(1, '#050510');
+    grad.addColorStop(0, style.colors[0]);
+    grad.addColorStop(0.5, style.colors[1]);
+    grad.addColorStop(1, style.colors[2]);
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, w, h);
-    particles.forEach(p => { p.update(); p.draw(); });
-    drawConnections();
+
+    // Draw particles with hue offset
+    particles.forEach(p => { p.update(); p.draw(hueOffset); });
+    drawConnections(hueOffset);
+
     requestAnimationFrame(animateBg);
   }
-  function resizeCanvas() { w = window.innerWidth; h = window.innerHeight; canvas.width = w; canvas.height = h; initParticles(); }
+
+  function resizeCanvas() {
+    w = window.innerWidth;
+    h = window.innerHeight;
+    canvas.width = w;
+    canvas.height = h;
+    initParticles();
+  }
+
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
   initParticles();
