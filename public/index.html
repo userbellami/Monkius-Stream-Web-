@@ -630,3 +630,111 @@
 </script>
 </body>
 </html>
+<script>
+  // ======= BLOCK POPUP REDIRECTS =======
+  // Intercept all click events on the page
+  document.addEventListener('click', function(e) {
+    const target = e.target;
+    // Check if clicked element is a close button (common popup close selectors)
+    const isCloseBtn = target.matches('.close, .close-btn, .modal-close, .popup-close, [class*="close"], [id*="close"], .fa-times, .fa-xmark');
+    
+    if (isCloseBtn) {
+      // Prevent default action (which might cause redirect)
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Find the closest popup/overlay and hide it
+      const popup = target.closest('.modal, .overlay, .popup, .ad-container, .notification, [class*="modal"], [class*="overlay"], [class*="popup"], [class*="ad-"], [class*="notification"]');
+      if (popup) {
+        popup.style.display = 'none';
+        popup.style.opacity = '0';
+        popup.style.pointerEvents = 'none';
+        // Also remove any iframe that might be causing redirects
+        const iframes = popup.querySelectorAll('iframe');
+        iframes.forEach(iframe => iframe.src = '');
+      }
+      
+      // Also try to remove any body overlays
+      document.querySelectorAll('.modal, .overlay, .popup, .ad-container, .notification, [class*="modal"], [class*="overlay"], [class*="popup"]').forEach(el => {
+        if (el.style.display !== 'none') {
+          el.style.display = 'none';
+        }
+      });
+      
+      return false;
+    }
+  }, true); // use capture phase to intercept early
+
+  // Also intercept any window.open or location changes from popups
+  const originalOpen = window.open;
+  window.open = function(url, name, features) {
+    // Block popups that try to open new windows
+    console.log('Blocked popup window:', url);
+    return null;
+  };
+
+  // Prevent redirects from iframes
+  document.addEventListener('beforeunload', function(e) {
+    // If there's an iframe with video playing, prevent navigation
+    const iframe = document.getElementById('stream-iframe');
+    if (iframe && iframe.src && iframe.src.includes('embed')) {
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  });
+
+  // Monitor for new popup elements and remove them
+  const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      mutation.addedNodes.forEach(function(node) {
+        if (node.nodeType === 1) { // Element node
+          // Check if node is a popup
+          const classes = node.className || '';
+          const id = node.id || '';
+          if (classes.includes('modal') || classes.includes('overlay') || classes.includes('popup') || 
+              classes.includes('ad') || classes.includes('notification') || 
+              id.includes('modal') || id.includes('overlay') || id.includes('popup') ||
+              id.includes('ad') || id.includes('notification')) {
+            // Remove or hide the popup
+            node.style.display = 'none';
+            node.style.pointerEvents = 'none';
+            // Also remove any child iframes
+            node.querySelectorAll('iframe').forEach(iframe => iframe.src = '');
+          }
+        }
+      });
+    });
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  console.log('✅ Popup blocker active – close buttons will not redirect.');
+</script>
+<style>
+  /* Hide popup elements and prevent clicks on them */
+  .modal, .overlay, .popup, .ad-container, .notification,
+  [class*="modal"], [class*="overlay"], [class*="popup"], 
+  [class*="ad-"], [class*="notification"],
+  [id*="modal"], [id*="overlay"], [id*="popup"], 
+  [id*="ad-"], [id*="notification"] {
+    display: none !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    position: fixed !important;
+    top: -9999px !important;
+    left: -9999px !important;
+  }
+  /* But allow our own modals */
+  #trailer-modal, #player-overlay, #stream-modal {
+    display: none !important;
+  }
+  #trailer-modal.active, #player-overlay.active, #stream-modal.active {
+    display: flex !important;
+    pointer-events: auto !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+  }
+</style>
