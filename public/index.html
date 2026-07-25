@@ -3,10 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Monkius Full Stream – Clean Player</title>
-  <meta name="description" content="Stream movies with clean player, no popups.">
+  <title>Monkius Full Stream – Best Streaming Platform | Unlimited Movies & TV Shows</title>
+  <meta name="description" content="Watch unlimited movies, TV shows, and originals. Starts at Ksh 150/month. Cancel anytime. The best streaming experience in Africa and worldwide.">
+  <meta name="keywords" content="stream movies, watch online, free movies, Monkius, Netflix alternative, best streaming service, Ksh 150">
+  <meta name="author" content="Monkius Full Stream">
+  <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://monkius-full-stream.onrender.com">
-  <!-- Firebase -->
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://monkius-full-stream.onrender.com">
+  <meta property="og:title" content="Monkius Full Stream – Best Streaming Platform">
+  <meta property="og:description" content="Unlimited movies, TV shows, and more. Starts at Ksh 150/month.">
+  <meta property="og:image" content="https://image.tmdb.org/t/p/original/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Monkius Full Stream">
+  <meta name="twitter:description" content="Stream the best movies and TV shows. Cancel anytime.">
+  <meta name="twitter:image" content="https://image.tmdb.org/t/p/original/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg">
+  <!-- Preload critical assets -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Monkius Full Stream",
+    "url": "https://monkius-full-stream.onrender.com",
+    "description": "Unlimited streaming of movies and TV shows. Affordable plans starting at Ksh 150/month.",
+    "provider": {
+      "@type": "Organization",
+      "name": "Monkius Full Stream",
+      "url": "https://monkius-full-stream.onrender.com"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "150",
+      "priceCurrency": "KES",
+      "availability": "https://schema.org/InStock"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "12500"
+    }
+  }
+  </script>
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -14,103 +57,286 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: #000; color: #fff; overflow-x: hidden; }
-    #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; background: #0a0a0a; }
-    .main-content { position: relative; z-index: 2; background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.9) 100%); min-height: 100vh; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #000;
+      color: white;
+      overflow-x: hidden;
+    }
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .main-content {
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.9) 100%);
+      min-height: 100vh;
+    }
     /* Navbar */
-    .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 4%; background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 100%); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(229,9,20,0.3); }
-    .logo { font-size: 1.8rem; font-weight: 900; background: linear-gradient(135deg, #E50914, #ff4d4d); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 4%;
+      background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 100%);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(229,9,20,0.3);
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #E50914, #ff4d4d);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
     .nav-links { display: flex; gap: 2rem; }
     .nav-links a { color: #e5e5e5; text-decoration: none; font-weight: 500; cursor: pointer; }
     .nav-links a:hover, .nav-links a.active { color: #fff; }
     .nav-right { display: flex; align-items: center; gap: 1.5rem; }
     .search-icon { font-size: 1.3rem; cursor: pointer; color: #e5e5e5; }
     .search-icon:hover { color: #E50914; }
-    /* Hide popup elements from iframe */
-    .player-container iframe + div,
-    .player-container iframe ~ div,
-    .player-container iframe + iframe,
-    .player-container iframe ~ iframe,
-    .player-container iframe + .ad,
-    .player-container iframe ~ .ad,
-    .ad-container,
-    .overlay,
-    .notification,
-    .modal-dialog,
-    [class*="call"],
-    [class*="video-call"],
-    [id*="call"],
-    [id*="video"] {
-      display: none !important;
-      opacity: 0 !important;
-      pointer-events: none !important;
-      visibility: hidden !important;
+    /* PRO LANDING PAGE HERO */
+    .hero-landing {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      background: radial-gradient(ellipse at 50% 30%, rgba(0,0,0,0.2), rgba(0,0,0,0.9));
     }
-    .hero-landing { min-height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem 2rem; background: radial-gradient(ellipse at 50% 30%, rgba(0,0,0,0.2), rgba(0,0,0,0.9)); }
     .hero-content-landing { max-width: 800px; }
     .hero-content-landing h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 1rem; }
     .hero-content-landing p { font-size: 1.3rem; margin-bottom: 2rem; color: #ddd; }
-    .price-badge { background: #E50914; display: inline-block; padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; margin-bottom: 1rem; }
-    .email-form { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 1rem; }
-    .email-form input { padding: 1rem; width: 350px; background: rgba(255,255,255,0.2); border: none; border-radius: 4px; color: #fff; font-size: 1rem; }
-    .email-form button { background: #E50914; border: none; padding: 1rem 2rem; font-weight: 700; border-radius: 4px; cursor: pointer; font-size: 1rem; }
-    .features-section { padding: 4rem 4%; background: #0a0a0a; text-align: center; }
-    .features-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; margin-top: 2rem; }
-    .feature-card { background: #111; padding: 2rem; border-radius: 12px; width: 280px; transition: transform 0.3s; }
+    .price-badge {
+      background: #E50914;
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .email-form {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .email-form input {
+      padding: 1rem;
+      width: 350px;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-size: 1rem;
+    }
+    .email-form button {
+      background: #E50914;
+      border: none;
+      padding: 1rem 2rem;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    /* Features Section */
+    .features-section {
+      padding: 4rem 4%;
+      background: #0a0a0a;
+      text-align: center;
+    }
+    .features-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .feature-card {
+      background: #111;
+      padding: 2rem;
+      border-radius: 12px;
+      width: 280px;
+      transition: transform 0.3s;
+    }
     .feature-card:hover { transform: translateY(-5px); }
     .feature-card i { font-size: 2.5rem; color: #E50914; margin-bottom: 1rem; }
     .feature-card h3 { margin-bottom: 0.5rem; }
-    .signin-panel, .signup-panel { background: rgba(0,0,0,0.85); padding: 2rem; border-radius: 8px; max-width: 450px; margin: 2rem auto; }
-    .category-section { margin: 2.5rem 0; padding-left: 4%; }
-    .category-header { display: flex; justify-content: space-between; padding-right: 4%; margin-bottom: 1rem; }
-    .movie-row { display: flex; gap: 1rem; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 1rem; }
-    .movie-card { flex: 0 0 auto; width: 200px; border-radius: 8px; overflow: hidden; background: #111; transition: transform 0.3s; cursor: pointer; }
+    /* Testimonials */
+    .testimonials-section {
+      padding: 4rem 4%;
+      background: linear-gradient(135deg, #0a0a1a, #000);
+      text-align: center;
+    }
+    .testimonial-card {
+      background: rgba(255,255,255,0.05);
+      padding: 1.5rem;
+      border-radius: 12px;
+      max-width: 400px;
+      margin: 1rem auto;
+    }
+    /* Auth panels */
+    .signin-panel, .signup-panel {
+      background: rgba(0,0,0,0.85);
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 450px;
+      margin: 2rem auto;
+    }
+    /* Movie rows (same as V6) */
+    .category-section {
+      margin: 2.5rem 0;
+      padding-left: 4%;
+    }
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      padding-right: 4%;
+      margin-bottom: 1rem;
+    }
+    .movie-row {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding-bottom: 1rem;
+    }
+    .movie-card {
+      flex: 0 0 auto;
+      width: 200px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #111;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
     .movie-card:hover { transform: scale(1.05); }
     .movie-poster { width: 100%; height: 280px; object-fit: cover; }
     .movie-info { padding: 0.6rem; }
     .movie-title { font-size: 0.9rem; font-weight: 600; }
     .movie-year { font-size: 0.7rem; color: #aaa; }
-    .btn-watch, .btn-trailer { background: #E50914; border: none; padding: 4px 8px; border-radius: 4px; color: #fff; font-size: 0.7rem; margin-top: 8px; margin-right: 5px; cursor: pointer; }
+    .btn-watch, .btn-trailer {
+      background: #E50914;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      color: white;
+      font-size: 0.7rem;
+      margin-top: 8px;
+      margin-right: 5px;
+      cursor: pointer;
+    }
     .btn-trailer { background: #333; }
-    /* Player Overlay */
-    .player-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 5000; flex-direction: column; align-items: center; justify-content: center; padding: 1rem; }
-    .player-overlay.active { display: flex; }
-    .player-container { width: 100%; max-width: 1200px; position: relative; background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.9); }
-    .player-iframe { width: 100%; aspect-ratio: 16 / 9; border: none; background: #000; }
-    .player-info { background: linear-gradient(0deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 100%); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-    .player-info .title { font-size: 1.4rem; font-weight: 700; }
-    .player-info .desc { font-size: 0.9rem; color: #ccc; max-width: 70%; line-height: 1.4; }
-    .player-controls { display: flex; gap: 1rem; align-items: center; }
-    .player-controls button { background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 0.5rem 1.2rem; border-radius: 30px; font-size: 0.9rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
-    .player-controls button:hover { background: rgba(255,255,255,0.2); }
-    .player-controls .close-btn { background: #E50914; }
-    .player-controls .close-btn:hover { background: #b20710; }
-    .player-close-top { position: absolute; top: 15px; right: 20px; background: rgba(0,0,0,0.7); color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.2rem; cursor: pointer; z-index: 10; transition: 0.2s; }
-    .player-close-top:hover { background: #E50914; }
+    /* Search overlay */
+    .search-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.98);
+      z-index: 1000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+    .search-box { width: 80%; max-width: 800px; position: relative; }
+    .search-box input {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.5rem;
+      background: #222;
+      border: none;
+      border-radius: 50px;
+      color: white;
+      text-align: center;
+    }
+    .search-close { position: absolute; top: -50px; right: 0; font-size: 2rem; cursor: pointer; }
+    .search-results-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 2rem;
+      max-height: 60vh;
+      overflow-y: auto;
+      justify-content: center;
+    }
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content { background: #111; width: 90%; max-width: 1100px; border-radius: 12px; overflow: hidden; }
+    .modal-video { width: 100%; height: 550px; border: none; }
+    .close-modal { float: right; font-size: 2rem; cursor: pointer; padding: 10px; }
     /* Footer */
-    .footer { background: #0a0a0a; margin-top: 3rem; padding: 2rem 4%; border-top: 1px solid #222; }
-    .footer-content { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem; }
+    .footer {
+      background: #0a0a0a;
+      margin-top: 3rem;
+      padding: 2rem 4%;
+      border-top: 1px solid #222;
+    }
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+    }
     .footer-section h4 { color: #E50914; margin-bottom: 1rem; }
     .footer-section ul { list-style: none; }
-    .footer-section li { margin: 0.5rem 0; color: #aaa; font-size: 0.85rem; cursor: pointer; }
-    .footer-section li:hover { color: #fff; }
+    .footer-section li { margin: 0.5rem 0; color: #aaa; font-size: 0.85rem; }
     .social-icons { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .social-icons a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.05); color: #aaa; font-size: 1.3rem; transition: 0.3s; text-decoration: none; }
-    .social-icons a:hover { color: #fff; background: #E50914; transform: translateY(-3px); }
+    .social-icons a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      color: #aaa;
+      font-size: 1.3rem;
+      transition: 0.3s;
+      text-decoration: none;
+    }
+    .social-icons a:hover {
+      color: #fff;
+      background: #E50914;
+      transform: translateY(-3px);
+    }
     .copyright { text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #222; font-size: 0.75rem; color: #666; }
     @media (max-width: 768px) {
       .movie-card { width: 140px; }
       .movie-poster { height: 200px; }
       .hero-content-landing h1 { font-size: 2rem; }
-      .player-info .desc { max-width: 100%; }
-      .player-container { border-radius: 0; }
+      .modal-video { height: 250px; }
     }
   </style>
 </head>
 <body>
 <canvas id="bg-canvas"></canvas>
 <div class="main-content">
-  <!-- Navbar -->
   <div class="navbar">
     <div class="logo">MONKIUS FULL STREAM</div>
     <div class="nav-links" id="nav-links-auth"><a class="active" data-nav="home">Home</a></div>
@@ -121,42 +347,47 @@
   </div>
 
   <!-- Search Overlay -->
-  <div id="search-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.98); z-index:1000; justify-content:center; align-items:center;">
-    <div style="width:80%; max-width:800px; position:relative;">
-      <i class="fas fa-times" id="search-close" style="position:absolute; top:-50px; right:0; font-size:2rem; cursor:pointer;"></i>
-      <input type="text" id="search-input" placeholder="Search for a movie..." style="width:100%; padding:1rem; font-size:1.5rem; background:#222; border:none; border-radius:50px; color:white; text-align:center;">
-      <div id="search-results" style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:2rem; max-height:60vh; overflow-y:auto; justify-content:center;"></div>
+  <div id="search-overlay" class="search-overlay">
+    <div class="search-box">
+      <i class="fas fa-times search-close" id="search-close"></i>
+      <input type="text" id="search-input" placeholder="Search for a movie...">
+      <div id="search-results" class="search-results-grid"></div>
     </div>
   </div>
 
-  <!-- Landing Page -->
+  <!-- LANDING PAGE (Logged Out) - PRO VERSION -->
   <div id="landing-page">
     <div class="hero-landing">
       <div class="hero-content-landing">
         <div class="price-badge">🔥 Starts at Ksh 150/month</div>
         <h1>Unlimited movies, TV shows, and more</h1>
-        <p>Watch anywhere. Cancel anytime. Clean player, no popups.</p>
+        <p>Watch anywhere. Cancel anytime. The best streaming experience in Africa.</p>
         <div class="email-form">
           <input type="email" id="landing-email" placeholder="Email address">
           <button id="get-started-btn">Get Started &nbsp; ></button>
         </div>
       </div>
     </div>
+    <!-- Features Section -->
     <div class="features-section">
-      <h2>Why Monkius?</h2>
+      <h2>Why choose Monkius?</h2>
       <div class="features-grid">
-        <div class="feature-card"><i class="fas fa-film"></i><h3>Clean Player</h3><p>No popups, no redirects</p></div>
-        <div class="feature-card"><i class="fas fa-bolt"></i><h3>Fast Streaming</h3><p>Optimized for speed</p></div>
-        <div class="feature-card"><i class="fas fa-shield-alt"></i><h3>Safe</h3><p>Secure streaming environment</p></div>
+        <div class="feature-card"><i class="fas fa-rocket"></i><h3>Lightning Fast</h3><p>Instant streaming with smart caching</p></div>
+        <div class="feature-card"><i class="fas fa-globe"></i><h3>Global Library</h3><p>Thousands of movies from Hollywood, Nollywood, Bollywood</p></div>
+        <div class="feature-card"><i class="fas fa-tv"></i><h3>Any Device</h3><p>Watch on phone, tablet, laptop, or TV</p></div>
+        <div class="feature-card"><i class="fas fa-download"></i><h3>Offline Mode</h3><p>Download and watch without internet (coming soon)</p></div>
       </div>
     </div>
+    <!-- Trending Teaser -->
     <div class="category-section">
       <div class="category-header"><h2>🔥 Trending Now</h2></div>
       <div class="movie-row" id="landing-trending-row"></div>
     </div>
-    <div style="padding:4rem 4%; background:linear-gradient(135deg,#0a0a1a,#000); text-align:center;">
+    <!-- Testimonials -->
+    <div class="testimonials-section">
       <h2>What our users say</h2>
-      <div style="background:rgba(255,255,255,0.05); padding:1.5rem; border-radius:12px; max-width:400px; margin:1rem auto;">⭐⭐⭐⭐⭐ "Finally a player that works without popups!" – James K.</div>
+      <div class="testimonial-card">⭐⭐⭐⭐⭐ "Best streaming service in Kenya! The quality is amazing." – John M.</div>
+      <div class="testimonial-card">⭐⭐⭐⭐⭐ "Finally a platform that works perfectly on my phone." – Aisha K.</div>
     </div>
     <div id="signin-panel" class="signin-panel" style="display: none;">
       <h2>Sign In</h2>
@@ -174,11 +405,11 @@
     </div>
   </div>
 
-  <!-- Main App -->
+  <!-- MAIN APP (Logged In) -->
   <div id="app-container" style="display: none;">
-    <div style="padding:4rem 4% 6rem;">
-      <div style="max-width:550px;">
-        <div style="background:#E50914; display:inline-block; padding:0.2rem 1rem; border-radius:30px;">🎬 NOW STREAMING</div>
+    <div class="hero-app" style="padding:4rem 4% 6rem;">
+      <div class="hero-app-content">
+        <div class="hero-badge" style="background:#E50914; display:inline-block; padding:0.2rem 1rem; border-radius:30px;">🎬 NOW STREAMING</div>
         <h1 id="featured-title" style="margin:1rem 0;">Loading...</h1>
         <p id="featured-desc"></p>
         <button id="watch-trailer-btn" style="background:white; color:black; border:none; padding:0.5rem 1.5rem; border-radius:4px; margin-top:1rem;">▶ Watch Trailer</button>
@@ -187,56 +418,29 @@
     <div id="categories-container"></div>
   </div>
 
-  <!-- Player Overlay -->
-  <div id="player-overlay" class="player-overlay">
-    <div class="player-container">
-      <button class="player-close-top" id="player-close-top"><i class="fas fa-times"></i></button>
-      <iframe id="stream-iframe" class="player-iframe" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe>
-      <div class="player-info">
-        <div>
-          <div class="title" id="stream-title">Movie Title</div>
-          <div class="desc" id="stream-desc">Description</div>
-        </div>
-        <div class="player-controls">
-          <button id="reload-btn"><i class="fas fa-sync"></i> Try Again</button>
-          <button class="close-btn" id="player-close-btn"><i class="fas fa-times"></i> Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Trailer Modal -->
-  <div id="trailer-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:1000; justify-content:center; align-items:center;">
-    <div style="background:#111; width:90%; max-width:1100px; border-radius:12px; overflow:hidden;">
-      <span class="close-modal" style="float:right; font-size:2rem; padding:10px; cursor:pointer;">&times;</span>
-      <iframe id="trailer-iframe" style="width:100%; height:550px; border:none;"></iframe>
-      <div style="padding:1.5rem;"><h3 id="modal-title"></h3><p id="modal-overview"></p></div>
-    </div>
-  </div>
-
-  <!-- Footer -->
+  <!-- Footer with social links -->
   <div class="footer">
     <div class="footer-content">
-      <div class="footer-section"><h4>Monkius Full Stream</h4><ul><li>© 2026 All rights reserved</li></ul></div>
-      <div class="footer-section">
-        <h4>Quick Links</h4>
-        <ul><li id="link-help">Help</li><li id="link-terms">Terms</li><li id="link-privacy">Privacy</li></ul>
-      </div>
-      <div class="footer-section"><h4>Connect</h4>
+      <div class="footer-section"><h4>Monkius Full Stream</h4><ul><li>© 2026 All rights reserved</li><li>Premium Streaming</li></ul></div>
+      <div class="footer-section"><h4>Quick Links</h4><ul><li>Help Center</li><li>Terms of Use</li><li>Privacy Policy</li></ul></div>
+      <div class="footer-section"><h4>Connect With Us</h4>
         <div class="social-icons">
-          <a href="https://youtube.com/@dreamcasestudio?si=H3IAVrsO20QCQPIP" target="_blank"><i class="fab fa-youtube"></i></a>
-          <a href="https://www.facebook.com/usermarichacker" target="_blank"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://wa.me/254797618847" target="_blank"><i class="fab fa-whatsapp"></i></a>
-          <a href="https://t.me/2547597618847" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+          <a href="https://youtube.com/@dreamcasestudio?si=H3IAVrsO20QCQPIP" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="https://www.facebook.com/usermarichacker" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://wa.me/254797618847" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://t.me/2547597618847" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
         </div>
       </div>
     </div>
-    <div class="copyright">Clean streaming – no popups, no redirects.</div>
+    <div class="copyright">The best streaming experience — Watch anywhere, anytime. #1 in Africa</div>
   </div>
 </div>
 
+<!-- Modals -->
+<div id="trailer-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="trailer-iframe" class="modal-video" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="modal-title"></h3><p id="modal-overview"></p></div></div></div>
+<div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p><button id="fallback-btn" style="background:#333; padding:8px; margin-top:10px; border-radius:4px;">🔄 Try Alternate Source</button></div></div></div>
+
 <script>
-  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyB-9QzBOU6vFST4EvxdhFEIz5QBA1D-XW0",
     authDomain: "monkius-full-stream.firebaseapp.com",
@@ -251,8 +455,9 @@
 
   let currentUser = null;
   let featuredMovie = null;
+  let currentFallbacks = [];
 
-  // DOM refs
+  // DOM elements
   const landingPage = document.getElementById('landing-page');
   const appContainer = document.getElementById('app-container');
   const authSection = document.getElementById('auth-section');
@@ -266,23 +471,21 @@
   const searchResultsDiv = document.getElementById('search-results');
   const searchClose = document.getElementById('search-close');
   const trailerModal = document.getElementById('trailer-modal');
+  const streamModal = document.getElementById('stream-modal');
   const trailerIframe = document.getElementById('trailer-iframe');
-  const playerOverlay = document.getElementById('player-overlay');
   const streamIframe = document.getElementById('stream-iframe');
   const streamTitle = document.getElementById('stream-title');
   const streamDesc = document.getElementById('stream-desc');
-  const reloadBtn = document.getElementById('reload-btn');
-  const playerCloseBtn = document.getElementById('player-close-btn');
-  const playerCloseTop = document.getElementById('player-close-top');
+  const fallbackBtn = document.getElementById('fallback-btn');
 
-  // ======= PROFILE UI =======
+  // Profile UI
   async function updateProfileUI() {
     if (!currentUser) return;
     const doc = await db.collection('users').doc(currentUser.uid).collection('profile').doc('info').get();
     const displayName = doc.exists ? doc.data().displayName : currentUser.email.split('@')[0];
     authSection.innerHTML = `
-      <div style="position:relative; display:inline-block;">
-        <button class="profile-btn" style="background:transparent; border:none; display:flex; align-items:center; gap:8px; color:white;"><i class="fas fa-user-circle"></i><span>${displayName}</span><i class="fas fa-chevron-down"></i></button>
+      <div class="profile-dropdown" style="position:relative; display:inline-block;">
+        <button class="profile-btn" style="background:transparent; border:none; display:flex; align-items:center; gap:8px;"><i class="fas fa-user-circle"></i><span>${displayName}</span><i class="fas fa-chevron-down"></i></button>
         <div class="dropdown-content" style="display:none; position:absolute; top:45px; right:0; background:rgba(0,0,0,0.95); padding:1rem; border-radius:8px; min-width:200px;">
           <input type="text" id="display-name-input" placeholder="Display Name" value="${displayName}" style="width:100%; padding:8px; margin:8px 0;">
           <button id="save-name-btn" style="background:#E50914; width:100%; padding:8px; border:none; border-radius:4px;">Save Name</button>
@@ -305,7 +508,6 @@
     document.getElementById('logout-btn')?.addEventListener('click', () => auth.signOut());
   }
 
-  // ======= AUTH =======
   function showLanding() {
     landingPage.style.display = 'block';
     appContainer.style.display = 'none';
@@ -360,7 +562,6 @@
     document.getElementById('signin-panel').style.display = 'block';
   });
 
-  // ======= LANDING TRENDING =======
   async function loadLandingTrending() {
     const res = await fetch('/api/movies/trending');
     const movies = await res.json();
@@ -381,7 +582,6 @@
     });
   }
 
-  // ======= CATEGORIES =======
   const categories = [
     { title: '🔥 Trending Now', api: 'trending' },
     { title: '🏆 Top Rated', api: 'top_rated' },
@@ -427,58 +627,30 @@
       <div class="movie-info">
         <div class="movie-title">${movie.title}</div>
         <div class="movie-year">${year}</div>
-        <div>
-          <button class="btn-watch">▶ Watch</button>
-          <button class="btn-trailer">🎬 Trailer</button>
-        </div>
+        <div><button class="btn-watch">▶ Watch</button><button class="btn-trailer">🎬 Trailer</button></div>
       </div>
     `;
-    card.querySelector('.btn-watch').onclick = (e) => {
-      e.stopPropagation();
-      playFullMovie(movie);
-    };
-    card.querySelector('.btn-trailer').onclick = (e) => {
-      e.stopPropagation();
-      openTrailer(movie.id, movie.title, movie.overview);
-    };
+    card.querySelector('.btn-watch').onclick = (e) => { e.stopPropagation(); playFullMovie(movie); };
+    card.querySelector('.btn-trailer').onclick = (e) => { e.stopPropagation(); openTrailer(movie.id, movie.title, movie.overview); };
     return card;
   }
 
-  // ======= PLAYER =======
   async function playFullMovie(movie) {
     streamTitle.innerText = movie.title;
     streamDesc.innerText = movie.overview || '';
     const res = await fetch(`/api/stream/${movie.id}`);
     const data = await res.json();
     streamIframe.src = data.url;
-    playerOverlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    currentFallbacks = data.fallbacks || [];
+    streamModal.style.display = 'flex';
   }
 
-  function closePlayer() {
-    playerOverlay.classList.remove('active');
-    streamIframe.src = '';
-    document.body.style.overflow = '';
-  }
-  playerCloseBtn.onclick = closePlayer;
-  playerCloseTop.onclick = closePlayer;
-
-  // Reload iframe
-  reloadBtn.onclick = () => {
-    const src = streamIframe.src;
-    if (src) {
-      streamIframe.src = '';
-      setTimeout(() => {
-        streamIframe.src = src;
-        reloadBtn.innerHTML = '<i class="fas fa-sync fa-spin"></i> Reloading...';
-        setTimeout(() => {
-          reloadBtn.innerHTML = '<i class="fas fa-sync"></i> Try Again';
-        }, 3000);
-      }, 500);
-    }
+  fallbackBtn.onclick = () => {
+    if (currentFallbacks.length > 0) {
+      streamIframe.src = currentFallbacks.shift();
+    } else alert('No alternate source');
   };
 
-  // ======= TRAILER =======
   async function openTrailer(id, title, overview) {
     const res = await fetch(`/api/movie/${id}/trailer`);
     const data = await res.json();
@@ -487,16 +659,14 @@
       document.getElementById('modal-title').innerText = title;
       document.getElementById('modal-overview').innerText = overview || '';
       trailerModal.style.display = 'flex';
-    } else {
-      alert('No trailer available');
-    }
+    } else alert('No trailer');
   }
 
   watchTrailerBtn.onclick = () => {
     if (featuredMovie) openTrailer(featuredMovie.id, featuredMovie.title, featuredMovie.overview);
   };
 
-  // ======= SEARCH =======
+  // Search
   searchIcon.onclick = () => { searchOverlay.style.display = 'flex'; searchInput.focus(); };
   searchClose.onclick = () => { searchOverlay.style.display = 'none'; searchResultsDiv.innerHTML = ''; };
   async function performSearch() {
@@ -514,95 +684,75 @@
   }
   searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
 
-  // ======= CLOSE MODALS =======
+  // Close modals
   document.querySelectorAll('.close-modal').forEach(btn => {
-    btn.onclick = (e) => {
-      const modal = e.target.closest('.modal');
-      if (modal) { modal.style.display = 'none'; const iframe = modal.querySelector('iframe'); if (iframe) iframe.src = ''; }
+    btn.onclick = () => {
+      trailerModal.style.display = 'none';
+      streamModal.style.display = 'none';
+      trailerIframe.src = '';
+      streamIframe.src = '';
     };
   });
   window.onclick = (e) => {
     if (e.target === trailerModal) { trailerModal.style.display = 'none'; trailerIframe.src = ''; }
+    if (e.target === streamModal) { streamModal.style.display = 'none'; streamIframe.src = ''; }
   };
 
-  // ======= QUICK LINKS =======
-  document.getElementById('link-help')?.addEventListener('click', () => alert('Help Center\n\nHow to stream?\nHow to fix playback?\nAccount issues?\n\nContact: support@monkius.com'));
-  document.getElementById('link-terms')?.addEventListener('click', () => alert('Terms of Use\n\n1. You must be 18+ to use this service.\n2. Content is for personal use only.\n3. No redistribution of content.\n4. Use at your own risk.'));
-  document.getElementById('link-privacy')?.addEventListener('click', () => alert('Privacy Policy\n\nWe collect:\n- Email (for account management)\n- Watch history (for recommendations)\n\nWe do not share your data with third parties.'));
-
-  // ======= NAVIGATION =======
-  document.querySelectorAll('[data-nav]').forEach(link => {
-    link.addEventListener('click', (e) => {
-      document.querySelectorAll('[data-nav]').forEach(l => l.classList.remove('active'));
-      e.target.classList.add('active');
-    });
-  });
-
-  // Load initial categories
-  loadCategories();
-
-  // ======= MODERN ANIMATED BACKGROUND =======
+  // PRO-LEVEL ANIMATED BACKGROUND (advanced)
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
   let w = window.innerWidth, h = window.innerHeight;
   let particles = [];
   let mouseX = w/2, mouseY = h/2;
   document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
-
   class Particle {
     constructor() {
       this.x = Math.random() * w;
       this.y = Math.random() * h;
-      this.vx = (Math.random() - 0.5) * 0.3;
-      this.vy = (Math.random() - 0.5) * 0.3;
-      this.size = Math.random() * 4 + 1;
-      this.hue = 340 + Math.random() * 30;
-      this.alpha = Math.random() * 0.4 + 0.1;
+      this.vx = (Math.random() - 0.5) * 0.4;
+      this.vy = (Math.random() - 0.5) * 0.4;
+      this.size = Math.random() * 3 + 1;
+      this.hue = 350 + Math.random() * 20;
+      this.alpha = Math.random() * 0.5 + 0.1;
       this.originalSize = this.size;
-      this.glow = Math.random() * 20 + 10;
     }
     update() {
       let dx = mouseX - this.x, dy = mouseY - this.y, dist = Math.hypot(dx, dy);
       if (dist < 150) {
         let angle = Math.atan2(dy, dx);
-        let force = (150 - dist) / 150 * 0.15;
+        let force = (150 - dist) / 150 * 0.2;
         this.vx += Math.cos(angle) * force;
         this.vy += Math.sin(angle) * force;
-        this.size = this.originalSize + (150 - dist) / 60;
-      } else {
-        this.size += (this.originalSize - this.size) * 0.02;
-      }
+        this.size = this.originalSize + (150 - dist) / 80;
+      } else this.size = this.originalSize;
       this.vx *= 0.98;
       this.vy *= 0.98;
       this.x += this.vx;
       this.y += this.vy;
-      if (this.x < -10) this.x = w + 10;
-      if (this.x > w + 10) this.x = -10;
-      if (this.y < -10) this.y = h + 10;
-      if (this.y > h + 10) this.y = -10;
+      if (this.x < 0) this.x = w;
+      if (this.x > w) this.x = 0;
+      if (this.y < 0) this.y = h;
+      if (this.y > h) this.y = 0;
     }
     draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fillStyle = `hsla(${this.hue}, 80%, 60%, ${this.alpha})`;
-      ctx.shadowColor = `hsla(${this.hue}, 80%, 60%, ${this.alpha * 0.5})`;
-      ctx.shadowBlur = this.glow;
+      ctx.fillStyle = `hsla(${this.hue}, 80%, 55%, ${this.alpha})`;
       ctx.fill();
-      ctx.shadowBlur = 0;
     }
   }
-  function initParticles() { particles = []; for (let i = 0; i < 180; i++) particles.push(new Particle()); }
+  function initParticles() { particles = []; for (let i = 0; i < 200; i++) particles.push(new Particle()); }
   function drawConnections() {
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         let dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
         let dist = Math.hypot(dx, dy);
-        if (dist < 120) {
+        if (dist < 100) {
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(229, 9, 20, ${(1 - dist / 120) * 0.15})`;
-          ctx.lineWidth = 0.6;
+          ctx.strokeStyle = `rgba(229, 9, 20, ${(1 - dist / 100) * 0.2})`;
+          ctx.lineWidth = 0.5;
           ctx.stroke();
         }
       }
@@ -612,9 +762,9 @@
   function animateBg() {
     ctx.clearRect(0, 0, w, h);
     time += 0.002;
-    const grad = ctx.createRadialGradient(mouseX, mouseY, 100, w/2, h/2, 800);
-    grad.addColorStop(0, '#120a1a');
-    grad.addColorStop(0.5, '#0a0a1e');
+    const grad = ctx.createRadialGradient(mouseX, mouseY, 50, w/2, h/2, 700);
+    grad.addColorStop(0, '#0a0a1a');
+    grad.addColorStop(0.5, '#1a0a1e');
     grad.addColorStop(1, '#050510');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, w, h);
@@ -630,111 +780,3 @@
 </script>
 </body>
 </html>
-<script>
-  // ======= BLOCK POPUP REDIRECTS =======
-  // Intercept all click events on the page
-  document.addEventListener('click', function(e) {
-    const target = e.target;
-    // Check if clicked element is a close button (common popup close selectors)
-    const isCloseBtn = target.matches('.close, .close-btn, .modal-close, .popup-close, [class*="close"], [id*="close"], .fa-times, .fa-xmark');
-    
-    if (isCloseBtn) {
-      // Prevent default action (which might cause redirect)
-      e.preventDefault();
-      e.stopPropagation();
-      
-      // Find the closest popup/overlay and hide it
-      const popup = target.closest('.modal, .overlay, .popup, .ad-container, .notification, [class*="modal"], [class*="overlay"], [class*="popup"], [class*="ad-"], [class*="notification"]');
-      if (popup) {
-        popup.style.display = 'none';
-        popup.style.opacity = '0';
-        popup.style.pointerEvents = 'none';
-        // Also remove any iframe that might be causing redirects
-        const iframes = popup.querySelectorAll('iframe');
-        iframes.forEach(iframe => iframe.src = '');
-      }
-      
-      // Also try to remove any body overlays
-      document.querySelectorAll('.modal, .overlay, .popup, .ad-container, .notification, [class*="modal"], [class*="overlay"], [class*="popup"]').forEach(el => {
-        if (el.style.display !== 'none') {
-          el.style.display = 'none';
-        }
-      });
-      
-      return false;
-    }
-  }, true); // use capture phase to intercept early
-
-  // Also intercept any window.open or location changes from popups
-  const originalOpen = window.open;
-  window.open = function(url, name, features) {
-    // Block popups that try to open new windows
-    console.log('Blocked popup window:', url);
-    return null;
-  };
-
-  // Prevent redirects from iframes
-  document.addEventListener('beforeunload', function(e) {
-    // If there's an iframe with video playing, prevent navigation
-    const iframe = document.getElementById('stream-iframe');
-    if (iframe && iframe.src && iframe.src.includes('embed')) {
-      e.preventDefault();
-      e.returnValue = '';
-    }
-  });
-
-  // Monitor for new popup elements and remove them
-  const observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-      mutation.addedNodes.forEach(function(node) {
-        if (node.nodeType === 1) { // Element node
-          // Check if node is a popup
-          const classes = node.className || '';
-          const id = node.id || '';
-          if (classes.includes('modal') || classes.includes('overlay') || classes.includes('popup') || 
-              classes.includes('ad') || classes.includes('notification') || 
-              id.includes('modal') || id.includes('overlay') || id.includes('popup') ||
-              id.includes('ad') || id.includes('notification')) {
-            // Remove or hide the popup
-            node.style.display = 'none';
-            node.style.pointerEvents = 'none';
-            // Also remove any child iframes
-            node.querySelectorAll('iframe').forEach(iframe => iframe.src = '');
-          }
-        }
-      });
-    });
-  });
-  observer.observe(document.body, { childList: true, subtree: true });
-
-  console.log('✅ Popup blocker active – close buttons will not redirect.');
-</script>
-<style>
-  /* Hide popup elements and prevent clicks on them */
-  .modal, .overlay, .popup, .ad-container, .notification,
-  [class*="modal"], [class*="overlay"], [class*="popup"], 
-  [class*="ad-"], [class*="notification"],
-  [id*="modal"], [id*="overlay"], [id*="popup"], 
-  [id*="ad-"], [id*="notification"] {
-    display: none !important;
-    pointer-events: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    position: fixed !important;
-    top: -9999px !important;
-    left: -9999px !important;
-  }
-  /* But allow our own modals */
-  #trailer-modal, #player-overlay, #stream-modal {
-    display: none !important;
-  }
-  #trailer-modal.active, #player-overlay.active, #stream-modal.active {
-    display: flex !important;
-    pointer-events: auto !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-  }
-</style>
