@@ -780,3 +780,18 @@
 </script>
 </body>
 </html>
+<script>
+  // Reload iframe functionality
+  document.getElementById('reload-btn')?.addEventListener('click', function() {
+    const iframe = document.getElementById('stream-iframe');
+    if (iframe) {
+      const src = iframe.src;
+      iframe.src = '';
+      setTimeout(() => { iframe.src = src; }, 500);
+      this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Reloading...';
+      setTimeout(() => {
+        this.innerHTML = '<i class="fas fa-sync"></i> Try Again';
+      }, 3000);
+    }
+  });
+</script>
