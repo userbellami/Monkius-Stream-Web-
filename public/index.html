@@ -438,7 +438,7 @@
       margin-right: auto;
     }
     
-    /* ======= PROFILE DROPDOWN ======= */
+    /* ======= NETFLIX-STYLE PROFILE DROPDOWN ======= */
     .profile-dropdown { position: relative; display: inline-block; }
     .profile-btn {
       background: transparent;
@@ -450,6 +450,7 @@
       padding: 6px 12px;
       border-radius: 30px;
       color: white;
+      font-size: 0.9rem;
     }
     .profile-btn:hover { background: rgba(255,255,255,0.1); }
     .profile-btn i { font-size: 1.4rem; color: #E50914; }
@@ -460,31 +461,42 @@
       right: 0;
       background: rgba(0,0,0,0.95);
       backdrop-filter: blur(10px);
-      min-width: 220px;
+      min-width: 200px;
       border-radius: 8px;
-      padding: 1rem;
+      padding: 0.5rem 0;
       border: 1px solid #333;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.8);
     }
     .profile-dropdown:hover .dropdown-content { display: block; }
-    .dropdown-content input {
-      width: 100%;
-      padding: 8px;
-      margin: 8px 0;
-      background: #222;
-      border: 1px solid #444;
-      border-radius: 4px;
-      color: white;
-    }
-    .dropdown-content button {
-      background: #E50914;
-      border: none;
-      padding: 8px;
-      width: 100%;
-      border-radius: 4px;
-      color: white;
+    .dropdown-item {
+      padding: 0.7rem 1.2rem;
+      color: #ddd;
+      font-size: 0.85rem;
       cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
     }
-    .dropdown-content button.secondary { background: #333; }
+    .dropdown-item:last-child { border-bottom: none; }
+    .dropdown-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+    .dropdown-item i { width: 18px; color: #aaa; }
+    .dropdown-item .email-text {
+      color: #888;
+      font-size: 0.75rem;
+      display: block;
+      margin-top: 2px;
+    }
+    .dropdown-divider {
+      border-top: 1px solid #333;
+      margin: 0.3rem 0;
+    }
+    .dropdown-item.logout {
+      color: #E50914;
+    }
+    .dropdown-item.logout i { color: #E50914; }
+    .dropdown-item.logout:hover { background: rgba(229,9,20,0.15); }
     
     @media (max-width: 768px) {
       .movie-card { width: 140px; }
@@ -731,30 +743,56 @@
     showAuthPage(isSignUp ? 'login' : 'signup');
   });
 
-  // ======= PROFILE UI =======
+  // ======= NETFLIX-STYLE PROFILE DROPDOWN =======
   async function updateProfileUI() {
     if (!currentUser) return;
     const doc = await db.collection('users').doc(currentUser.uid).collection('profile').doc('info').get();
     const displayName = doc.exists ? doc.data().displayName : currentUser.email.split('@')[0];
+    const email = currentUser.email;
+    
     authSection.innerHTML = `
       <div class="profile-dropdown">
-        <button class="profile-btn"><i class="fas fa-user-circle"></i><span>${displayName}</span><i class="fas fa-chevron-down"></i></button>
+        <button class="profile-btn">
+          <i class="fas fa-user-circle"></i>
+          <span>${displayName}</span>
+          <i class="fas fa-chevron-down" style="font-size:0.7rem;"></i>
+        </button>
         <div class="dropdown-content">
-          <input type="text" id="display-name-input" placeholder="Display Name" value="${displayName}">
-          <button id="save-name-btn">Save Name</button>
-          <button id="logout-btn" class="secondary">Logout</button>
+          <div class="dropdown-item">
+            <i class="fas fa-user"></i>
+            <div>
+              ${displayName}
+              <span class="email-text">${email}</span>
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-item" id="save-name-item">
+            <i class="fas fa-edit"></i> Edit Name
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-item logout" id="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Sign Out
+          </div>
         </div>
       </div>
     `;
-    document.getElementById('save-name-btn')?.addEventListener('click', async () => {
-      const newName = document.getElementById('display-name-input').value.trim();
-      if (newName) {
-        await db.collection('users').doc(currentUser.uid).collection('profile').doc('info').set({ displayName: newName }, { merge: true });
-        document.querySelector('#auth-section .profile-btn span').innerText = newName;
-        alert('Name updated');
+    
+    // Save name functionality
+    document.getElementById('save-name-item')?.addEventListener('click', async () => {
+      const newName = prompt('Enter your display name:', displayName);
+      if (newName && newName.trim() !== '') {
+        await db.collection('users').doc(currentUser.uid).collection('profile').doc('info').set({ displayName: newName.trim() }, { merge: true });
+        document.querySelector('#auth-section .profile-btn span').innerText = newName.trim();
+        alert('Name updated!');
       }
     });
-    document.getElementById('logout-btn')?.addEventListener('click', () => auth.signOut());
+    
+    // Logout functionality
+    document.getElementById('logout-btn')?.addEventListener('click', () => {
+      auth.signOut();
+      // Show a brief confirmation
+      alert('Signed out successfully.');
+    });
   }
 
   function showLanding() {
