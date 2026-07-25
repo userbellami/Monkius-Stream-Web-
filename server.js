@@ -8,11 +8,6 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static('public'));
 app.use(express.json());
 
-// Cache for sitemap movies (refresh every 24h)
-let sitemapCache = null;
-let sitemapLastUpdate = 0;
-
-// TMDB endpoints
 app.get('/api/movies/:category', async (req, res) => {
   const { category } = req.params;
   const key = process.env.TMDB_API_KEY;
@@ -62,22 +57,13 @@ app.get('/api/movie/:id/trailer', async (req, res) => {
   }
 });
 
-// Streaming with fallbacks
+// Use embed.su – known for fewer popups
 app.get('/api/stream/:id', (req, res) => {
   const { id } = req.params;
-  const providers = [
-    `https://vidsrc.me/embed/movie/${id}?autoplay=1`,
-    `https://vidsrc.xyz/embed/movie/${id}`,
-    `https://2embed.cc/embed/${id}`,
-    `https://embed.su/embed/movie/${id}`
-  ];
-  res.json({ url: providers[0], fallbacks: providers.slice(1) });
+  const url = `https://embed.su/embed/movie/${id}`;
+  res.json({ url: url, fallbacks: [] });
 });
 
-// -------------------------------
-// SEO Routes
-// -------------------------------
-// Robots.txt
 app.get('/robots.txt', (req, res) => {
   res.type('text/plain');
   res.send(`User-agent: *
@@ -85,18 +71,12 @@ Allow: /
 Sitemap: https://monkius-full-stream.onrender.com/sitemap.xml`);
 });
 
-// Sitemap.xml generator (dynamic, caches movies for 24h)
 app.get('/sitemap.xml', async (req, res) => {
   try {
-    const now = Date.now();
-    if (sitemapCache && (now - sitemapLastUpdate) < 24 * 60 * 60 * 1000) {
-      return res.type('application/xml').send(sitemapCache);
-    }
     const key = process.env.TMDB_API_KEY;
     const trendingRes = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${key}`);
     const trendingData = await trendingRes.json();
     const movies = trendingData.results || [];
-    // Generate sitemap XML
     let urls = '';
     const baseUrl = 'https://monkius-full-stream.onrender.com';
     movies.slice(0, 50).forEach(movie => {
@@ -117,20 +97,21 @@ app.get('/sitemap.xml', async (req, res) => {
     <priority>1.0</priority>
   </url>${urls}
 </urlset>`;
-    sitemapCache = sitemap;
-    sitemapLastUpdate = now;
     res.type('application/xml').send(sitemap);
   } catch (err) {
     res.status(500).send('Error generating sitemap');
   }
 });
 
-// Individual movie page (for SEO – dynamic route)
 app.get('/movie/:id', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Serve frontend
+app.get('/sw.js', (req, res) => {
+  res.type('application/javascript');
+  res.sendFile(path.join(__dirname, 'public', 'sw.js'));
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
