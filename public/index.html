@@ -54,7 +54,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Inter', sans-serif; background: #000; color: white; overflow-x: hidden; }
     
-    /* ======= ANIMATED BACKGROUND ======= */
+    /* ======= GLOWING ANIMATED BACKGROUND ======= */
     #bg-canvas {
       position: fixed;
       top: 0;
@@ -63,7 +63,7 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
-      transition: opacity 1.5s ease;
+      transition: opacity 1s ease;
     }
     .bg-overlay {
       position: fixed;
@@ -72,7 +72,7 @@
       width: 100%;
       height: 100%;
       z-index: 1;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.55);
       pointer-events: none;
     }
     .main-content {
@@ -87,7 +87,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 1.2rem 4%;
-      background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 100%);
+      background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 100%);
       position: sticky;
       top: 0;
       z-index: 100;
@@ -117,14 +117,13 @@
       justify-content: center;
       text-align: center;
       padding: 2rem;
-      background: radial-gradient(ellipse at 50% 40%, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%);
     }
     .hero-content-landing { max-width: 700px; }
     .hero-content-landing h1 {
       font-size: 3.8rem;
       font-weight: 900;
       margin-bottom: 1rem;
-      text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+      text-shadow: 0 2px 30px rgba(0,0,0,0.8);
     }
     .hero-content-landing .subtitle {
       font-size: 1.5rem;
@@ -165,10 +164,101 @@
     }
     .email-form button:hover { background: #b20710; }
     
-    /* ======= FEATURES (Netflix Style) ======= */
+    /* ======= NETFLIX-STYLE REGISTRATION PAGE ======= */
+    .auth-page {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .auth-container {
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(10px);
+      padding: 3rem;
+      border-radius: 8px;
+      max-width: 450px;
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .auth-container h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .auth-container input {
+      width: 100%;
+      padding: 1rem;
+      margin: 0.5rem 0;
+      background: #333;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-size: 1rem;
+    }
+    .auth-container input:focus {
+      outline: 2px solid #E50914;
+      background: #444;
+    }
+    .auth-container .auth-btn {
+      width: 100%;
+      padding: 1rem;
+      background: #E50914;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: 0.2s;
+    }
+    .auth-container .auth-btn:hover { background: #b20710; }
+    .auth-container .toggle-auth {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: #aaa;
+      cursor: pointer;
+    }
+    .auth-container .toggle-auth span {
+      color: #E50914;
+      font-weight: 600;
+    }
+    .auth-container .toggle-auth span:hover { text-decoration: underline; }
+    .auth-container .error-msg {
+      color: #E50914;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      text-align: center;
+      display: none;
+    }
+    .auth-container .success-msg {
+      color: #4CAF50;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      text-align: center;
+      display: none;
+    }
+    .auth-container .divider {
+      display: flex;
+      align-items: center;
+      margin: 1.5rem 0;
+      color: #666;
+    }
+    .auth-container .divider::before,
+    .auth-container .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #333;
+    }
+    .auth-container .divider span { padding: 0 1rem; }
+    
+    /* ======= FEATURES ======= */
     .features-section {
       padding: 3rem 4%;
-      background: #0a0a0a;
+      background: rgba(0,0,0,0.7);
       text-align: center;
       border-top: 8px solid #222;
     }
@@ -181,12 +271,12 @@
       margin-top: 1.5rem;
     }
     .feature-card {
-      background: #111;
+      background: rgba(255,255,255,0.05);
       padding: 2rem;
       border-radius: 12px;
       width: 280px;
       transition: transform 0.3s;
-      border: 1px solid #222;
+      border: 1px solid rgba(255,255,255,0.1);
     }
     .feature-card:hover { transform: translateY(-5px); border-color: #E50914; }
     .feature-card i { font-size: 2.8rem; color: #E50914; margin-bottom: 1rem; }
@@ -245,36 +335,6 @@
     .btn-watch:hover { background: #b20710; }
     .btn-trailer:hover { background: #444; }
     
-    /* ======= AUTH PANELS ======= */
-    .signin-panel, .signup-panel {
-      background: rgba(0,0,0,0.92);
-      padding: 2rem;
-      border-radius: 8px;
-      max-width: 450px;
-      margin: 2rem auto;
-    }
-    .signin-panel input, .signup-panel input {
-      width: 100%;
-      padding: 1rem;
-      margin: 0.5rem 0;
-      background: #333;
-      border: none;
-      border-radius: 4px;
-      color: white;
-    }
-    .signin-panel button, .signup-panel button {
-      width: 100%;
-      padding: 1rem;
-      background: #E50914;
-      border: none;
-      border-radius: 4px;
-      color: white;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .toggle-auth { text-align: center; margin-top: 1rem; color: #aaa; cursor: pointer; }
-    .toggle-auth span { color: #E50914; }
-    
     /* ======= MODALS ======= */
     .modal {
       display: none;
@@ -330,7 +390,7 @@
     
     /* ======= FOOTER ======= */
     .footer {
-      background: #0a0a0a;
+      background: rgba(0,0,0,0.8);
       margin-top: 3rem;
       padding: 2rem 4%;
       border-top: 8px solid #222;
@@ -423,11 +483,12 @@
       .email-form input { width: 100%; }
       .modal-video { height: 250px; }
       .nav-links { display: none; }
+      .auth-container { padding: 2rem; }
     }
   </style>
 </head>
 <body>
-<!-- Background Canvas -->
+<!-- Glowing Animated Background -->
 <canvas id="bg-canvas"></canvas>
 <div class="bg-overlay"></div>
 
@@ -451,7 +512,7 @@
     </div>
   </div>
 
-  <!-- LANDING PAGE (Netflix Style) -->
+  <!-- LANDING PAGE -->
   <div id="landing-page">
     <div class="hero-landing">
       <div class="hero-content-landing">
@@ -465,7 +526,7 @@
       </div>
     </div>
     
-    <!-- Features (Netflix Style) -->
+    <!-- Features -->
     <div class="features-section">
       <h2>Why choose Monkius?</h2>
       <div class="features-grid">
@@ -480,20 +541,18 @@
       <div class="category-header"><h2>🔥 Trending Now</h2></div>
       <div class="movie-row" id="landing-trending-row"></div>
     </div>
-    
-    <div id="signin-panel" class="signin-panel" style="display: none;">
-      <h2>Sign In</h2>
-      <input type="email" id="signin-email" placeholder="Email">
-      <input type="password" id="signin-password" placeholder="Password">
-      <button id="signin-submit">Sign In</button>
-      <div class="toggle-auth" id="toggle-signup">New? <span>Sign up now</span></div>
-    </div>
-    <div id="signup-panel" class="signup-panel" style="display: none;">
-      <h2>Sign Up</h2>
-      <input type="email" id="signup-email" placeholder="Email">
-      <input type="password" id="signup-password" placeholder="Password (min 6 chars)">
-      <button id="signup-submit">Create Account</button>
-      <div class="toggle-auth" id="toggle-login">Already have account? <span>Sign In</span></div>
+  </div>
+
+  <!-- ======= NETFLIX-STYLE REGISTRATION PAGE ======= -->
+  <div id="auth-page" class="auth-page" style="display: none;">
+    <div class="auth-container">
+      <h2 id="auth-title">Sign In</h2>
+      <div id="auth-error" class="error-msg"></div>
+      <div id="auth-success" class="success-msg"></div>
+      <input type="email" id="auth-email" placeholder="Email address">
+      <input type="password" id="auth-password" placeholder="Password">
+      <button class="auth-btn" id="auth-submit">Sign In</button>
+      <div class="toggle-auth" id="auth-toggle">New to Monkius? <span>Sign up now</span>.</div>
     </div>
   </div>
 
@@ -551,9 +610,11 @@
   let currentUser = null;
   let featuredMovie = null;
   let currentFallbacks = [];
+  let isSignUp = false;
 
   // DOM refs
   const landingPage = document.getElementById('landing-page');
+  const authPage = document.getElementById('auth-page');
   const appContainer = document.getElementById('app-container');
   const authSection = document.getElementById('auth-section');
   const categoriesContainer = document.getElementById('categories-container');
@@ -572,6 +633,69 @@
   const streamTitle = document.getElementById('stream-title');
   const streamDesc = document.getElementById('stream-desc');
   const fallbackBtn = document.getElementById('fallback-btn');
+
+  // Auth elements
+  const authTitle = document.getElementById('auth-title');
+  const authEmail = document.getElementById('auth-email');
+  const authPassword = document.getElementById('auth-password');
+  const authSubmit = document.getElementById('auth-submit');
+  const authToggle = document.getElementById('auth-toggle');
+  const authError = document.getElementById('auth-error');
+  const authSuccess = document.getElementById('auth-success');
+
+  // ======= AUTH FUNCTIONS =======
+  function showAuthPage(mode) {
+    landingPage.style.display = 'none';
+    authPage.style.display = 'flex';
+    appContainer.style.display = 'none';
+    isSignUp = mode === 'signup';
+    authTitle.innerText = isSignUp ? 'Sign Up' : 'Sign In';
+    authSubmit.innerText = isSignUp ? 'Create Account' : 'Sign In';
+    authToggle.innerHTML = isSignUp 
+      ? 'Already have an account? <span>Sign In</span>'
+      : 'New to Monkius? <span>Sign up now</span>';
+    authError.style.display = 'none';
+    authSuccess.style.display = 'none';
+    authEmail.value = '';
+    authPassword.value = '';
+  }
+
+  authSubmit.addEventListener('click', async () => {
+    const email = authEmail.value.trim();
+    const password = authPassword.value.trim();
+    if (!email || !password) {
+      authError.innerText = 'Please fill in all fields.';
+      authError.style.display = 'block';
+      return;
+    }
+    if (password.length < 6) {
+      authError.innerText = 'Password must be at least 6 characters.';
+      authError.style.display = 'block';
+      return;
+    }
+    authError.style.display = 'none';
+    authSuccess.style.display = 'none';
+    try {
+      if (isSignUp) {
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        await db.collection('users').doc(userCredential.user.uid).collection('profile').doc('info').set({ displayName: email.split('@')[0] });
+        authSuccess.innerText = 'Account created! Welcome to Monkius.';
+        authSuccess.style.display = 'block';
+      } else {
+        await auth.signInWithEmailAndPassword(email, password);
+        authSuccess.innerText = 'Signed in successfully!';
+        authSuccess.style.display = 'block';
+      }
+      // Auth state change will handle navigation
+    } catch (err) {
+      authError.innerText = err.message;
+      authError.style.display = 'block';
+    }
+  });
+
+  authToggle.addEventListener('click', () => {
+    showAuthPage(isSignUp ? 'login' : 'signup');
+  });
 
   // ======= PROFILE UI =======
   async function updateProfileUI() {
@@ -601,17 +725,16 @@
 
   function showLanding() {
     landingPage.style.display = 'block';
+    authPage.style.display = 'none';
     appContainer.style.display = 'none';
     authSection.innerHTML = '<button id="navbar-signin" style="background:#E50914; border:none; padding:0.4rem 1rem; border-radius:4px; color:white; cursor:pointer;">Sign In</button>';
-    document.getElementById('navbar-signin')?.addEventListener('click', () => {
-      document.getElementById('signin-panel').style.display = 'block';
-      document.getElementById('signup-panel').style.display = 'none';
-    });
+    document.getElementById('navbar-signin')?.addEventListener('click', () => showAuthPage('login'));
     loadLandingTrending();
   }
 
   function showApp() {
     landingPage.style.display = 'none';
+    authPage.style.display = 'none';
     appContainer.style.display = 'block';
     updateProfileUI();
     loadCategories();
@@ -623,34 +746,15 @@
     else showLanding();
   });
 
-  // Auth
+  // Landing email -> signup
   document.getElementById('get-started-btn')?.addEventListener('click', () => {
     const email = document.getElementById('landing-email').value.trim();
     if (email) {
-      document.getElementById('signup-panel').style.display = 'block';
-      document.getElementById('signin-panel').style.display = 'none';
-      document.getElementById('signup-email').value = email;
+      showAuthPage('signup');
+      authEmail.value = email;
+    } else {
+      showAuthPage('signup');
     }
-  });
-  document.getElementById('signin-submit')?.addEventListener('click', () => {
-    const email = document.getElementById('signin-email').value;
-    const pwd = document.getElementById('signin-password').value;
-    auth.signInWithEmailAndPassword(email, pwd).catch(e => alert(e.message));
-  });
-  document.getElementById('signup-submit')?.addEventListener('click', () => {
-    const email = document.getElementById('signup-email').value;
-    const pwd = document.getElementById('signup-password').value;
-    auth.createUserWithEmailAndPassword(email, pwd).then(() => {
-      db.collection('users').doc(auth.currentUser.uid).collection('profile').doc('info').set({ displayName: email.split('@')[0] });
-    }).catch(e => alert(e.message));
-  });
-  document.getElementById('toggle-signup')?.addEventListener('click', () => {
-    document.getElementById('signin-panel').style.display = 'none';
-    document.getElementById('signup-panel').style.display = 'block';
-  });
-  document.getElementById('toggle-login')?.addEventListener('click', () => {
-    document.getElementById('signup-panel').style.display = 'none';
-    document.getElementById('signin-panel').style.display = 'block';
   });
 
   // Landing trending
@@ -666,10 +770,7 @@
         <img class="movie-poster" src="https://image.tmdb.org/t/p/w300${m.poster_path}">
         <div class="movie-info"><div class="movie-title">${m.title}</div><button class="btn-watch">Sign in to watch</button></div>
       `;
-      card.querySelector('button').onclick = () => {
-        document.getElementById('signin-panel').style.display = 'block';
-        document.getElementById('signup-panel').style.display = 'none';
-      };
+      card.querySelector('button').onclick = () => showAuthPage('login');
       row.appendChild(card);
     });
   }
@@ -828,20 +929,23 @@
     return null;
   };
 
-  // ======= DYNAMIC BACKGROUND (CHANGES EVERY 3 SECONDS) =======
+  // ======= GLOWING ANIMATED BACKGROUND (Changes every 3 seconds) =======
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
   let w = window.innerWidth, h = window.innerHeight;
   let particles = [];
   let mouseX = w/2, mouseY = h/2;
   let bgStyle = 0;
+  
+  // Bright glowing color palettes
   const BG_STYLES = [
-    { colors: ['#120a1a', '#0a0a1e', '#050510'], hue: 340 },
-    { colors: ['#0a1a1a', '#0a1e1e', '#051010'], hue: 180 },
-    { colors: ['#1a0a0a', '#1e0a0a', '#100505'], hue: 20 },
-    { colors: ['#0a0a2a', '#0a1a3e', '#050520'], hue: 240 },
-    { colors: ['#1a1a0a', '#2a2a0a', '#151505'], hue: 60 },
-    { colors: ['#2a0a1a', '#3e0a2a', '#200515'], hue: 300 }
+    { colors: ['#1a0a20', '#2d0a40', '#400a60'], glow: '#ff0066' },
+    { colors: ['#0a1a30', '#0a3a60', '#0a5a90'], glow: '#00ccff' },
+    { colors: ['#1a0a0a', '#3d0a0a', '#600a0a'], glow: '#ff3300' },
+    { colors: ['#1a1a0a', '#3d3d0a', '#60600a'], glow: '#ffcc00' },
+    { colors: ['#0a1a1a', '#0a3d3d', '#0a6060'], glow: '#00ff99' },
+    { colors: ['#1a0a30', '#3d0a60', '#600a90'], glow: '#cc00ff' },
+    { colors: ['#0a0a1a', '#0a0a3d', '#0a0a60'], glow: '#3366ff' }
   ];
 
   document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
@@ -850,22 +954,22 @@
     constructor() {
       this.x = Math.random() * w;
       this.y = Math.random() * h;
-      this.vx = (Math.random() - 0.5) * 0.3;
-      this.vy = (Math.random() - 0.5) * 0.3;
-      this.size = Math.random() * 4 + 1;
-      this.hue = 340 + Math.random() * 30;
-      this.alpha = Math.random() * 0.4 + 0.1;
+      this.vx = (Math.random() - 0.5) * 0.4;
+      this.vy = (Math.random() - 0.5) * 0.4;
+      this.size = Math.random() * 5 + 2;
+      this.hue = 0;
+      this.alpha = Math.random() * 0.6 + 0.2;
       this.originalSize = this.size;
-      this.glow = Math.random() * 20 + 10;
+      this.glow = Math.random() * 30 + 15;
     }
     update() {
       let dx = mouseX - this.x, dy = mouseY - this.y, dist = Math.hypot(dx, dy);
-      if (dist < 150) {
+      if (dist < 180) {
         let angle = Math.atan2(dy, dx);
-        let force = (150 - dist) / 150 * 0.15;
+        let force = (180 - dist) / 180 * 0.2;
         this.vx += Math.cos(angle) * force;
         this.vy += Math.sin(angle) * force;
-        this.size = this.originalSize + (150 - dist) / 60;
+        this.size = this.originalSize + (180 - dist) / 50;
       } else {
         this.size += (this.originalSize - this.size) * 0.02;
       }
@@ -873,37 +977,40 @@
       this.vy *= 0.98;
       this.x += this.vx;
       this.y += this.vy;
-      if (this.x < -10) this.x = w + 10;
-      if (this.x > w + 10) this.x = -10;
-      if (this.y < -10) this.y = h + 10;
-      if (this.y > h + 10) this.y = -10;
+      if (this.x < -20) this.x = w + 20;
+      if (this.x > w + 20) this.x = -20;
+      if (this.y < -20) this.y = h + 20;
+      if (this.y > h + 20) this.y = -20;
     }
-    draw(hueOffset) {
-      const hue = (this.hue + hueOffset) % 360;
+    draw(glowColor) {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fillStyle = `hsla(${hue}, 80%, 60%, ${this.alpha})`;
-      ctx.shadowColor = `hsla(${hue}, 80%, 60%, ${this.alpha * 0.5})`;
+      ctx.fillStyle = glowColor;
+      ctx.shadowColor = glowColor;
       ctx.shadowBlur = this.glow;
+      ctx.globalAlpha = this.alpha;
       ctx.fill();
       ctx.shadowBlur = 0;
+      ctx.globalAlpha = 1;
     }
   }
 
-  function initParticles() { particles = []; for (let i = 0; i < 180; i++) particles.push(new Particle()); }
+  function initParticles() { particles = []; for (let i = 0; i < 160; i++) particles.push(new Particle()); }
 
-  function drawConnections(hueOffset) {
+  function drawConnections(glowColor) {
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         let dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
         let dist = Math.hypot(dx, dy);
-        if (dist < 120) {
+        if (dist < 130) {
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(229, 9, 20, ${(1 - dist / 120) * 0.15})`;
-          ctx.lineWidth = 0.6;
+          ctx.strokeStyle = glowColor;
+          ctx.globalAlpha = (1 - dist / 130) * 0.15;
+          ctx.lineWidth = 0.8;
           ctx.stroke();
+          ctx.globalAlpha = 1;
         }
       }
     }
@@ -918,7 +1025,7 @@
     time += 0.002;
     styleTimer += 0.002;
 
-    // Change background style every 3 seconds
+    // Change background every 3 seconds
     if (styleTimer > 3) {
       styleTimer = 0;
       currentStyle = (currentStyle + 1) % BG_STYLES.length;
@@ -926,19 +1033,19 @@
     }
 
     const style = BG_STYLES[currentStyle];
-    const hueOffset = style.hue || 0;
+    const glowColor = style.glow;
 
-    // Dynamic gradient
-    const grad = ctx.createRadialGradient(mouseX, mouseY, 100, w/2, h/2, 800);
+    // Dynamic radial gradient
+    const grad = ctx.createRadialGradient(mouseX, mouseY, 50, w/2, h/2, 800);
     grad.addColorStop(0, style.colors[0]);
     grad.addColorStop(0.5, style.colors[1]);
     grad.addColorStop(1, style.colors[2]);
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, w, h);
 
-    // Draw particles with hue offset
-    particles.forEach(p => { p.update(); p.draw(hueOffset); });
-    drawConnections(hueOffset);
+    // Draw particles with glow
+    particles.forEach(p => { p.update(); p.draw(glowColor); });
+    drawConnections(glowColor);
 
     requestAnimationFrame(animateBg);
   }
