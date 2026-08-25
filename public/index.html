@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>CINEXUS – Movies. Series. Sports. Comedy. All in One Universe.</title>
-  <meta name="description" content="Stream endless entertainment from blockbuster movies to live sports and exclusive originals.">
-  <meta name="keywords" content="CINEXUS, streaming, movies, TV shows, sports, comedy, unlimited entertainment">
+  <title>CINEXUS – Premium Streaming</title>
+  <meta name="description" content="Stream endless entertainment from blockbuster movies to live sports and exclusive originals in stunning 4K, with no ads.">
+  <meta name="keywords" content="CINEXUS, streaming, movies, TV shows, sports, comedy">
   <meta name="author" content="CINEXUS">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://monkius-full-stream.onrender.com">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://monkius-full-stream.onrender.com">
-  <meta property="og:title" content="CINEXUS – Movies. Series. Sports. Comedy. All in One Universe.">
-  <meta property="og:description" content="Stream endless entertainment from blockbuster movies to live sports and exclusive originals.">
+  <meta property="og:title" content="CINEXUS – Premium Streaming">
+  <meta property="og:description" content="Stream endless entertainment from blockbuster movies to live sports and exclusive originals in stunning 4K, with no ads.">
   <meta property="og:image" content="https://image.tmdb.org/t/p/original/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="CINEXUS">
-  <meta name="twitter:description" content="Stream endless entertainment from blockbuster movies to live sports.">
+  <meta name="twitter:description" content="Stream the best movies and TV shows. Cancel anytime.">
   <meta name="twitter:image" content="https://image.tmdb.org/t/p/original/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +26,7 @@
     "@type": "VideoGame",
     "name": "CINEXUS",
     "url": "https://monkius-full-stream.onrender.com",
-    "description": "Stream endless entertainment from blockbuster movies to live sports and exclusive originals.",
+    "description": "Stream endless entertainment from blockbuster movies to live sports and exclusive originals in stunning 4K, with no ads.",
     "provider": {
       "@type": "Organization",
       "name": "CINEXUS",
@@ -91,8 +91,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 4%;
-      background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 100%);
+      padding: 1.2rem 4%;
+      background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 100%);
       position: sticky;
       top: 0;
       z-index: 100;
@@ -123,7 +123,7 @@
       color: #e5e5e5;
       text-decoration: none;
       font-weight: 500;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       cursor: pointer;
       transition: 0.2s;
     }
@@ -140,44 +140,44 @@
     }
     .search-icon:hover { color: #E50914; }
     
-    /* ======= HERO SECTION ======= */
+    /* ======= HERO SECTION (StreamVerse style) ======= */
     .hero {
-      min-height: 90vh;
+      min-height: 85vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
       padding: 2rem;
-      background: radial-gradient(ellipse at 50% 40%, rgba(229,9,20,0.1) 0%, transparent 70%);
+      background: radial-gradient(ellipse at 50% 40%, rgba(229,9,20,0.08) 0%, transparent 70%);
     }
-    .hero-content { max-width: 800px; }
+    .hero-content { max-width: 750px; }
     .hero-content .welcome {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       letter-spacing: 6px;
       color: #E50914;
       text-transform: uppercase;
       font-weight: 600;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
     }
     .hero-content h1 {
       font-size: 4.5rem;
       font-weight: 900;
-      background: linear-gradient(135deg, #fff 0%, #E50914 100%);
+      background: linear-gradient(135deg, #fff 0%, #E50914 80%);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
     }
     .hero-content .tagline {
-      font-size: 1.4rem;
-      color: #ccc;
+      font-size: 1.5rem;
+      color: #ddd;
       margin-bottom: 0.5rem;
-      font-weight: 300;
+      font-weight: 400;
     }
     .hero-content .description {
-      font-size: 1rem;
-      color: #999;
+      font-size: 1.05rem;
+      color: #aaa;
       max-width: 600px;
       margin: 0 auto 2rem;
       line-height: 1.6;
@@ -201,8 +201,8 @@
     }
     .btn-primary:hover { background: #b20710; transform: scale(1.02); }
     .btn-secondary {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
       padding: 0.8rem 2.5rem;
       border-radius: 30px;
       color: white;
@@ -211,23 +211,37 @@
       cursor: pointer;
       transition: 0.2s;
     }
-    .btn-secondary:hover { background: rgba(255,255,255,0.2); }
+    .btn-secondary:hover { background: rgba(255,255,255,0.15); }
     
-    /* ======= CATEGORY NAV ======= */
+    /* ======= TRENDING NOW BANNER ======= */
+    .trending-banner {
+      text-align: center;
+      padding: 0.5rem 2rem 1.5rem;
+      color: #aaa;
+      font-size: 0.95rem;
+    }
+    .trending-banner strong {
+      color: #E50914;
+      font-weight: 700;
+    }
+    
+    /* ======= CATEGORY NAV (StreamVerse style) ======= */
     .category-nav {
       display: flex;
-      gap: 1.5rem;
-      padding: 0.5rem 4%;
-      background: rgba(0,0,0,0.4);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      gap: 2.5rem;
+      padding: 0.8rem 4%;
+      background: rgba(0,0,0,0.3);
+      border-top: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
       overflow-x: auto;
       flex-wrap: nowrap;
     }
     .category-nav a {
-      color: #aaa;
+      color: #999;
       text-decoration: none;
-      font-size: 0.85rem;
-      padding: 0.5rem 0;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.3rem 0;
       border-bottom: 2px solid transparent;
       transition: 0.2s;
       white-space: nowrap;
@@ -241,10 +255,10 @@
     /* ======= STATS SECTION ======= */
     .stats-section {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 2rem;
-      padding: 3rem 4%;
-      max-width: 1000px;
+      padding: 2.5rem 4%;
+      max-width: 900px;
       margin: 0 auto;
       text-align: center;
     }
@@ -255,7 +269,7 @@
     }
     .stat-item p {
       color: #999;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       margin-top: 0.3rem;
     }
     
@@ -272,18 +286,19 @@
       margin-bottom: 1rem;
     }
     .category-header h2 {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: 700;
     }
     .category-header .view-all {
       color: #E50914;
       font-size: 0.85rem;
       cursor: pointer;
+      font-weight: 500;
     }
     .category-header .view-all:hover { text-decoration: underline; }
     .movie-row {
       display: flex;
-      gap: 1rem;
+      gap: 1.2rem;
       overflow-x: auto;
       scroll-behavior: smooth;
       padding-bottom: 1rem;
@@ -297,18 +312,21 @@
       border-radius: 10px;
       overflow: hidden;
       background: #111;
-      transition: transform 0.3s;
+      transition: transform 0.3s, box-shadow 0.3s;
       cursor: pointer;
       position: relative;
     }
-    .movie-card:hover { transform: scale(1.05); }
+    .movie-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+    }
     .movie-poster {
       width: 100%;
       height: 280px;
       object-fit: cover;
     }
     .movie-info {
-      padding: 0.6rem;
+      padding: 0.7rem;
     }
     .movie-title {
       font-size: 0.85rem;
@@ -322,12 +340,12 @@
     .movie-actions {
       display: flex;
       gap: 0.5rem;
-      margin-top: 0.5rem;
+      margin-top: 0.6rem;
     }
     .btn-watch, .btn-trailer {
       background: #E50914;
       border: none;
-      padding: 4px 12px;
+      padding: 4px 14px;
       border-radius: 20px;
       color: white;
       font-size: 0.65rem;
@@ -352,18 +370,18 @@
       border-bottom: 1px solid rgba(255,255,255,0.05);
     }
     .feature-item i {
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       color: #E50914;
       margin-bottom: 0.5rem;
     }
     .feature-item h4 {
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: 600;
       margin-bottom: 0.3rem;
     }
     .feature-item p {
       color: #888;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
     }
     
     /* ======= AUTH PAGE ======= */
@@ -429,20 +447,14 @@
       font-weight: 600;
     }
     .auth-container .toggle-auth span:hover { text-decoration: underline; }
-    .auth-container .error-msg {
-      color: #E50914;
+    .auth-container .error-msg, .auth-container .success-msg {
       font-size: 0.85rem;
       margin-top: 0.5rem;
       text-align: center;
       display: none;
     }
-    .auth-container .success-msg {
-      color: #4CAF50;
-      font-size: 0.85rem;
-      margin-top: 0.5rem;
-      text-align: center;
-      display: none;
-    }
+    .auth-container .error-msg { color: #E50914; }
+    .auth-container .success-msg { color: #4CAF50; }
     
     /* ======= MODALS ======= */
     .modal {
@@ -644,7 +656,8 @@
       .stats-section { grid-template-columns: repeat(2, 1fr); }
       .features-section { grid-template-columns: 1fr; }
       .modal-video { height: 250px; }
-      .category-nav { gap: 1rem; }
+      .category-nav { gap: 1.5rem; }
+      .category-nav a { font-size: 0.8rem; }
     }
   </style>
 </head>
@@ -658,12 +671,12 @@
   <div class="navbar">
     <div class="logo">CIN<span>EXUS</span></div>
     <div class="nav-links" id="nav-links-auth">
-      <a class="active" data-nav="home">Home</a>
-      <a data-nav="movies">Movies</a>
-      <a data-nav="tvshows">TV Shows</a>
-      <a data-nav="sports">Sports</a>
-      <a data-nav="comedy">Comedy</a>
-      <a data-nav="mylist">My List</a>
+      <a class="active" data-cat="home">Home</a>
+      <a data-cat="movies">Movies</a>
+      <a data-cat="tvshows">TV Shows</a>
+      <a data-cat="sports">Sports</a>
+      <a data-cat="comedy">Comedy</a>
+      <a data-cat="mylist">My List</a>
     </div>
     <div class="nav-right">
       <i class="fas fa-search search-icon" id="search-icon"></i>
@@ -671,7 +684,7 @@
     </div>
   </div>
 
-  <!-- Category Nav -->
+  <!-- Category Nav (duplicate for easy access) -->
   <div class="category-nav" id="category-nav">
     <a class="active" data-cat="home">Home</a>
     <a data-cat="movies">Movies</a>
@@ -698,12 +711,17 @@
         <div class="welcome">WELCOME TO</div>
         <h1>CINEXUS</h1>
         <div class="tagline">Movies. Series. Sports. Comedy. All in One Universe.</div>
-        <div class="description">Stream endless entertainment from blockbuster movies to live sports and exclusive originals.</div>
+        <div class="description">Stream endless entertainment from blockbuster movies to live sports and exclusive originals — in stunning 4K, with no ads.</div>
         <div class="hero-buttons">
-          <button class="btn-primary" id="get-started-btn">Start Streaming</button>
+          <button class="btn-primary" id="get-started-btn">▶ Start Streaming</button>
           <button class="btn-secondary" id="explore-btn">Explore</button>
         </div>
       </div>
+    </div>
+
+    <!-- Trending banner -->
+    <div class="trending-banner">
+      Trending right now: <strong id="trending-title">Loading...</strong>
     </div>
 
     <!-- Stats -->
@@ -713,7 +731,7 @@
       <div class="stat-item"><h3>Live</h3><p>Matches</p></div>
     </div>
 
-    <!-- Trending -->
+    <!-- Trending Row -->
     <div class="category-section">
       <div class="category-header">
         <h2>🔥 Trending Now</h2>
@@ -755,7 +773,7 @@
     </div>
   </div>
 
-  <!-- MAIN APP -->
+  <!-- MAIN APP (logged in) -->
   <div id="app-container" style="display: none;">
     <div id="categories-container"></div>
   </div>
@@ -814,6 +832,9 @@
   let featuredMovie = null;
   let currentFallbacks = [];
   let isSignUp = false;
+  let currentCategory = 'home';
+  let allMovies = [];
+  let currentCategoryMovies = [];
 
   // DOM refs
   const landingPage = document.getElementById('landing-page');
@@ -833,6 +854,7 @@
   const streamTitle = document.getElementById('stream-title');
   const streamDesc = document.getElementById('stream-desc');
   const fallbackBtn = document.getElementById('fallback-btn');
+  const trendingTitleSpan = document.getElementById('trending-title');
 
   // Auth elements
   const authTitle = document.getElementById('auth-title');
@@ -951,6 +973,7 @@
     appContainer.style.display = 'none';
     authSection.innerHTML = '<button id="navbar-signin" style="background:#E50914; border:none; padding:0.4rem 1rem; border-radius:8px; color:white; cursor:pointer; font-weight:600;">Sign In</button>';
     document.getElementById('navbar-signin')?.addEventListener('click', () => showAuthPage('login'));
+    // Load trending for landing
     loadLandingTrending();
   }
 
@@ -959,7 +982,8 @@
     authPage.style.display = 'none';
     appContainer.style.display = 'block';
     updateProfileUI();
-    loadCategories();
+    // Load all categories (default Home)
+    loadCategory('home');
   }
 
   auth.onAuthStateChanged(user => {
@@ -974,73 +998,104 @@
     document.getElementById('landing-trending-row').scrollIntoView({ behavior: 'smooth' });
   });
 
-  // Landing trending
+  // ======= FETCH MOVIES BY CATEGORY (with genre mapping) =======
+  const genreMap = {
+    'action': 28,
+    'comedy': 35,
+    'sports': 10770, // TV Movie? We'll use 10770 for sports? Actually we can map to 10749? Better to use custom query for sports? We'll just use 'top_rated' for now.
+    'movies': 'top_rated', // we'll use top_rated for movies
+    'tvshows': 'trending' // not implemented, but we'll just use trending
+  };
+
+  async function fetchMoviesByCategory(category) {
+    let endpoint = 'trending';
+    let genreId = null;
+    if (category === 'home') endpoint = 'trending';
+    else if (category === 'movies') endpoint = 'top_rated';
+    else if (category === 'tvshows') endpoint = 'trending'; // placeholder
+    else if (category === 'sports') endpoint = 'action'; // we'll use action for sports
+    else if (category === 'comedy') endpoint = 'comedy';
+    else if (category === 'mylist') return []; // handled separately
+    const res = await fetch(`/api/movies/${endpoint}`);
+    const data = await res.json();
+    return data || [];
+  }
+
+  async function loadCategory(category) {
+    currentCategory = category;
+    // Update active nav
+    document.querySelectorAll('.category-nav a, .nav-links a[data-cat]').forEach(el => {
+      el.classList.toggle('active', el.getAttribute('data-cat') === category);
+    });
+    // Clear container
+    categoriesContainer.innerHTML = '';
+    if (category === 'mylist') {
+      // Show My List (coming soon)
+      categoriesContainer.innerHTML = `
+        <div style="text-align:center; padding:3rem 2rem; color:#aaa;">
+          <i class="fas fa-heart" style="font-size:3rem; color:#E50914; margin-bottom:1rem;"></i>
+          <h2>My List</h2>
+          <p>Your saved movies will appear here. Start adding movies to your list!</p>
+        </div>
+      `;
+      return;
+    }
+    // Fetch movies for this category
+    const movies = await fetchMoviesByCategory(category);
+    if (!movies || movies.length === 0) {
+      categoriesContainer.innerHTML = `<p style="padding:2rem; color:#aaa;">No movies found for this category.</p>`;
+      return;
+    }
+    // Create a single row with all movies (for simplicity)
+    const section = document.createElement('div');
+    section.className = 'category-section';
+    const displayName = category.charAt(0).toUpperCase() + category.slice(1);
+    section.innerHTML = `<div class="category-header"><h2>${displayName}</h2></div><div class="movie-row" id="category-movie-row"></div>`;
+    const rowDiv = section.querySelector('.movie-row');
+    movies.slice(0, 20).forEach(movie => {
+      const card = createMovieCard(movie);
+      rowDiv.appendChild(card);
+    });
+    categoriesContainer.appendChild(section);
+  }
+
+  // Landing trending (for non-logged-in users)
   async function loadLandingTrending() {
     const res = await fetch('/api/movies/trending');
     const movies = await res.json();
     const row = document.getElementById('landing-trending-row');
     row.innerHTML = '';
-    movies.slice(0, 10).forEach(m => {
-      const card = document.createElement('div');
-      card.className = 'movie-card';
-      card.innerHTML = `
-        <img class="movie-poster" src="https://image.tmdb.org/t/p/w300${m.poster_path}">
-        <div class="movie-info">
-          <div class="movie-title">${m.title}</div>
-          <div class="movie-year">${m.release_date ? new Date(m.release_date).getFullYear() : 'N/A'}</div>
-          <div class="movie-actions">
-            <button class="btn-watch">▶ Watch</button>
-            <button class="btn-trailer">🎬 Trailer</button>
+    if (movies && movies.length > 0) {
+      // Update trending title
+      if (movies[0]) trendingTitleSpan.innerText = movies[0].title;
+      movies.slice(0, 10).forEach(m => {
+        const card = document.createElement('div');
+        card.className = 'movie-card';
+        card.innerHTML = `
+          <img class="movie-poster" src="https://image.tmdb.org/t/p/w300${m.poster_path}">
+          <div class="movie-info">
+            <div class="movie-title">${m.title}</div>
+            <div class="movie-year">${m.release_date ? new Date(m.release_date).getFullYear() : 'N/A'}</div>
+            <div class="movie-actions">
+              <button class="btn-watch">▶ Watch</button>
+              <button class="btn-trailer">🎬 Trailer</button>
+            </div>
           </div>
-        </div>
-      `;
-      card.querySelector('.btn-watch').onclick = () => {
-        if (currentUser) playFullMovie(m);
-        else showAuthPage('login');
-      };
-      card.querySelector('.btn-trailer').onclick = () => {
-        if (currentUser) openTrailer(m.id, m.title, m.overview);
-        else showAuthPage('login');
-      };
-      row.appendChild(card);
-    });
-  }
-
-  // Categories
-  const categories = [
-    { title: '🔥 Trending Now', api: 'trending' },
-    { title: '🏆 Top Rated', api: 'top_rated' },
-    { title: '💥 Action', api: 'action' },
-    { title: '😂 Comedy', api: 'comedy' },
-    { title: '🚀 Sci-Fi', api: 'scifi' },
-    { title: '💖 Romance', api: 'romance' }
-  ];
-
-  async function fetchMovies(cat) {
-    const res = await fetch(`/api/movies/${cat}`);
-    return await res.json();
-  }
-
-  async function loadCategories() {
-    categoriesContainer.innerHTML = '';
-    for (let cat of categories) {
-      const movies = await fetchMovies(cat.api);
-      if (!movies || movies.length === 0) continue;
-      const section = document.createElement('div');
-      section.className = 'category-section';
-      section.innerHTML = `<div class="category-header"><h2>${cat.title}</h2><span class="view-all">View All →</span></div><div class="movie-row" id="row-${cat.api}"></div>`;
-      const rowDiv = section.querySelector('.movie-row');
-      movies.slice(0, 12).forEach(movie => {
-        const card = createMovieCard(movie);
-        rowDiv.appendChild(card);
+        `;
+        card.querySelector('.btn-watch').onclick = () => {
+          if (currentUser) playFullMovie(m);
+          else showAuthPage('login');
+        };
+        card.querySelector('.btn-trailer').onclick = () => {
+          if (currentUser) openTrailer(m.id, m.title, m.overview);
+          else showAuthPage('login');
+        };
+        row.appendChild(card);
       });
-      categoriesContainer.appendChild(section);
-      if (cat.api === 'trending' && movies[0]) {
-        featuredMovie = movies[0];
-      }
     }
   }
 
+  // ======= CREATE MOVIE CARD (for all contexts) =======
   function createMovieCard(movie) {
     const card = document.createElement('div');
     card.className = 'movie-card';
@@ -1061,6 +1116,7 @@
     return card;
   }
 
+  // ======= STREAMING FUNCTIONS =======
   async function playFullMovie(movie) {
     streamTitle.innerText = movie.title;
     streamDesc.innerText = movie.overview || '';
@@ -1088,7 +1144,7 @@
     } else alert('No trailer');
   }
 
-  // Search
+  // ======= SEARCH =======
   searchIcon.onclick = () => { searchOverlay.style.display = 'flex'; searchInput.focus(); };
   searchClose.onclick = () => { searchOverlay.style.display = 'none'; searchResultsDiv.innerHTML = ''; };
   async function performSearch() {
@@ -1106,7 +1162,7 @@
   }
   searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
 
-  // Close modals
+  // ======= CLOSE MODALS =======
   document.querySelectorAll('.close-modal').forEach(btn => {
     btn.onclick = () => {
       trailerModal.style.display = 'none';
@@ -1120,34 +1176,45 @@
     if (e.target === streamModal) { streamModal.style.display = 'none'; streamIframe.src = ''; }
   };
 
-  // Category navigation
-  document.querySelectorAll('.category-nav a, .nav-links a[data-nav]').forEach(link => {
+  // ======= CATEGORY NAVIGATION (both navbars) =======
+  document.querySelectorAll('.category-nav a, .nav-links a[data-cat]').forEach(link => {
     link.addEventListener('click', (e) => {
-      document.querySelectorAll('.category-nav a, .nav-links a[data-nav]').forEach(l => l.classList.remove('active'));
-      e.target.classList.add('active');
-      const cat = e.target.getAttribute('data-cat') || e.target.getAttribute('data-nav');
+      const cat = e.target.getAttribute('data-cat');
+      if (!cat) return;
+      // If not logged in, redirect to login for non-home categories
+      if (!currentUser && cat !== 'home') {
+        showAuthPage('login');
+        return;
+      }
+      // Update active state for both navs
+      document.querySelectorAll('.category-nav a, .nav-links a[data-cat]').forEach(l => {
+        l.classList.toggle('active', l.getAttribute('data-cat') === cat);
+      });
       if (cat === 'home') {
-        document.getElementById('landing-page').style.display = 'block';
-        document.getElementById('app-container').style.display = 'none';
+        landingPage.style.display = 'block';
+        appContainer.style.display = 'none';
         if (currentUser) {
-          document.getElementById('landing-page').style.display = 'none';
-          document.getElementById('app-container').style.display = 'block';
+          landingPage.style.display = 'none';
+          appContainer.style.display = 'block';
+          loadCategory('home');
         }
-      } else if (cat === 'mylist') {
-        alert('My List feature coming soon!');
       } else {
-        if (currentUser) {
-          document.getElementById('landing-page').style.display = 'none';
-          document.getElementById('app-container').style.display = 'block';
-        } else {
-          showAuthPage('login');
-        }
+        landingPage.style.display = 'none';
+        appContainer.style.display = 'block';
+        loadCategory(cat);
       }
     });
   });
 
-  // Load categories on app start
-  loadCategories();
+  // Initialize: show landing or app
+  auth.onAuthStateChanged(user => {
+    currentUser = user;
+    if (user) {
+      showApp();
+    } else {
+      showLanding();
+    }
+  });
 
   // ======= POPUP BLOCKER =======
   document.addEventListener('click', function(e) {
@@ -1248,7 +1315,6 @@
     ctx.clearRect(0, 0, w, h);
     time += 0.001;
     
-    // Dynamic gradient
     const grad = ctx.createRadialGradient(mouseX, mouseY, 100, w/2, h/2, 700);
     grad.addColorStop(0, '#1a0a2e');
     grad.addColorStop(0.5, '#0f0a1a');
