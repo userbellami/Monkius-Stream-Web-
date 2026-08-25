@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Monkius Full Stream – Netflix Style</title>
-  <meta name="description" content="Watch unlimited movies, TV shows, and originals. Starts at Ksh 150/month.">
-  <meta name="keywords" content="stream movies, watch online, Monkius, best streaming service">
-  <meta name="author" content="Monkius Full Stream">
+  <title>CINEXUS – Movies. Series. Sports. Comedy. All in One Universe.</title>
+  <meta name="description" content="Stream endless entertainment from blockbuster movies to live sports and exclusive originals.">
+  <meta name="keywords" content="CINEXUS, streaming, movies, TV shows, sports, comedy, unlimited entertainment">
+  <meta name="author" content="CINEXUS">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://monkius-full-stream.onrender.com">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://monkius-full-stream.onrender.com">
-  <meta property="og:title" content="Monkius Full Stream – Netflix Style">
-  <meta property="og:description" content="Unlimited movies, TV shows, and more. Starts at Ksh 150/month.">
+  <meta property="og:title" content="CINEXUS – Movies. Series. Sports. Comedy. All in One Universe.">
+  <meta property="og:description" content="Stream endless entertainment from blockbuster movies to live sports and exclusive originals.">
   <meta property="og:image" content="https://image.tmdb.org/t/p/original/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Monkius Full Stream">
-  <meta name="twitter:description" content="Stream the best movies and TV shows. Cancel anytime.">
+  <meta name="twitter:title" content="CINEXUS">
+  <meta name="twitter:description" content="Stream endless entertainment from blockbuster movies to live sports.">
   <meta name="twitter:image" content="https://image.tmdb.org/t/p/original/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,12 +24,12 @@
   {
     "@context": "https://schema.org",
     "@type": "VideoGame",
-    "name": "Monkius Full Stream",
+    "name": "CINEXUS",
     "url": "https://monkius-full-stream.onrender.com",
-    "description": "Unlimited streaming of movies and TV shows. Affordable plans starting at Ksh 150/month.",
+    "description": "Stream endless entertainment from blockbuster movies to live sports and exclusive originals.",
     "provider": {
       "@type": "Organization",
-      "name": "Monkius Full Stream",
+      "name": "CINEXUS",
       "url": "https://monkius-full-stream.onrender.com"
     },
     "offers": {
@@ -48,13 +48,18 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: #000; color: white; overflow-x: hidden; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0a;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
     
-    /* ======= GLOWING ANIMATED BACKGROUND ======= */
+    /* ======= ANIMATED BACKGROUND ======= */
     #bg-canvas {
       position: fixed;
       top: 0;
@@ -63,7 +68,7 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
-      transition: opacity 1s ease;
+      background: radial-gradient(ellipse at 50% 30%, #1a0a2e, #0a0a0a);
     }
     .bg-overlay {
       position: fixed;
@@ -72,7 +77,7 @@
       width: 100%;
       height: 100%;
       z-index: 1;
-      background: rgba(0,0,0,0.55);
+      background: rgba(0,0,0,0.6);
       pointer-events: none;
     }
     .main-content {
@@ -81,16 +86,17 @@
       min-height: 100vh;
     }
     
-    /* ======= NETFLIX-STYLE NAVBAR ======= */
+    /* ======= NAVBAR ======= */
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.2rem 4%;
-      background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 100%);
+      padding: 1rem 4%;
+      background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 100%);
       position: sticky;
       top: 0;
       z-index: 100;
+      backdrop-filter: blur(10px);
     }
     .logo {
       font-size: 1.8rem;
@@ -99,72 +105,268 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      letter-spacing: -0.5px;
+      letter-spacing: -1px;
     }
-    .nav-links { display: flex; gap: 2rem; }
-    .nav-links a { color: #e5e5e5; text-decoration: none; font-weight: 500; font-size: 0.9rem; cursor: pointer; }
+    .logo span {
+      color: #ffffff;
+      background: none;
+      -webkit-background-clip: unset;
+      background-clip: unset;
+      font-weight: 300;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    .nav-links a {
+      color: #e5e5e5;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
     .nav-links a:hover, .nav-links a.active { color: #fff; }
-    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
-    .search-icon { font-size: 1.2rem; cursor: pointer; color: #e5e5e5; }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .search-icon {
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #e5e5e5;
+    }
     .search-icon:hover { color: #E50914; }
     
-    /* ======= NETFLIX-STYLE HERO ======= */
-    .hero-landing {
-      min-height: 85vh;
+    /* ======= HERO SECTION ======= */
+    .hero {
+      min-height: 90vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
       padding: 2rem;
+      background: radial-gradient(ellipse at 50% 40%, rgba(229,9,20,0.1) 0%, transparent 70%);
     }
-    .hero-content-landing { max-width: 700px; }
-    .hero-content-landing h1 {
-      font-size: 3.8rem;
-      font-weight: 900;
+    .hero-content { max-width: 800px; }
+    .hero-content .welcome {
+      font-size: 0.9rem;
+      letter-spacing: 6px;
+      color: #E50914;
+      text-transform: uppercase;
+      font-weight: 600;
       margin-bottom: 1rem;
-      text-shadow: 0 2px 30px rgba(0,0,0,0.8);
     }
-    .hero-content-landing .subtitle {
-      font-size: 1.5rem;
+    .hero-content h1 {
+      font-size: 4.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #fff 0%, #E50914 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1rem;
+    }
+    .hero-content .tagline {
+      font-size: 1.4rem;
+      color: #ccc;
       margin-bottom: 0.5rem;
-      color: #ddd;
+      font-weight: 300;
     }
-    .hero-content-landing .price-text {
-      font-size: 1.1rem;
-      color: #aaa;
-      margin-bottom: 2rem;
-    }
-    .email-form {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
-    .email-form input {
-      padding: 1rem 1.2rem;
-      width: 380px;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 4px;
-      color: white;
+    .hero-content .description {
       font-size: 1rem;
+      color: #999;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
     }
-    .email-form input::placeholder { color: #bbb; }
-    .email-form button {
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
       background: #E50914;
       border: none;
-      padding: 1rem 2.5rem;
-      font-weight: 700;
-      font-size: 1.1rem;
-      border-radius: 4px;
+      padding: 0.8rem 2.5rem;
+      border-radius: 30px;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
       cursor: pointer;
       transition: 0.2s;
     }
-    .email-form button:hover { background: #b20710; }
+    .btn-primary:hover { background: #b20710; transform: scale(1.02); }
+    .btn-secondary {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.8rem 2.5rem;
+      border-radius: 30px;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.2); }
     
-    /* ======= NETFLIX-STYLE REGISTRATION PAGE ======= */
+    /* ======= CATEGORY NAV ======= */
+    .category-nav {
+      display: flex;
+      gap: 1.5rem;
+      padding: 0.5rem 4%;
+      background: rgba(0,0,0,0.4);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      overflow-x: auto;
+      flex-wrap: nowrap;
+    }
+    .category-nav a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 0.85rem;
+      padding: 0.5rem 0;
+      border-bottom: 2px solid transparent;
+      transition: 0.2s;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .category-nav a:hover, .category-nav a.active {
+      color: #fff;
+      border-bottom-color: #E50914;
+    }
+    
+    /* ======= STATS SECTION ======= */
+    .stats-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 2rem;
+      padding: 3rem 4%;
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .stat-item h3 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #E50914;
+    }
+    .stat-item p {
+      color: #999;
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+    }
+    
+    /* ======= MOVIE ROWS ======= */
+    .category-section {
+      margin: 2.5rem 0;
+      padding-left: 4%;
+    }
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-right: 4%;
+      margin-bottom: 1rem;
+    }
+    .category-header h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .category-header .view-all {
+      color: #E50914;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .category-header .view-all:hover { text-decoration: underline; }
+    .movie-row {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding-bottom: 1rem;
+    }
+    .movie-row::-webkit-scrollbar { height: 6px; }
+    .movie-row::-webkit-scrollbar-track { background: #1a1a1a; border-radius: 8px; }
+    .movie-row::-webkit-scrollbar-thumb { background: #E50914; border-radius: 8px; }
+    .movie-card {
+      flex: 0 0 auto;
+      width: 200px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #111;
+      transition: transform 0.3s;
+      cursor: pointer;
+      position: relative;
+    }
+    .movie-card:hover { transform: scale(1.05); }
+    .movie-poster {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+    }
+    .movie-info {
+      padding: 0.6rem;
+    }
+    .movie-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .movie-year {
+      font-size: 0.7rem;
+      color: #888;
+      margin-top: 0.2rem;
+    }
+    .movie-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .btn-watch, .btn-trailer {
+      background: #E50914;
+      border: none;
+      padding: 4px 12px;
+      border-radius: 20px;
+      color: white;
+      font-size: 0.65rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-trailer { background: #333; }
+    .btn-watch:hover { background: #b20710; }
+    .btn-trailer:hover { background: #444; }
+    
+    /* ======= FEATURES SECTION ======= */
+    .features-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      padding: 3rem 4%;
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .feature-item i {
+      font-size: 2.5rem;
+      color: #E50914;
+      margin-bottom: 0.5rem;
+    }
+    .feature-item h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+    .feature-item p {
+      color: #888;
+      font-size: 0.85rem;
+    }
+    
+    /* ======= AUTH PAGE ======= */
     .auth-page {
       min-height: 90vh;
       display: flex;
@@ -177,10 +379,10 @@
       background: rgba(0,0,0,0.85);
       backdrop-filter: blur(10px);
       padding: 3rem;
-      border-radius: 8px;
+      border-radius: 12px;
       max-width: 450px;
       width: 100%;
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.08);
     }
     .auth-container h2 {
       font-size: 2rem;
@@ -192,22 +394,22 @@
       width: 100%;
       padding: 1rem;
       margin: 0.5rem 0;
-      background: #333;
+      background: #222;
       border: none;
-      border-radius: 4px;
+      border-radius: 8px;
       color: white;
       font-size: 1rem;
     }
     .auth-container input:focus {
       outline: 2px solid #E50914;
-      background: #444;
+      background: #2a2a2a;
     }
     .auth-container .auth-btn {
       width: 100%;
       padding: 1rem;
       background: #E50914;
       border: none;
-      border-radius: 4px;
+      border-radius: 8px;
       color: white;
       font-weight: 700;
       font-size: 1.1rem;
@@ -242,86 +444,6 @@
       display: none;
     }
     
-    /* ======= FEATURES ======= */
-    .features-section {
-      padding: 3rem 4%;
-      background: rgba(0,0,0,0.7);
-      text-align: center;
-      border-top: 8px solid #222;
-    }
-    .features-section h2 { font-size: 2.2rem; margin-bottom: 1.5rem; }
-    .features-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      margin-top: 1.5rem;
-    }
-    .feature-card {
-      background: rgba(255,255,255,0.05);
-      padding: 2rem;
-      border-radius: 12px;
-      width: 280px;
-      transition: transform 0.3s;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    .feature-card:hover { transform: translateY(-5px); border-color: #E50914; }
-    .feature-card i { font-size: 2.8rem; color: #E50914; margin-bottom: 1rem; }
-    .feature-card h3 { margin-bottom: 0.5rem; font-size: 1.2rem; }
-    .feature-card p { color: #aaa; font-size: 0.9rem; }
-    
-    /* ======= MOVIE ROWS ======= */
-    .category-section {
-      margin: 2.5rem 0;
-      padding-left: 4%;
-    }
-    .category-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding-right: 4%;
-      margin-bottom: 1rem;
-    }
-    .category-header h2 { font-size: 1.5rem; font-weight: 700; }
-    .movie-row {
-      display: flex;
-      gap: 0.8rem;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      padding-bottom: 1rem;
-    }
-    .movie-row::-webkit-scrollbar { height: 6px; }
-    .movie-row::-webkit-scrollbar-track { background: #1a1a1a; border-radius: 8px; }
-    .movie-row::-webkit-scrollbar-thumb { background: #E50914; border-radius: 8px; }
-    .movie-card {
-      flex: 0 0 auto;
-      width: 200px;
-      border-radius: 8px;
-      overflow: hidden;
-      background: #111;
-      transition: transform 0.3s;
-      cursor: pointer;
-    }
-    .movie-card:hover { transform: scale(1.05); }
-    .movie-poster { width: 100%; height: 280px; object-fit: cover; }
-    .movie-info { padding: 0.6rem; }
-    .movie-title { font-size: 0.9rem; font-weight: 600; }
-    .movie-year { font-size: 0.7rem; color: #aaa; margin-top: 0.2rem; }
-    .btn-watch, .btn-trailer {
-      background: #E50914;
-      border: none;
-      padding: 4px 10px;
-      border-radius: 4px;
-      color: white;
-      font-size: 0.7rem;
-      margin-top: 8px;
-      margin-right: 5px;
-      cursor: pointer;
-    }
-    .btn-trailer { background: #333; }
-    .btn-watch:hover { background: #b20710; }
-    .btn-trailer:hover { background: #444; }
-    
     /* ======= MODALS ======= */
     .modal {
       display: none;
@@ -335,9 +457,24 @@
       justify-content: center;
       align-items: center;
     }
-    .modal-content { background: #111; width: 90%; max-width: 1100px; border-radius: 12px; overflow: hidden; }
-    .modal-video { width: 100%; height: 550px; border: none; }
-    .close-modal { float: right; font-size: 2rem; cursor: pointer; padding: 10px; }
+    .modal-content {
+      background: #111;
+      width: 90%;
+      max-width: 1100px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .modal-video {
+      width: 100%;
+      height: 550px;
+      border: none;
+    }
+    .close-modal {
+      float: right;
+      font-size: 2rem;
+      cursor: pointer;
+      padding: 10px;
+    }
     .modal-info { padding: 1.5rem; }
     
     /* ======= SEARCH OVERLAY ======= */
@@ -364,7 +501,13 @@
       color: white;
       text-align: center;
     }
-    .search-close { position: absolute; top: -50px; right: 0; font-size: 2rem; cursor: pointer; }
+    .search-close {
+      position: absolute;
+      top: -50px;
+      right: 0;
+      font-size: 2rem;
+      cursor: pointer;
+    }
     .search-results-grid {
       display: flex;
       flex-wrap: wrap;
@@ -375,16 +518,16 @@
       justify-content: center;
     }
     
-    /* ======= NETFLIX-STYLE FOOTER ======= */
+    /* ======= FOOTER ======= */
     .footer {
       background: rgba(0,0,0,0.8);
       margin-top: 3rem;
       padding: 3rem 4% 2rem;
-      border-top: 8px solid #222;
+      border-top: 1px solid rgba(255,255,255,0.05);
     }
     .footer-content {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 2rem;
       max-width: 1000px;
       margin: 0 auto;
@@ -392,20 +535,18 @@
     .footer-section h4 {
       color: #E50914;
       margin-bottom: 1rem;
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: 700;
     }
     .footer-section ul { list-style: none; }
     .footer-section li {
-      margin: 0.6rem 0;
-      color: #aaa;
+      margin: 0.5rem 0;
+      color: #888;
       font-size: 0.85rem;
       cursor: pointer;
-      transition: color 0.2s;
+      transition: 0.2s;
     }
-    .footer-section li:hover { color: #fff; text-decoration: underline; }
-    
-    /* ======= SOCIAL ICONS ======= */
+    .footer-section li:hover { color: #fff; }
     .social-icons {
       display: flex;
       gap: 1rem;
@@ -421,7 +562,7 @@
       border-radius: 50%;
       background: rgba(255,255,255,0.05);
       color: #aaa;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       transition: 0.3s;
       text-decoration: none;
     }
@@ -430,7 +571,7 @@
       text-align: center;
       margin-top: 2rem;
       padding-top: 1.5rem;
-      border-top: 1px solid #222;
+      border-top: 1px solid rgba(255,255,255,0.05);
       font-size: 0.75rem;
       color: #666;
       max-width: 1000px;
@@ -438,7 +579,7 @@
       margin-right: auto;
     }
     
-    /* ======= NETFLIX-STYLE PROFILE DROPDOWN ======= */
+    /* ======= PROFILE DROPDOWN ======= */
     .profile-dropdown { position: relative; display: inline-block; }
     .profile-btn {
       background: transparent;
@@ -452,7 +593,7 @@
       color: white;
       font-size: 0.9rem;
     }
-    .profile-btn:hover { background: rgba(255,255,255,0.1); }
+    .profile-btn:hover { background: rgba(255,255,255,0.08); }
     .profile-btn i { font-size: 1.4rem; color: #E50914; }
     .dropdown-content {
       display: none;
@@ -462,9 +603,9 @@
       background: rgba(0,0,0,0.95);
       backdrop-filter: blur(10px);
       min-width: 200px;
-      border-radius: 8px;
+      border-radius: 10px;
       padding: 0.5rem 0;
-      border: 1px solid #333;
+      border: 1px solid rgba(255,255,255,0.08);
       box-shadow: 0 4px 20px rgba(0,0,0,0.8);
     }
     .profile-dropdown:hover .dropdown-content { display: block; }
@@ -473,58 +614,71 @@
       color: #ddd;
       font-size: 0.85rem;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: 0.2s;
       display: flex;
       align-items: center;
       gap: 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
     }
     .dropdown-item:last-child { border-bottom: none; }
-    .dropdown-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
-    .dropdown-item i { width: 18px; color: #aaa; }
+    .dropdown-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+    .dropdown-item i { width: 18px; color: #888; }
     .dropdown-item .email-text {
-      color: #888;
+      color: #666;
       font-size: 0.75rem;
       display: block;
       margin-top: 2px;
     }
-    .dropdown-divider {
-      border-top: 1px solid #333;
-      margin: 0.3rem 0;
-    }
-    .dropdown-item.logout {
-      color: #E50914;
-    }
+    .dropdown-divider { border-top: 1px solid rgba(255,255,255,0.06); margin: 0.3rem 0; }
+    .dropdown-item.logout { color: #E50914; }
     .dropdown-item.logout i { color: #E50914; }
-    .dropdown-item.logout:hover { background: rgba(229,9,20,0.15); }
+    .dropdown-item.logout:hover { background: rgba(229,9,20,0.12); }
     
     @media (max-width: 768px) {
       .movie-card { width: 140px; }
       .movie-poster { height: 200px; }
-      .hero-content-landing h1 { font-size: 2.2rem; }
-      .hero-content-landing .subtitle { font-size: 1.1rem; }
-      .email-form input { width: 100%; }
-      .modal-video { height: 250px; }
+      .hero-content h1 { font-size: 2.8rem; }
+      .hero-content .tagline { font-size: 1.1rem; }
       .nav-links { display: none; }
       .auth-container { padding: 2rem; }
-      .footer-content { grid-template-columns: 1fr 1fr; }
+      .stats-section { grid-template-columns: repeat(2, 1fr); }
+      .features-section { grid-template-columns: 1fr; }
+      .modal-video { height: 250px; }
+      .category-nav { gap: 1rem; }
     }
   </style>
 </head>
 <body>
-<!-- Glowing Animated Background -->
+<!-- Animated Background -->
 <canvas id="bg-canvas"></canvas>
 <div class="bg-overlay"></div>
 
 <div class="main-content">
   <!-- Navbar -->
   <div class="navbar">
-    <div class="logo">MONKIUS FULL STREAM</div>
-    <div class="nav-links" id="nav-links-auth"><a class="active" data-nav="home">Home</a></div>
+    <div class="logo">CIN<span>EXUS</span></div>
+    <div class="nav-links" id="nav-links-auth">
+      <a class="active" data-nav="home">Home</a>
+      <a data-nav="movies">Movies</a>
+      <a data-nav="tvshows">TV Shows</a>
+      <a data-nav="sports">Sports</a>
+      <a data-nav="comedy">Comedy</a>
+      <a data-nav="mylist">My List</a>
+    </div>
     <div class="nav-right">
       <i class="fas fa-search search-icon" id="search-icon"></i>
       <div id="auth-section"></div>
     </div>
+  </div>
+
+  <!-- Category Nav -->
+  <div class="category-nav" id="category-nav">
+    <a class="active" data-cat="home">Home</a>
+    <a data-cat="movies">Movies</a>
+    <a data-cat="tvshows">TV Shows</a>
+    <a data-cat="sports">Sports</a>
+    <a data-cat="comedy">Comedy</a>
+    <a data-cat="mylist">My List</a>
   </div>
 
   <!-- Search Overlay -->
@@ -538,36 +692,57 @@
 
   <!-- LANDING PAGE -->
   <div id="landing-page">
-    <div class="hero-landing">
-      <div class="hero-content-landing">
-        <h1>Unlimited movies, TV shows, and more</h1>
-        <div class="subtitle">Watch anywhere. Cancel anytime.</div>
-        <div class="price-text">Starts at Ksh 150/month. Ready to watch?</div>
-        <div class="email-form">
-          <input type="email" id="landing-email" placeholder="Email address">
-          <button id="get-started-btn">Get Started &nbsp; ></button>
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-content">
+        <div class="welcome">WELCOME TO</div>
+        <h1>CINEXUS</h1>
+        <div class="tagline">Movies. Series. Sports. Comedy. All in One Universe.</div>
+        <div class="description">Stream endless entertainment from blockbuster movies to live sports and exclusive originals.</div>
+        <div class="hero-buttons">
+          <button class="btn-primary" id="get-started-btn">Start Streaming</button>
+          <button class="btn-secondary" id="explore-btn">Explore</button>
         </div>
       </div>
     </div>
-    
-    <!-- Features -->
-    <div class="features-section">
-      <h2>Why choose Monkius?</h2>
-      <div class="features-grid">
-        <div class="feature-card"><i class="fas fa-tv"></i><h3>Watch on any device</h3><p>Smartphones, tablets, laptops, and TVs</p></div>
-        <div class="feature-card"><i class="fas fa-download"></i><h3>Download and go</h3><p>Watch offline on the go (coming soon)</p></div>
-        <div class="feature-card"><i class="fas fa-infinity"></i><h3>No contracts</h3><p>Cancel anytime, no long-term commitments</p></div>
-      </div>
+
+    <!-- Stats -->
+    <div class="stats-section">
+      <div class="stat-item"><h3>10,000+</h3><p>Titles</p></div>
+      <div class="stat-item"><h3>2,000+</h3><p>TV Shows</p></div>
+      <div class="stat-item"><h3>Live</h3><p>Matches</p></div>
     </div>
-    
+
     <!-- Trending -->
     <div class="category-section">
-      <div class="category-header"><h2>🔥 Trending Now</h2></div>
+      <div class="category-header">
+        <h2>🔥 Trending Now</h2>
+        <span class="view-all" id="view-all-trending">View All →</span>
+      </div>
       <div class="movie-row" id="landing-trending-row"></div>
+    </div>
+
+    <!-- Features -->
+    <div class="features-section">
+      <div class="feature-item">
+        <i class="fas fa-ban"></i>
+        <h4>No Ads</h4>
+        <p>Enjoy uninterrupted streaming</p>
+      </div>
+      <div class="feature-item">
+        <i class="fas fa-download"></i>
+        <h4>Download & Watch</h4>
+        <p>Watch offline anytime</p>
+      </div>
+      <div class="feature-item">
+        <i class="fas fa-tv"></i>
+        <h4>Multi-Screen</h4>
+        <p>Watch on any device</p>
+      </div>
     </div>
   </div>
 
-  <!-- ======= NETFLIX-STYLE REGISTRATION PAGE ======= -->
+  <!-- AUTH PAGE -->
   <div id="auth-page" class="auth-page" style="display: none;">
     <div class="auth-container">
       <h2 id="auth-title">Sign In</h2>
@@ -576,64 +751,44 @@
       <input type="email" id="auth-email" placeholder="Email address">
       <input type="password" id="auth-password" placeholder="Password">
       <button class="auth-btn" id="auth-submit">Sign In</button>
-      <div class="toggle-auth" id="auth-toggle">New to Monkius? <span>Sign up now</span>.</div>
+      <div class="toggle-auth" id="auth-toggle">New to CINEXUS? <span>Sign up now</span>.</div>
     </div>
   </div>
 
   <!-- MAIN APP -->
   <div id="app-container" style="display: none;">
-    <div style="padding:4rem 4% 6rem;">
-      <div style="max-width:550px;">
-        <div style="background:#E50914; display:inline-block; padding:0.2rem 1rem; border-radius:30px;">🎬 NOW STREAMING</div>
-        <h1 id="featured-title" style="margin:1rem 0;">Loading...</h1>
-        <p id="featured-desc"></p>
-        <button id="watch-trailer-btn" style="background:white; color:black; border:none; padding:0.5rem 1.5rem; border-radius:4px; margin-top:1rem;">▶ Watch Trailer</button>
-      </div>
-    </div>
     <div id="categories-container"></div>
   </div>
 
-  <!-- ======= NETFLIX-STYLE FOOTER ======= -->
+  <!-- FOOTER -->
   <div class="footer">
     <div class="footer-content">
       <div class="footer-section">
-        <h4>FAQ</h4>
+        <h4>CINEXUS</h4>
         <ul>
-          <li>What is Monkius?</li>
-          <li>How much does it cost?</li>
-          <li>Where can I watch?</li>
-          <li>How do I cancel?</li>
+          <li>Movies. Series. Sports. Comedy.</li>
+          <li>All in One Universe.</li>
         </ul>
       </div>
       <div class="footer-section">
-        <h4>Help Center</h4>
+        <h4>Quick Links</h4>
         <ul>
-          <li>Account & Billing</li>
-          <li>Plans & Pricing</li>
-          <li>Supported Devices</li>
-          <li>Contact Us</li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h4>Terms & Privacy</h4>
-        <ul>
-          <li id="link-terms">Terms of Use</li>
-          <li id="link-privacy">Privacy Policy</li>
-          <li>Cookie Preferences</li>
-          <li>Corporate Information</li>
+          <li>Help Center</li>
+          <li>Terms of Use</li>
+          <li>Privacy Policy</li>
         </ul>
       </div>
       <div class="footer-section">
         <h4>Connect With Us</h4>
         <div class="social-icons">
-          <a href="https://youtube.com/@dreamcasestudio?si=H3IAVrsO20QCQPIP" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
-          <a href="https://www.facebook.com/profile.php?id=61591539599065" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://wa.me/254797618847" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
-          <a href="https://t.me/2547597618847" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram-plane"></i></a>
+          <a href="https://youtube.com/@dreamcasestudio?si=H3IAVrsO20QCQPIP" target="_blank"><i class="fab fa-youtube"></i></a>
+          <a href="https://www.facebook.com/profile.php?id=61591539599065" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://wa.me/254797618847" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://t.me/2547597618847" target="_blank"><i class="fab fa-telegram-plane"></i></a>
         </div>
       </div>
     </div>
-    <div class="copyright">© 2026 Monkius Full Stream. All rights reserved. #1 in Africa</div>
+    <div class="copyright">© 2026 CINEXUS. All rights reserved. #1 in Africa</div>
   </div>
 </div>
 
@@ -642,6 +797,7 @@
 <div id="stream-modal" class="modal"><div class="modal-content"><span class="close-modal">&times;</span><iframe id="stream-iframe" class="modal-video" allow="autoplay; fullscreen" frameborder="0" allowfullscreen></iframe><div class="modal-info"><h3 id="stream-title"></h3><p id="stream-desc"></p><button id="fallback-btn" style="background:#333; padding:8px; margin-top:10px; border-radius:4px;">🔄 Try Alternate Source</button></div></div></div>
 
 <script>
+  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyB-9QzBOU6vFST4EvxdhFEIz5QBA1D-XW0",
     authDomain: "monkius-full-stream.firebaseapp.com",
@@ -665,9 +821,6 @@
   const appContainer = document.getElementById('app-container');
   const authSection = document.getElementById('auth-section');
   const categoriesContainer = document.getElementById('categories-container');
-  const featuredTitle = document.getElementById('featured-title');
-  const featuredDesc = document.getElementById('featured-desc');
-  const watchTrailerBtn = document.getElementById('watch-trailer-btn');
   const searchIcon = document.getElementById('search-icon');
   const searchOverlay = document.getElementById('search-overlay');
   const searchInput = document.getElementById('search-input');
@@ -700,7 +853,7 @@
     authSubmit.innerText = isSignUp ? 'Create Account' : 'Sign In';
     authToggle.innerHTML = isSignUp 
       ? 'Already have an account? <span>Sign In</span>'
-      : 'New to Monkius? <span>Sign up now</span>';
+      : 'New to CINEXUS? <span>Sign up now</span>';
     authError.style.display = 'none';
     authSuccess.style.display = 'none';
     authEmail.value = '';
@@ -726,7 +879,7 @@
       if (isSignUp) {
         const userCredential = await auth.createUserWithEmailAndPassword(email, password);
         await db.collection('users').doc(userCredential.user.uid).collection('profile').doc('info').set({ displayName: email.split('@')[0] });
-        authSuccess.innerText = 'Account created! Welcome to Monkius.';
+        authSuccess.innerText = 'Account created! Welcome to CINEXUS.';
         authSuccess.style.display = 'block';
       } else {
         await auth.signInWithEmailAndPassword(email, password);
@@ -743,7 +896,7 @@
     showAuthPage(isSignUp ? 'login' : 'signup');
   });
 
-  // ======= NETFLIX-STYLE PROFILE DROPDOWN =======
+  // ======= PROFILE DROPDOWN =======
   async function updateProfileUI() {
     if (!currentUser) return;
     const doc = await db.collection('users').doc(currentUser.uid).collection('profile').doc('info').get();
@@ -777,7 +930,6 @@
       </div>
     `;
     
-    // Save name functionality
     document.getElementById('save-name-item')?.addEventListener('click', async () => {
       const newName = prompt('Enter your display name:', displayName);
       if (newName && newName.trim() !== '') {
@@ -787,10 +939,8 @@
       }
     });
     
-    // Logout functionality
     document.getElementById('logout-btn')?.addEventListener('click', () => {
       auth.signOut();
-      // Show a brief confirmation
       alert('Signed out successfully.');
     });
   }
@@ -799,7 +949,7 @@
     landingPage.style.display = 'block';
     authPage.style.display = 'none';
     appContainer.style.display = 'none';
-    authSection.innerHTML = '<button id="navbar-signin" style="background:#E50914; border:none; padding:0.4rem 1rem; border-radius:4px; color:white; cursor:pointer;">Sign In</button>';
+    authSection.innerHTML = '<button id="navbar-signin" style="background:#E50914; border:none; padding:0.4rem 1rem; border-radius:8px; color:white; cursor:pointer; font-weight:600;">Sign In</button>';
     document.getElementById('navbar-signin')?.addEventListener('click', () => showAuthPage('login'));
     loadLandingTrending();
   }
@@ -818,15 +968,10 @@
     else showLanding();
   });
 
-  // Landing email -> signup
-  document.getElementById('get-started-btn')?.addEventListener('click', () => {
-    const email = document.getElementById('landing-email').value.trim();
-    if (email) {
-      showAuthPage('signup');
-      authEmail.value = email;
-    } else {
-      showAuthPage('signup');
-    }
+  // Landing buttons
+  document.getElementById('get-started-btn')?.addEventListener('click', () => showAuthPage('signup'));
+  document.getElementById('explore-btn')?.addEventListener('click', () => {
+    document.getElementById('landing-trending-row').scrollIntoView({ behavior: 'smooth' });
   });
 
   // Landing trending
@@ -840,9 +985,23 @@
       card.className = 'movie-card';
       card.innerHTML = `
         <img class="movie-poster" src="https://image.tmdb.org/t/p/w300${m.poster_path}">
-        <div class="movie-info"><div class="movie-title">${m.title}</div><button class="btn-watch">Sign in to watch</button></div>
+        <div class="movie-info">
+          <div class="movie-title">${m.title}</div>
+          <div class="movie-year">${m.release_date ? new Date(m.release_date).getFullYear() : 'N/A'}</div>
+          <div class="movie-actions">
+            <button class="btn-watch">▶ Watch</button>
+            <button class="btn-trailer">🎬 Trailer</button>
+          </div>
+        </div>
       `;
-      card.querySelector('button').onclick = () => showAuthPage('login');
+      card.querySelector('.btn-watch').onclick = () => {
+        if (currentUser) playFullMovie(m);
+        else showAuthPage('login');
+      };
+      card.querySelector('.btn-trailer').onclick = () => {
+        if (currentUser) openTrailer(m.id, m.title, m.overview);
+        else showAuthPage('login');
+      };
       row.appendChild(card);
     });
   }
@@ -869,7 +1028,7 @@
       if (!movies || movies.length === 0) continue;
       const section = document.createElement('div');
       section.className = 'category-section';
-      section.innerHTML = `<div class="category-header"><h2>${cat.title}</h2></div><div class="movie-row" id="row-${cat.api}"></div>`;
+      section.innerHTML = `<div class="category-header"><h2>${cat.title}</h2><span class="view-all">View All →</span></div><div class="movie-row" id="row-${cat.api}"></div>`;
       const rowDiv = section.querySelector('.movie-row');
       movies.slice(0, 12).forEach(movie => {
         const card = createMovieCard(movie);
@@ -878,8 +1037,6 @@
       categoriesContainer.appendChild(section);
       if (cat.api === 'trending' && movies[0]) {
         featuredMovie = movies[0];
-        featuredTitle.innerText = featuredMovie.title;
-        featuredDesc.innerText = featuredMovie.overview ? featuredMovie.overview.slice(0, 150) + '...' : '';
       }
     }
   }
@@ -893,7 +1050,10 @@
       <div class="movie-info">
         <div class="movie-title">${movie.title}</div>
         <div class="movie-year">${year}</div>
-        <div><button class="btn-watch">▶ Watch</button><button class="btn-trailer">🎬 Trailer</button></div>
+        <div class="movie-actions">
+          <button class="btn-watch">▶ Watch</button>
+          <button class="btn-trailer">🎬 Trailer</button>
+        </div>
       </div>
     `;
     card.querySelector('.btn-watch').onclick = (e) => { e.stopPropagation(); playFullMovie(movie); };
@@ -928,10 +1088,6 @@
     } else alert('No trailer');
   }
 
-  watchTrailerBtn.onclick = () => {
-    if (featuredMovie) openTrailer(featuredMovie.id, featuredMovie.title, featuredMovie.overview);
-  };
-
   // Search
   searchIcon.onclick = () => { searchOverlay.style.display = 'flex'; searchInput.focus(); };
   searchClose.onclick = () => { searchOverlay.style.display = 'none'; searchResultsDiv.innerHTML = ''; };
@@ -964,18 +1120,33 @@
     if (e.target === streamModal) { streamModal.style.display = 'none'; streamIframe.src = ''; }
   };
 
-  // Quick Links
-  document.getElementById('link-terms')?.addEventListener('click', () => alert('Terms of Use\n\n1. You must be 18+ to use this service.\n2. Content is for personal use only.\n3. No redistribution of content.\n4. Use at your own risk.'));
-  document.getElementById('link-privacy')?.addEventListener('click', () => alert('Privacy Policy\n\nWe collect:\n- Email (for account management)\n- Watch history (for recommendations)\n\nWe do not share your data with third parties.'));
-
-  // Navigation
-  document.querySelectorAll('[data-nav]').forEach(link => {
+  // Category navigation
+  document.querySelectorAll('.category-nav a, .nav-links a[data-nav]').forEach(link => {
     link.addEventListener('click', (e) => {
-      document.querySelectorAll('[data-nav]').forEach(l => l.classList.remove('active'));
+      document.querySelectorAll('.category-nav a, .nav-links a[data-nav]').forEach(l => l.classList.remove('active'));
       e.target.classList.add('active');
+      const cat = e.target.getAttribute('data-cat') || e.target.getAttribute('data-nav');
+      if (cat === 'home') {
+        document.getElementById('landing-page').style.display = 'block';
+        document.getElementById('app-container').style.display = 'none';
+        if (currentUser) {
+          document.getElementById('landing-page').style.display = 'none';
+          document.getElementById('app-container').style.display = 'block';
+        }
+      } else if (cat === 'mylist') {
+        alert('My List feature coming soon!');
+      } else {
+        if (currentUser) {
+          document.getElementById('landing-page').style.display = 'none';
+          document.getElementById('app-container').style.display = 'block';
+        } else {
+          showAuthPage('login');
+        }
+      }
     });
   });
 
+  // Load categories on app start
   loadCategories();
 
   // ======= POPUP BLOCKER =======
@@ -985,7 +1156,7 @@
     if (isCloseBtn) {
       e.preventDefault();
       e.stopPropagation();
-      const popup = target.closest('.modal, .overlay, .popup, .ad-container, .notification, [class*="modal"], [class*="overlay"], [class*="popup"]');
+      const popup = target.closest('.modal, .overlay, .popup, .ad-container, .notification');
       if (popup) {
         popup.style.display = 'none';
         popup.style.pointerEvents = 'none';
@@ -1000,120 +1171,94 @@
     return null;
   };
 
-  // ======= GLOWING ANIMATED BACKGROUND =======
+  // ======= ANIMATED BACKGROUND =======
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
   let w = window.innerWidth, h = window.innerHeight;
   let particles = [];
   let mouseX = w/2, mouseY = h/2;
-  let bgStyle = 0;
   
-  const BG_STYLES = [
-    { colors: ['#1a0a20', '#2d0a40', '#400a60'], glow: '#ff0066' },
-    { colors: ['#0a1a30', '#0a3a60', '#0a5a90'], glow: '#00ccff' },
-    { colors: ['#1a0a0a', '#3d0a0a', '#600a0a'], glow: '#ff3300' },
-    { colors: ['#1a1a0a', '#3d3d0a', '#60600a'], glow: '#ffcc00' },
-    { colors: ['#0a1a1a', '#0a3d3d', '#0a6060'], glow: '#00ff99' },
-    { colors: ['#1a0a30', '#3d0a60', '#600a90'], glow: '#cc00ff' },
-    { colors: ['#0a0a1a', '#0a0a3d', '#0a0a60'], glow: '#3366ff' }
-  ];
-
   document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
 
   class Particle {
     constructor() {
       this.x = Math.random() * w;
       this.y = Math.random() * h;
-      this.vx = (Math.random() - 0.5) * 0.4;
-      this.vy = (Math.random() - 0.5) * 0.4;
-      this.size = Math.random() * 5 + 2;
-      this.hue = 0;
-      this.alpha = Math.random() * 0.6 + 0.2;
+      this.vx = (Math.random() - 0.5) * 0.3;
+      this.vy = (Math.random() - 0.5) * 0.3;
+      this.size = Math.random() * 3 + 1;
+      this.alpha = Math.random() * 0.3 + 0.1;
       this.originalSize = this.size;
-      this.glow = Math.random() * 30 + 15;
+      this.pulse = Math.random() * Math.PI * 2;
     }
     update() {
       let dx = mouseX - this.x, dy = mouseY - this.y, dist = Math.hypot(dx, dy);
-      if (dist < 180) {
+      if (dist < 200) {
         let angle = Math.atan2(dy, dx);
-        let force = (180 - dist) / 180 * 0.2;
+        let force = (200 - dist) / 200 * 0.1;
         this.vx += Math.cos(angle) * force;
         this.vy += Math.sin(angle) * force;
-        this.size = this.originalSize + (180 - dist) / 50;
+        this.size = this.originalSize + (200 - dist) / 100;
       } else {
         this.size += (this.originalSize - this.size) * 0.02;
       }
-      this.vx *= 0.98;
-      this.vy *= 0.98;
+      this.vx *= 0.99;
+      this.vy *= 0.99;
       this.x += this.vx;
       this.y += this.vy;
-      if (this.x < -20) this.x = w + 20;
-      if (this.x > w + 20) this.x = -20;
-      if (this.y < -20) this.y = h + 20;
-      if (this.y > h + 20) this.y = -20;
+      if (this.x < -10) this.x = w + 10;
+      if (this.x > w + 10) this.x = -10;
+      if (this.y < -10) this.y = h + 10;
+      if (this.y > h + 10) this.y = -10;
+      this.pulse += 0.02;
     }
-    draw(glowColor) {
+    draw() {
+      const alpha = this.alpha * (0.7 + 0.3 * Math.sin(this.pulse));
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fillStyle = glowColor;
-      ctx.shadowColor = glowColor;
-      ctx.shadowBlur = this.glow;
-      ctx.globalAlpha = this.alpha;
+      ctx.fillStyle = `rgba(229, 9, 20, ${alpha})`;
       ctx.fill();
-      ctx.shadowBlur = 0;
-      ctx.globalAlpha = 1;
     }
   }
 
-  function initParticles() { particles = []; for (let i = 0; i < 160; i++) particles.push(new Particle()); }
+  function initParticles() {
+    particles = [];
+    for (let i = 0; i < 120; i++) particles.push(new Particle());
+  }
 
-  function drawConnections(glowColor) {
+  function drawConnections() {
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         let dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
         let dist = Math.hypot(dx, dy);
-        if (dist < 130) {
+        if (dist < 150) {
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = glowColor;
-          ctx.globalAlpha = (1 - dist / 130) * 0.15;
-          ctx.lineWidth = 0.8;
+          ctx.strokeStyle = `rgba(229, 9, 20, ${(1 - dist / 150) * 0.08})`;
+          ctx.lineWidth = 0.5;
           ctx.stroke();
-          ctx.globalAlpha = 1;
         }
       }
     }
   }
 
   let time = 0;
-  let styleTimer = 0;
-  let currentStyle = 0;
-
   function animateBg() {
     ctx.clearRect(0, 0, w, h);
-    time += 0.002;
-    styleTimer += 0.002;
-
-    if (styleTimer > 3) {
-      styleTimer = 0;
-      currentStyle = (currentStyle + 1) % BG_STYLES.length;
-      bgStyle = currentStyle;
-    }
-
-    const style = BG_STYLES[currentStyle];
-    const glowColor = style.glow;
-
-    const grad = ctx.createRadialGradient(mouseX, mouseY, 50, w/2, h/2, 800);
-    grad.addColorStop(0, style.colors[0]);
-    grad.addColorStop(0.5, style.colors[1]);
-    grad.addColorStop(1, style.colors[2]);
+    time += 0.001;
+    
+    // Dynamic gradient
+    const grad = ctx.createRadialGradient(mouseX, mouseY, 100, w/2, h/2, 700);
+    grad.addColorStop(0, '#1a0a2e');
+    grad.addColorStop(0.5, '#0f0a1a');
+    grad.addColorStop(1, '#0a0a0a');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, w, h);
-
-    particles.forEach(p => { p.update(); p.draw(glowColor); });
-    drawConnections(glowColor);
-
+    
+    particles.forEach(p => { p.update(); p.draw(); });
+    drawConnections();
+    
     requestAnimationFrame(animateBg);
   }
 
